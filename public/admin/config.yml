@@ -1,0 +1,23 @@
+backend:
+  name: github
+  repo: baalebos-cloud/townscribe
+  branch: main
+
+# Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
+publish_mode: editorial_workflow
+
+media_folder: "public/images/uploads" # Where media uploads land in your repo
+public_folder: "/images/uploads"     # Path mapping Astro uses to render images
+
+collections:
+  - name: "blog"
+    label: "News Articles"
+    folder: "src/content/blog" # Direct injection path into Astro content directory
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
