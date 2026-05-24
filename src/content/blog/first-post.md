@@ -2,7 +2,7 @@
 title: A SPECIAL WELCOME TO TOWNSCRIBE
 description: Welcome, Ladies and Gentle men!!!!
 pubDate: 2026-05-24T18:34:00.000+01:00
-heroImage: ../../assets/blog-placeholder-3.jpg
+heroImage: /images/uploads/townscribe-logo.jpeg
 ---
 Where stories breathe, ideas flourish, and voices truly matter.
 
