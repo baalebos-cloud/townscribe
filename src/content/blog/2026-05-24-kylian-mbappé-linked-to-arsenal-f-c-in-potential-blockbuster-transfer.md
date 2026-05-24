@@ -2,7 +2,7 @@
 title: Kylian Mbappé Linked to Arsenal F.C. in Potential Blockbuster Transfer
 description: "Sport "
 pubDate: 2026-05-24T19:24:00.000+01:00
-heroImage: /images/uploads/mbappe.webp
+
 ---
 London, May 24, 2026 – Kylian Mbappé is being strongly linked with a move to Arsenal F.C. in what could be a transformative deal for European football. 
 
