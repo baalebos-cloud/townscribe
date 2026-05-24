@@ -20,3 +20,7 @@ collections:
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+# --- NEW SEO FIELDS FOR WRITERS ---
+      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: false, hint: "Optional: Custom title for Google search results (defaults to Title if blank)" }
+      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: false, hint: "Optional: A brief summary under 160 characters for search engines" }
+      
