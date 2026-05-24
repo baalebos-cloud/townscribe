@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: baalebos-cloud/townscribe
+  name: git-gateway
   branch: main
 
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
