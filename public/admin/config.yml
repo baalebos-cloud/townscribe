@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: baalebos-cloud/townscribe
   branch: main
+  base_url: https://api.decapcms.org
 
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
@@ -20,7 +22,6 @@ collections:
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
-# --- NEW SEO FIELDS FOR WRITERS ---
+      # --- SEO FIELDS FOR WRITERS ---
       - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: false, hint: "Optional: Custom title for Google search results (defaults to Title if blank)" }
       - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: false, hint: "Optional: A brief summary under 160 characters for search engines" }
-      
