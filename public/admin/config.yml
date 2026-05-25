@@ -2,7 +2,7 @@ backend:
   name: github
   repo: baalebos-cloud/townscribe
   branch: main
-  auth_type: implicit
+  base_url: https://gatekeeper.tylergaw.com
 
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
