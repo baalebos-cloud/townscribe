@@ -2,7 +2,7 @@ backend:
   name: github
   repo: baalebos-cloud/townscribe
   branch: main
-  base_url: https://api.decapcms.org
+  auth_type: implicit
 
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
