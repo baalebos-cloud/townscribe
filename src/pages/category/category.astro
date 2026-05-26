@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro'; // Adjust layout path to match your layout name
+import BlogPost from '../../layouts/BlogPost.astro';
 
 // 1. Generate static URL paths for all 9 required categories
 export async function getStaticPaths() {
@@ -29,7 +29,7 @@ const { category } = Astro.params;
 const { posts, categoryName } = Astro.props;
 ---
 
-<BaseLayout title={`${categoryName.toUpperCase()} News | TownScribe`}>
+<BlogPost title={`${categoryName.toUpperCase()} News | TownScribe`}>
   <main class="category-container">
     <header class="category-header">
       <p class="breadcrumbs"><a href="/">Home</a> / Category</p>
@@ -67,7 +67,7 @@ const { posts, categoryName } = Astro.props;
       )}
     </section>
   </main>
-</BaseLayout>
+</BlogPost>
 
 <style>
   /* Quick styling grid for readability */
