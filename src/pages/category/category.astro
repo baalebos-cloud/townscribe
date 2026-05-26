@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro'; // Adjust layout path to match your layout name
+
+// 1. Generate static URL paths for all 9 required categories
+export async function getStaticPaths() {
+  const categories = [
+    'politics', 'business', 'entertainment', 'technology', 
+    'health', 'sport', 'world', 'job'
+  ];
+
+  const allPosts = await getCollection('blog');
+
+  return categories.map((catName) => {
+    // Filter posts that match the current category name string
+    const filteredPosts = allPosts
+      .filter((post) => post.data.category?.toLowerCase() === catName)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return {
+      params: { category: catName },
+      props: { posts: filteredPosts, categoryName: catName },
+    };
+  });
+}
+
+// 2. Extract properties sent down from getStaticPaths
+const { category } = Astro.params;
+const { posts, categoryName } = Astro.props;
+---
+
+<BaseLayout title={`${categoryName.toUpperCase()} News | TownScribe`}>
+  <main class="category-container">
+    <header class="category-header">
+      <p class="breadcrumbs"><a href="/">Home</a> / Category</p>
+      <h1>{categoryName.toUpperCase()}</h1>
+      <p class="subtitle">Latest updates and deep analysis on {categoryName}.</p>
+    </header>
+
+    <section class="posts-grid">
+      {posts.length === 0 ? (
+        <div class="empty-state">
+          <p>No articles published in this category yet. Where Every Story Breathes...</p>
+        </div>
+      ) : (
+        posts.map((post) => (
+          <article class="post-card">
+            {post.data.heroImage && (
+              <img src={post.data.heroImage} alt={post.data.title} class="card-img" />
+            )}
+            <div class="card-body">
+              <span class="category-tag">{post.data.category}</span>
+              <h2>
+                <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+              </h2>
+              <p class="excerpt">{post.data.description}</p>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString('en-us', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </time>
+            </div>
+          </article>
+        ))
+      )}
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* Quick styling grid for readability */
+  .category-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+  .category-header { border-bottom: 2px solid #eaeaea; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .category-header h1 { font-size: 2.5rem; margin: 0.5rem 0; text-transform: capitalize; letter-spacing: -1px; }
+  .breadcrumbs a { color: #666; text-decoration: none; }
+  .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+  .post-card { border: 1px solid #eee; border-radius: 8px; overflow: hidden; background: #fff; }
+  .card-img { width: 100%; height: 200px; object-fit: cover; }
+  .card-body { padding: 1.5rem; }
+  .category-tag { background: #000; color: #fff; font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+  .card-body h2 { font-size: 1.35rem; margin: 0.5rem 0; }
+  .card-body h2 a { color: #000; text-decoration: none; }
+  .excerpt { color: #555; font-size: 0.95rem; line-height: 1.5; }
+</style>
