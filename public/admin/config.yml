@@ -3,6 +3,7 @@ backend:
   repo: baalebos-cloud/townscribe
   branch: main
   base_url: https://decap-proxy.jayeolaoluwadamilare.workers.dev
+
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
 
@@ -19,8 +20,29 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      
+      # --- WRITER & AUTHOR ATTRIBUTION ---
+      - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
+      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Editor", "Writer", "Contributor"], default: "Writer" }
+
+      # --- AUTOMATED CATEGORIES LINKING BAR ---
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        default: "world"
+        options:
+          - { label: "Politics", value: "politics" }
+          - { label: "Business", value: "business" }
+          - { label: "Entertainment", value: "entertainment" }
+          - { label: "Technology", value: "technology" }
+          - { label: "Health", value: "health" }
+          - { label: "Sport", value: "sport" }
+          - { label: "World", value: "world" }
+          - { label: "Job", value: "job" }
+
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
       # --- SEO FIELDS FOR WRITERS ---
       - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: false, hint: "Optional: Custom title for Google search results (defaults to Title if blank)" }
       - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: false, hint: "Optional: A brief summary under 160 characters for search engines" }
