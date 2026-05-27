@@ -5,7 +5,7 @@ pubDate: 2026-05-27T11:56:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: politics
-heroImage: /1000291856.png
+heroImage: /1000291857.jpg
 ---
 
 The Ekiti State chapter of the African Democratic Congress has accused security operatives of political intimidation following the arrest and detention of its House of Assembly candidate, Mr. Ayodele Babatola, over alleged rape allegations.
