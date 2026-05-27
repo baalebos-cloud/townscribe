@@ -1,4 +1,5 @@
 ---
+import SEO from '../components/SEO.astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -12,7 +13,17 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
 <html lang="en">
 	<head>
+		{/* 1. Global Base Head Elements */}
 		<BaseHead title={title} description={description} />
+		
+		{/* 2. Dynamic Production-Ready SEO Optimization */}
+		<SEO 
+			title={title} 
+			description={description} 
+			image={heroImage}
+			type={pubDate ? 'article' : 'website'} 
+		/>
+
 		<style>
 			main {
 				width: calc(100% - 2em);
