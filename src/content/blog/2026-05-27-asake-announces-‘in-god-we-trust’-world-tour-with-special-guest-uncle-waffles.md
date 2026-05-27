@@ -15,8 +15,6 @@ In a resignation letter dated **May 22, 2026**, addressed to the Chairman of APC
 
 “I will not remain a sitting duck in a party where I cannot advance the interests of Delta Central, Delta State, and Nigeria,” the former lawmaker declared. He added that after reviewing recent developments within the APC in Delta State and wide consultations with his associates and supporters, it became clear that his political objectives would be better served outside the party.
 
-### Context Behind the Exit
-
 The resignation comes days after Omo-Agege lost the APC senatorial primary for Delta Central to incumbent Senator Ede Dafinone on May 18, 2026. According to official party results, Dafinone polled 116,252 votes while Omo-Agege scored 3,643. However, Omo-Agege’s camp strongly disputed the outcome, claiming he won with over 109,000 votes based on their own collation.
 
 The development is seen as a significant blow to the APC in Delta State, where Omo-Agege previously served as the party’s 2023 governorship candidate and remains a major political figure in the Urhobo nation and Delta Central Senatorial District.
