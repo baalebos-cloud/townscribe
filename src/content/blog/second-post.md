@@ -1,16 +1,40 @@
 ---
-title: 'Second post'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 15 2022'
-heroImage: '/images/blog-placeholder-4.jpg'
+title: ADC Alleges Political Persecution Over Arrest of Assembly Candidate in Ekiti
+description: Ado Ekiti
+pubDate: 2026-05-27T12:13:00.000+01:00
+author: "Afolabi Olaiya Idowu "
+authorRole: Editor
+category: politics
+heroImage: /1000291856.png
 ---
+The Ekiti State chapter of the African Democratic Congress has accused security operatives of political intimidation following the arrest and detention of its House of Assembly candidate, Mr. Ayodele Babatola, over alleged rape allegations.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
+Speaking during a press conference held on Tuesday at the Amb. Dare Bejide Campaign Office in Ado-Ekiti, the party described the arrest as unlawful, politically motivated, and a dangerous abuse of police powers capable of undermining democracy in the state ahead of the 2027 elections.
 
-Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc. Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra massa massa ultricies mi.
+Addressing journalists on behalf of the party, former Speaker of the Ekiti State House of Assembly, Olugboyega Aribisogan, alleged that Babatola, the ADC candidate for Ekiti State House of Assembly Constituency 1, was arrested by operatives of the Rapid Response Squad (RRS) without a valid warrant and subsequently remanded through the use of what the party termed the “controversial Form K.”
 
-Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
+According to the ADC, Form K — a legal instrument used by the police to seek a magistrate’s approval for the remand of suspects pending investigation — has increasingly become a tool for intimidation and arbitrary detention in Ekiti State.
 
-Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id cursus metus aliquam eleifend mi.
+“The weaponization of Form K is a direct assault on constitutional rights and democratic values,” Aribisogan said. “It was never designed to become an instrument for silencing opposition voices or keeping political actors out of circulation during sensitive electoral periods.”
 
-Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
+The party maintained that Babatola, described as a social activist and outspoken critic of government policies in the state, had consistently faced harassment due to his advocacy on issues of governance and infrastructure.
+
+The ADC further claimed that the rape allegation against the candidate was suspicious and politically orchestrated, insisting that Babatola had no known criminal record and was widely recognized for his activism and public commentary on governance in Ekiti State.
+
+While stressing that it does not condone criminality, the party said any genuine allegation against its candidate should be transparently investigated and prosecuted within the confines of the law.
+
+“What we reject is the misuse of security institutions to intimidate opposition members because of their political beliefs,” the party stated.
+
+The opposition party called on the Nigeria Police Force and the Inspector General of Police to immediately review the circumstances surrounding Babatola’s arrest and order his release if no lawful basis exists for his continued detention.
+
+It also appealed to the Ekiti State judiciary to critically examine the remand application and ensure that due process is not compromised by political interests.
+
+In addition, the party urged the National Human Rights Commission to investigate what it described as a growing pattern of unlawful detentions through the use of Form K in the state.
+
+The ADC further called on the Independent National Electoral Commission to monitor developments closely and ensure that the electoral process in Ekiti is not undermined by intimidation or suppression of opposition figures.
+
+The party warned that continued abuse of police powers could erode public trust in democratic institutions and create fear among citizens participating in the political process.
+
+“If a political candidate can be arrested and detained under questionable circumstances today, then ordinary citizens may become even more vulnerable tomorrow,” the statement added.
+
+The press conference ended with a demand for the immediate and unconditional release of Ayodele Babatola and a broader call for accountability in the conduct of security agencies in Ekiti State.
