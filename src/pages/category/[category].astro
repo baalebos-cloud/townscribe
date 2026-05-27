@@ -15,7 +15,11 @@ export async function getStaticPaths() {
     // Filter posts that match the current category name string
     const filteredPosts = allPosts
       .filter((post) => post.data.category?.toLowerCase() === catName)
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+      .sort((a, b) => {
+        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        return dateB - dateA;
+      });
 
     return {
       params: { category: catName },
@@ -24,7 +28,7 @@ export async function getStaticPaths() {
   });
 }
 
-// 2. Extract properties sent down from getStaticPaths (Safe global execution scope)
+// 2. Extract properties sent down from getStaticPaths
 const { category } = Astro.params;
 const { posts, categoryName } = Astro.props;
 ---
@@ -54,13 +58,19 @@ const { posts, categoryName } = Astro.props;
                 <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
               </h2>
               <p class="excerpt">{post.data.description}</p>
-              <time datetime={post.data.pubDate.toISOString()}>
-                {post.data.pubDate.toLocaleDateString('en-us', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </time>
+              
+              {/* Safe check: Only render the time element if pubDate exists */}
+              {post.data.pubDate && typeof post.data.pubDate.toISOString === 'function' ? (
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-us', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+              ) : (
+                <time>Date Unavailable</time>
+              )}
             </div>
           </article>
         ))
