@@ -1,37 +1,43 @@
 ---
-title: 'Markdown Style Guide'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jun 19 2024'
-heroImage: '/images/blog-placeholder-1.jpg'
+title: "Beyond the Paint and Propaganda: The Painful Gap Between BAO’s Billions,
+  Ekiti’s Bleeding Reality"
+description: Governor Biodun Abayomi Oyebanji wants Ekiti people to believe that
+  repainting roads
+pubDate: Jun 19 2024
+author: Afolabi Olaiya Idowu
+authorRole: Editor
+category: politics
+heroImage: /1000291854.jpg
 ---
+### 
 
-Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
+Governor Biodun Abayomi Oyebanji wants Ekiti people to believe that repainting roads, commissioning signboards, and flooding social media with propaganda amount to performance. But beyond the carefully edited videos, orchestrated endorsements, and endless political praise-singing lies a painful reality many ordinary Ekiti residents experience daily — hardship, stagnation, and disappointment.
 
-## Headings
+The greatest tragedy of the BAO administration is not merely underperformance; it is the frightening gap between the massive allocations received by Ekiti State and the embarrassingly little impact visible on the ground. Since the removal of the fuel subsidy, states across Nigeria have received unprecedented increases in federal allocations. Yet Ekiti under Oyebanji still looks like a state struggling to breathe.
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+Where exactly has the money gone?
 
-# H1
+A government that has received billions upon billions should not be celebrating ordinary road patching as a monumental achievement. Ekiti people are not beggars who should clap because a governor did the barest minimum expected of governance. Roads remain poor across many communities, youth unemployment remains alarming, rural areas continue to suffer neglect, and economic opportunities are painfully scarce. What, then, is the true evidence of this so-called “good governance”?
 
-## H2
+The administration boasts about flyovers and urban beautification while many citizens can barely survive the current economic hardship. Governance is not about media optics. It is about visible improvement in the lives of ordinary people. A government that spends more energy promoting itself than transforming the lives of its citizens has failed its purpose.
 
-### H3
+BAO’s supporters constantly talk about “continuity,” but continuity of what exactly? Continuity of propaganda? Continuity of elite politics? Continuity of managing poverty instead of solving it?
 
-#### H4
+The bitter truth is that many Ekiti people no longer see governance; they see a carefully managed public relations operation designed to manufacture the illusion of progress. Every small project is amplified as if Ekiti has suddenly become Dubai, while the average citizen continues to battle unemployment, inflation, insecurity, and hopelessness.
 
-##### H5
+Even more dangerous is the growing arrogance of power surrounding the administration. When politicians begin to act as though re-election is guaranteed because of endorsements from powerful figures — rather than the genuine satisfaction of the people — democracy itself is threatened. Ekiti has always been known as a politically conscious state, not a colony where citizens are expected to surrender their future to political godfathers and recycled promises.
 
-###### H6
+A second term for BAO risks normalizing mediocrity in Ekiti politics. It sends a dangerous message that performance no longer matters — that leaders can receive huge allocations without corresponding transformation and still be rewarded with another mandate. That is how states collapse slowly: not through sudden disaster, but through the repeated celebration of average leadership as excellence.
 
-## Paragraph
+The June 20, 2026 election must therefore be more than a political contest. It must be a protest against underperformance disguised as achievement. Ekiti cannot afford four more years of explanations, excuses, and exaggerated publicity.
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+The people must ask themselves a hard question: if this is the level of development BAO delivered with enormous federal support and all the advantages of incumbency, what exactly should Ekiti expect in another four years besides deeper disappointment?
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+History will not forgive a people who knowingly reward failure twice.
 
-## Images
+Ekiti deserves leadership that inspires progress, not leadership that survives on propaganda. The future of the state is too important to be sacrificed on the altar of political loyalty, federal influence, and carefully manufactured public perception.
 
-### Syntax
+June 20 is not just an election day. It is a rescue mission for Ekiti State.
 
 ```markdown
 ![Alt text](./full/or/relative/path/of/image)
@@ -39,7 +45,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ### Output
 
-![blog placeholder](../../assets/townscribe-img.jpg)
+![blog placeholder](/1000291854.jpg "Beyond the Paint and Propaganda: The Painful Gap Between BAO’s Billions, Ekiti’s Bleeding Reality")
 
 ## Blockquotes
 
@@ -56,8 +62,8 @@ The blockquote element represents content that is quoted from another source, op
 
 #### Output
 
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
-> **Note** that you can use _Markdown syntax_ within a blockquote.
+> Tiam, ad mint andaepu dandae nostion secatur sequo quae.\
+> **Note** that you can use *Markdown syntax* within a blockquote.
 
 ### Blockquote with attribution
 
@@ -89,7 +95,7 @@ The blockquote element represents content that is quoted from another source, op
 
 | Italics   | Bold     | Code   |
 | --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
+| *italics* | **bold** | `code` |
 
 ## Code Blocks
 
@@ -157,9 +163,9 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 
 #### Output
 
-- List item
-- Another item
-- And another item
+* List item
+* Another item
+* And another item
 
 ### Nested list
 
@@ -177,13 +183,15 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 
 #### Output
 
-- Fruit
-  - Apple
-  - Orange
-  - Banana
-- Dairy
-  - Milk
-  - Cheese
+* Fruit
+
+  * Apple
+  * Orange
+  * Banana
+* Dairy
+
+  * Milk
+  * Cheese
 
 ## Other Elements — abbr, sub, sup, kbd, mark
 
