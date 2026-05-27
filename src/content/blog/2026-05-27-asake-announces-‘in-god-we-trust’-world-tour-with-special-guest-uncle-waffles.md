@@ -19,11 +19,7 @@ The resignation comes days after Omo-Agege lost the APC senatorial primary for D
 
 The development is seen as a significant blow to the APC in Delta State, where Omo-Agege previously served as the party’s 2023 governorship candidate and remains a major political figure in the Urhobo nation and Delta Central Senatorial District.
 
-### Reaction on Social Media
-
 The news has dominated discussions on X (formerly Twitter) and other platforms since Tuesday, with many users describing it as “used and dumped” by the ruling party. Political observers note that Omo-Agege’s exit adds to a growing list of high-profile defections from the APC ahead of the 2027 general elections. Speculation is rife about his next political move, with some suggesting he may join the New Democratic Congress (NDC) or another opposition platform.
-
-### Background
 
 Senator Obarisi Ovie Omo-Agege, CFR, a lawyer and traditional chief (Obarisi of Urhoboland), represented Delta Central in the Senate from 2015 to 2023 and served as Deputy Senate President during the 9th Assembly. He defected to the APC from the Labour Party in 2017 and has been a key leader in building the party’s structure in Delta State.
 
