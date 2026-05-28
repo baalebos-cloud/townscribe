@@ -19,7 +19,7 @@ backend:
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 
 # Add site links in Decap CMS (optional)
-site_url: https://townscribe.pages.dev
+site_url: https://townscribe.org
 
 # Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
