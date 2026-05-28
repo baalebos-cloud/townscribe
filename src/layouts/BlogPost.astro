@@ -107,6 +107,50 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 				margin-top: 0.5em;
 				text-transform: capitalize;
 			}
+			
+			/* --- INJECTED: ANONYMOUS SUGGESTIONS BOX STYLING --- */
+			.anonymous-feedback-box {
+				margin-top: 3em;
+				padding: 1.5em;
+				background-color: #f8f9fa;
+				border-radius: 8px;
+				border: 1px solid rgba(var(--gray), 0.2);
+			}
+			.anonymous-feedback-box h3 {
+				margin-top: 0;
+				margin-bottom: 0.5em;
+				font-size: 1.3rem;
+			}
+			.anonymous-feedback-box p {
+				font-size: 0.95rem;
+				color: rgb(var(--gray-dark));
+				margin-bottom: 1em;
+			}
+			.anonymous-feedback-box textarea {
+				width: 100%;
+				padding: 0.75em;
+				border-radius: 6px;
+				border: 1px solid rgb(var(--gray));
+				margin-bottom: 1em;
+				font-family: inherit;
+				font-size: 1rem;
+				resize: vertical;
+				box-sizing: border-box;
+			}
+			.anonymous-feedback-box button {
+				background-color: rgb(var(--gray-dark));
+				color: white;
+				padding: 0.6em 1.5em;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-weight: bold;
+				font-size: 0.95rem;
+				transition: background-color 0.2s ease;
+			}
+			.anonymous-feedback-box button:hover {
+				background-color: #000000;
+			}
 		</style>
 	</head>
 
@@ -135,7 +179,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 						</div>
 						<hr />
 					</div>
+					
+					{/* Your main article markdown content drops in here */}
 					<slot />
+					
+					<hr />
+					
+					{/* --- INJECTED: ANONYMOUS CONTRIBUTION FORM --- */}
+					<div class="anonymous-feedback-box">
+						<h3>💡 Have a Suggestion or News Tip?</h3>
+						<p>Submit your thoughts or additional information regarding this story below. Your submission is completely anonymous.</p>
+						
+						{/* Simply swap out your endpoint URL handling whenever you register a form endpoint */}
+						<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+							<textarea 
+								name="suggestion" 
+								placeholder="Type your suggestions, updates, or news contributions here..." 
+								required 
+								rows="4"
+							></textarea>
+							<button type="submit">Submit Anonymously</button>
+						</form>
+					</div>
 				</div>
 			</article>
 		</main>

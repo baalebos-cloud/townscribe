@@ -16,7 +16,8 @@ export async function getStaticPaths() {
     const filteredPosts = allPosts
       .filter((post) => post.data.category?.toLowerCase() === catName)
       .sort((a, b) => {
-        const dateA = a.data.pubDate ? b.data.pubDate.valueOf() : 0;
+        // FIXED: Now properly maps dateA to 'a' and dateB to 'b'
+        const dateA = a.data.pubDate ? a.data.pubDate.valueOf() : 0;
         const dateB = b.data.pubDate ? b.data.pubDate.valueOf() : 0;
         return dateB - dateA;
       });
@@ -55,7 +56,8 @@ const { posts, categoryName } = Astro.props;
             <div class="card-body">
               <span class="category-tag">{post.data.category}</span>
               <h2>
-                <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+                {/* FIXED: Changed post.slug to post.id to align with your Astro v5 route loader */}
+                <a href={`/blog/${post.id}/`}>{post.data.title}</a>
               </h2>
               <p class="excerpt">{post.data.description}</p>
               
