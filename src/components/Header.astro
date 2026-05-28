@@ -14,14 +14,16 @@ import HeaderLink from './HeaderLink.astro';
 						<line x1="3" y1="18" x2="21" y2="18"></line>
 					</svg>
 				</button>
-				<h2><a href="/">{SITE_TITLE}</a></h2>
+				{/* Branding wrapper containing your text overlay */}
+				<h2 class="brand-logo-wrapper">
+					<a href="/">{SITE_TITLE}</a>
+				</h2>
 			</div>
 			
 			<div class="internal-links">
 				<HeaderLink href="/">Blog</HeaderLink>
 			</div>
 
-			{/* --- UPPER RIGHT CORNER: CORRECT BRAND LOGOS --- */}
 			<div class="social-links">
 				<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram">
 					<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -46,6 +48,7 @@ import HeaderLink from './HeaderLink.astro';
 				<HeaderLink href="/home">Home</HeaderLink>
 				<HeaderLink href="/about">About</HeaderLink>
 				<hr class="drawer-divider" />
+				<HeaderLink href="/category/news">News</HeaderLink>
 				<HeaderLink href="/category/politics">Politics</HeaderLink>
 				<HeaderLink href="/category/business">Business</HeaderLink>
 				<HeaderLink href="/category/entertainment">Entertainment</HeaderLink>
@@ -53,7 +56,6 @@ import HeaderLink from './HeaderLink.astro';
 				<HeaderLink href="/category/health">Health</HeaderLink>
 				<HeaderLink href="/category/sport">Sport</HeaderLink>
 				<HeaderLink href="/category/world">World</HeaderLink>
-				<HeaderLink href="/category/news">News</HeaderLink>
 				<HeaderLink href="/category/job">Job</HeaderLink>
 			</div>
 		</div>
@@ -83,8 +85,25 @@ import HeaderLink from './HeaderLink.astro';
 	.main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 	.brand-row { display: flex; align-items: center; justify-content: space-between; }
 	.left-brand-group { display: flex; align-items: center; gap: 0.75rem; }
-	h2 { margin: 0; font-size: 1.25rem; }
-	h2 a { color: #000; text-decoration: none; }
+	
+	/* --- CUSTOM IMAGE BACKGROUND CONFIGURATION --- */
+	.brand-logo-wrapper { 
+		margin: 0; 
+		font-size: 1.25rem; 
+		position: relative;
+		padding: 1rem 0.5rem 1rem 48px;
+		display: flex;
+		align-items: center;
+		
+		/* Pointed dynamically to your townscribe image asset file */
+		background-image: url('/townscribe-img.jpg'); 
+		background-repeat: no-repeat;
+		background-position: left center;
+		background-size: 38px 38px;
+		border-radius: 4px;
+	}
+	
+	.brand-logo-wrapper a { color: #000; text-decoration: none; font-weight: 700; z-index: 2; }
 	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
 	.internal-links { display: flex; }
 	.internal-links :global(a) { padding: 1rem 0.5rem; color: #000; text-decoration: none; border-bottom: 4px solid transparent; }
@@ -100,8 +119,6 @@ import HeaderLink from './HeaderLink.astro';
 	.drawer-divider { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 0.5rem 0; }
 	.drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
 	.drawer-overlay.active { opacity: 1; pointer-events: auto; }
-	
-	/* HEADER SOCALS RIGHT ALIGN */
 	.social-links { display: flex; gap: 1.2rem; align-items: center; }
 	.social-links a { color: #000; transition: color 0.2s ease; display: inline-flex; align-items: center; }
 	.social-links a:hover { color: #14b8a6; }
