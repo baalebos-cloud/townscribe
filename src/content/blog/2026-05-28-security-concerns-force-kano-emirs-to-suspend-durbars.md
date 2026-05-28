@@ -2,7 +2,7 @@
 title: Security Concerns Force Kano Emirs To Suspend Durbars
 description: "Kano State have forced both Muhammadu Sanusi II and Aminu Ado
   Bayero to suspend all remaining Eid-el-Kabir durbar activities "
-pubDate: 2026-05-28T18:02:00.000+01:00
+pubDate: 2026-05-28T18:05:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Editor
 category: news
