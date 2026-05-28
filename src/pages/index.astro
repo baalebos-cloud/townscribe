@@ -36,15 +36,31 @@ const posts = (await getCollection('blog')).sort(
 				line-height: 1.6;
 				color: #333;
 			}
-			.social-inline-links a {
-				margin-right: 1rem;
-				font-weight: 600;
-				color: #14b8a6;
-				text-decoration: none;
+			
+			/* --- BOTTOM CONTENT LINE SOCIAL BLOCKS --- */
+			.social-inline-links {
+				margin-top: 1.5rem;
+				line-height: 2;
 			}
-			.social-inline-links a:hover {
-				text-decoration: underline;
+			.inline-social-group {
+				display: inline-flex;
+				align-items: center;
+				gap: 1.25rem;
+				margin-left: 0.5rem;
+				vertical-align: middle;
 			}
+			.inline-icon {
+				color: #111;
+				transition: color 0.2s ease, transform 0.2s ease;
+				display: inline-flex;
+				align-items: center;
+			}
+			.inline-icon:hover {
+				transform: translateY(-2px);
+			}
+			.inline-icon.insta:hover { color: #E1306C; }
+			.inline-icon.x-corp:hover { color: #000000; }
+			.inline-icon.ytube:hover { color: #FF0000; }
 
 			/* --- RECENT ARTICLES GRID LAYOUT --- */
 			.articles-heading {
@@ -125,23 +141,20 @@ const posts = (await getCollection('blog')).sort(
 		<main>
 			{/* Intro Welcome Frame */}
 			<div class="welcome-section">
-				<h1>Welcome To Townscribe News</h1>
-				<p>
-					Where stories breathe, ideas flourish, and voices truly matter. At TownScribe, we believe every headline has a heartbeat, 
-					Every opinion deserves a platform, and every reader deserves content that informs, inspires, and connects. 
-					This is more than just a blogging and news website, It is a vibrant community built for thinkers, 
-					Dreamers, creators, and everyday people who want to stay informed and inspired.
-				</p>
-				<p>
-					From breaking news to lifestyle, politics, entertainment, culture, technology, and powerful human stories, 
-					we are committed to delivering fresh, authentic, and engaging content that speaks directly to you.
-					Whether you are here to read, learn, share, or simply explore, we are honored to have you as part of this growing journey.
-				</p>
+				{/* --- CORRECTED BOTTOM SOCIAL INTERFACE LINK BAR --- */}
 				<p class="social-inline-links">
-					Looking for a way to carry out your publicity or your blog? Check out:
-					<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank">Townscribe IG</a>
-					<a href="https://www.youtube.com/@townscribeTV" target="_blank">Townscribe YouTube</a>
-					<a href="https://x.com/townscribenews?s=21" target="_blank">Townscribe X</a>
+					Looking for a way to carry out your publicity or your blog? Connect with us:
+					<span class="inline-social-group">
+						<a class="inline-icon insta" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram Profile">
+							<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+						</a>
+						<a class="inline-icon x-corp" href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter) Profile">
+							<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+						</a>
+						<a class="inline-icon ytube" href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube Channel">
+							<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+						</a>
+					</span>
 				</p>
 			</div>
 
@@ -152,7 +165,6 @@ const posts = (await getCollection('blog')).sort(
 					{
 						posts.map((post) => (
 							<li>
-								{/* Direct link matching to your individual post layout generator file routing */}
 								<a href={`/blog/${post.slug || post.id}/`}>
 									<img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" />
 									<h4 class="title">{post.data.title}</h4>
