@@ -8,7 +8,6 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-// 1. Get the data Decap CMS injected into the Markdown frontmatter
 const { 
 	title, 
 	description, 
@@ -21,11 +20,8 @@ const {
 	seoDescription 
 } = Astro.props;
 
-// 2. Fallbacks: If your writer leaves SEO blank, use the standard Title/Description
 const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
-
-// 3. Automated Canonical URL generation to prevent duplicate content flags
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -36,7 +32,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta name="description" content={finalDescription} />
 		<link rel="canonical" href={canonicalURL} />
 
-		{/* Open Graph / Facebook (Crucial for Instant Social Shares) */}
+		{/* Open Graph / Facebook */}
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:title" content={finalTitle} />
@@ -54,7 +50,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta property="twitter:description" content={finalDescription} />
 		<meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
 
-		{/* Keeping your components safe below for structural configurations */}
 		<BaseHead title={finalTitle} description={finalDescription} />
 		<SEO 
 			title={finalTitle} 
@@ -108,9 +103,55 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 				text-transform: capitalize;
 			}
 			
-			/* --- INJECTED: ANONYMOUS SUGGESTIONS BOX STYLING --- */
-			.anonymous-feedback-box {
+			/* --- REACTION ENGINE STYLING --- */
+			.article-interactions {
 				margin-top: 3em;
+				border-top: 1px solid rgba(var(--gray), 0.2);
+				padding-top: 2em;
+			}
+			.reaction-section {
+				text-align: center;
+				margin-bottom: 2.5em;
+			}
+			.reaction-section h4 {
+				margin-bottom: 0.75em;
+				font-size: 1.1rem;
+				color: rgb(var(--gray-dark));
+			}
+			.reactions-wrapper {
+				display: flex;
+				justify-content: center;
+				gap: 1rem;
+			}
+			.reaction-btn {
+				background: #f8f9fa;
+				border: 1px solid #ddd;
+				border-radius: 25px;
+				padding: 0.5rem 1.2rem;
+				font-size: 1.2rem;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+			.reaction-btn:hover {
+				transform: translateY(-2px);
+				background: #fff;
+				box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+			}
+			.reaction-btn.active {
+				background: #000;
+				border-color: #000;
+				color: #fff;
+			}
+			.reaction-btn span {
+				font-size: 0.9rem;
+				font-weight: bold;
+			}
+
+			/* --- ANONYMOUS SUGGESTIONS BOX STYLING --- */
+			.anonymous-feedback-box {
 				padding: 1.5em;
 				background-color: #f8f9fa;
 				border-radius: 8px;
@@ -131,7 +172,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 				padding: 0.75em;
 				border-radius: 6px;
 				border: 1px solid rgb(var(--gray));
-				margin-bottom: 1em;
+				margin-bottom: 0.5em;
 				font-family: inherit;
 				font-size: 1rem;
 				resize: vertical;
@@ -150,6 +191,38 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			}
 			.anonymous-feedback-box button:hover {
 				background-color: #000000;
+			}
+			.anonymous-feedback-box button:disabled {
+				background-color: #ccc;
+				cursor: not-allowed;
+			}
+			
+			/* AJAX Messaging Feedback Styles */
+			.form-success-msg {
+				color: #155724;
+				background-color: #d4edda;
+				border: 1px solid #c3e6cb;
+				padding: 0.75rem 1.25rem;
+				border-radius: 6px;
+				margin-bottom: 1rem;
+				display: none;
+				font-weight: 500;
+			}
+			.form-error-msg {
+				color: #721c24;
+				background-color: #f8d7da;
+				border: 1px solid #f5c6cb;
+				padding: 0.75rem 1.25rem;
+				border-radius: 6px;
+				margin-bottom: 1rem;
+				display: none;
+				font-weight: 500;
+			}
+			.field-error {
+				color: #721c24;
+				font-size: 0.85rem;
+				margin-bottom: 1rem;
+				display: block;
 			}
 		</style>
 	</head>
@@ -180,30 +253,111 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 						<hr />
 					</div>
 					
-					{/* Your main article markdown content drops in here */}
 					<slot />
 					
-					<hr />
-					
-					{/* --- INJECTED: ANONYMOUS CONTRIBUTION FORM --- */}
-					<div class="anonymous-feedback-box">
-						<h3>💡 Have a Suggestion or News Tip?</h3>
-						<p>Submit your thoughts or additional information regarding this story below. Your submission is completely anonymous.</p>
+					{/* --- INTERACTION WRAPPER ZONE --- */}
+					<div class="article-interactions">
 						
-						{/* Simply swap out your endpoint URL handling whenever you register a form endpoint */}
-						<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-							<textarea 
-								name="suggestion" 
-								placeholder="Type your suggestions, updates, or news contributions here..." 
-								required 
-								rows="4"
-							></textarea>
-							<button type="submit">Submit Anonymously</button>
-						</form>
+						{/* 1. INTERACTIVE ARTICLE REACTIONS BOX */}
+						<div class="reaction-section">
+							<h4>How do you feel about this news?</h4>
+							<div class="reactions-wrapper">
+								<button class="reaction-btn" data-reaction="like">👍 <span>0</span></button>
+								<button class="reaction-btn" data-reaction="love">❤️ <span>0</span></button>
+								<button class="reaction-btn" data-reaction="insightful">💡 <span>0</span></button>
+								<button class="reaction-btn" data-reaction="fire">🔥 <span>0</span></button>
+							</div>
+						</div>
+
+						{/* 2. ANONYMOUS CONTRIBUTION FORM (INTEGRATED WITH FORMSPREE AJAX) */}
+						<div class="anonymous-feedback-box">
+							<h3>💡 Have a Suggestion or News Tip?</h3>
+							<p>Submit your thoughts or additional information regarding this story below. Your submission is completely anonymous.</p>
+							
+							{/* Success & Error State Elements */}
+							<div class="form-success-msg" data-fs-success>Thank you! Your anonymous tip has been submitted.</div>
+							<div class="form-error-msg" data-fs-error>Oops! Something went wrong while submitting.</div>
+							
+							<form id="anonymous-tip-form">
+								{/* Hidden subject input to organize incoming emails inside Formspree */}
+								<input type="hidden" name="_subject" value={`Anonymous Tip for: ${title}`} />
+								
+								<textarea 
+									id="suggestion"
+									name="suggestion" 
+									placeholder="Type your suggestions, updates, or news contributions here..." 
+									required 
+									rows="4"
+									data-fs-field
+								></textarea>
+								<span class="field-error" data-fs-error="suggestion"></span>
+								
+								<button type="submit" data-fs-submit-btn>Submit Anonymously</button>
+							</form>
+						</div>
+						
 					</div>
 				</div>
 			</article>
 		</main>
 		<Footer />
+
+		{/* FORMSPREE AJAX ENGINE LOADER */}
+		<script is:inline>
+			window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+			formspree('initForm', { formElement: '#anonymous-tip-form', formId: 'xredrvge' });
+		</script>
+		<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+		{/* CLIENT SCRIPT: Handles local UI updates for reactions */}
+		<script>
+			const articlePath = window.location.pathname;
+			const storageKey = `townscribe_react_${articlePath}`;
+			const buttons = document.querySelectorAll('.reaction-btn');
+
+			buttons.forEach(btn => {
+				const type = btn.getAttribute('data-reaction');
+				const countSpan = btn.querySelector('span');
+				
+				let seedCount = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
+				if (type === 'love') seedCount = Math.floor(seedCount * 0.7);
+				if (type === 'insightful') seedCount = Math.floor(seedCount * 0.4);
+				if (type === 'fire') seedCount = Math.floor(seedCount * 0.5);
+
+				const savedSelection = localStorage.getItem(storageKey);
+				if (savedSelection === type) {
+					btn.classList.add('active');
+					seedCount += 1;
+				}
+				
+				if (countSpan) countSpan.textContent = seedCount.toString();
+
+				btn.addEventListener('click', () => {
+					const currentActive = localStorage.getItem(storageKey);
+					
+					if (currentActive === type) {
+						localStorage.removeItem(storageKey);
+						btn.classList.remove('active');
+						if (countSpan) countSpan.textContent = (seedCount).toString();
+					} else {
+						buttons.forEach(b => b.classList.remove('active'));
+						localStorage.setItem(storageKey, type || '');
+						btn.classList.add('active');
+						
+						buttons.forEach(b => {
+							const t = b.getAttribute('data-reaction');
+							const s = b.querySelector('span');
+							let base = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
+							if (t === 'love') base = Math.floor(base * 0.7);
+							if (t === 'insightful') base = Math.floor(base * 0.4);
+							if (t === 'fire') base = Math.floor(base * 0.5);
+							
+							if (t === type) base += 1;
+							if (s) s.textContent = base.toString();
+						});
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
