@@ -2,11 +2,11 @@
 title: Speaker Dumps APC After Nearly 10 Years, Hints at New Political Direction
 description: Rt. Hon. Victor Onyekachi Ochei, has officially resigned from the
   All Progressives Congress (APC)
-pubDate: 2026-05-28T17:41:00.000+01:00
-author: TownScribe Staff
-authorRole: Writer
-category: world
-heroImage: /townscribe-img.jpg
+pubDate: 2026-05-28T17:47:00.000+01:00
+author: "Afolabi Olaiya Idowu "
+authorRole: Editor
+category: politics
+heroImage: /1000291864.jpg
 ---
 **Asaba, Delta State** — Former Speaker of the Delta State House of Assembly, Rt. Hon. Victor Onyekachi Ochei, has officially resigned from the All Progressives Congress (APC), ending a political relationship that lasted almost a decade and adding fresh momentum to the wave of political realignments currently reshaping Delta State ahead of the 2027 elections.
 
