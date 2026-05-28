@@ -13,6 +13,12 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		
+		// 👇 ADD THESE NEW CMS FIELDS HERE 👇
+		author: z.string().default('TownScribe Staff'),
+		category: z.string().default('world'),
+		seoTitle: z.string().optional(),
+		seoDescription: z.string().optional(),
 	}),
 });
 
