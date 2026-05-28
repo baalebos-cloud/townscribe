@@ -55,7 +55,7 @@ collections:
           - { label: "Health", value: "health" }
           - { label: "Sport", value: "sport" }
           - { label: "World", value: "world" }
-          - { label: "News", value: "News" }
+          - { label: "News", value: "news" }
           - { label: "Job", value: "job" }
 
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
