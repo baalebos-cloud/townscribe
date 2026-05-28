@@ -15,12 +15,13 @@ import HeaderLink from './HeaderLink.astro';
 						<line x1="3" y1="18" x2="21" y2="18"></line>
 					</svg>
 				</button>
+				{/* The main logo link now natively acts as the root entrance point */}
 				<h2><a href="/">{SITE_TITLE}</a></h2>
 			</div>
 			
-			{/* Your Original Main Internal Links remain untouched here */}
+			{/* Blog is now safely established as your main root landing destination */}
 			<div class="internal-links">
-				<HeaderLink href="/blog">Blog</HeaderLink>
+				<HeaderLink href="/">Blog</HeaderLink>
 			</div>
 
 			<div class="social-links">
@@ -35,7 +36,7 @@ import HeaderLink from './HeaderLink.astro';
 			</div>
 		</div>
 
-		{/* Left Sidebar Drawer - Only containing your specified news categories */}
+		{/* Left Sidebar Drawer - Home and About shifted perfectly to the top of the category stack */}
 		<div id="nav-drawer" class="nav-drawer">
 			<div class="drawer-header">
 				<span class="drawer-title">Sign in</span>
@@ -48,8 +49,9 @@ import HeaderLink from './HeaderLink.astro';
 			</div>
 			
 			<div class="drawer-links">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/">About</HeaderLink>
+				<HeaderLink href="/home">Home</HeaderLink>
+				<HeaderLink href="/about">About</HeaderLink>
+				<hr class="drawer-divider" />
 				<HeaderLink href="/category/politics">Politics</HeaderLink>
 				<HeaderLink href="/category/business">Business</HeaderLink>
 				<HeaderLink href="/category/entertainment">Entertainment</HeaderLink>
@@ -61,7 +63,7 @@ import HeaderLink from './HeaderLink.astro';
 			</div>
 		</div>
 		
-		{/* Dark backdrop overlay overlay */}
+		{/* Dark backdrop overlay */}
 		<div id="drawer-overlay" class="drawer-overlay"></div>
 	</nav>
 </header>
@@ -140,14 +142,14 @@ import HeaderLink from './HeaderLink.astro';
 		border-bottom-color: var(--accent, #14b8a6);
 	}
 
-	/* --- LEFT SIDEBAR DRAWER (Dark Theme UI - image_de3fa4.jpg) --- */
+	/* --- LEFT SIDEBAR DRAWER (Dark Theme UI) --- */
 	.nav-drawer {
 		position: fixed;
 		top: 0;
 		left: -320px;
 		width: 300px;
 		height: 100vh;
-		background: #142129; /* Matches image_de3fa4.jpg background hue */
+		background: #142129; 
 		z-index: 200;
 		display: flex;
 		flex-direction: column;
@@ -194,8 +196,15 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	.drawer-links :global(a.active),
 	.drawer-links :global(a:hover) {
-		color: #14b8a6; /* Active color state indicator matched from image_de3fa4.jpg */
+		color: #14b8a6; 
 		font-weight: 600;
+	}
+
+	/* Separator line styling between custom pages and core news streams */
+	.drawer-divider {
+		border: 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		margin: 0.5rem 0;
 	}
 
 	/* Transparent blur cover overlay behind sidebar drawer */
