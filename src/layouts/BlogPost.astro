@@ -24,7 +24,7 @@ const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Safely generate a unique ID based on the URL path for the comment engine
+// Generates a clean template ID based on the URL path for Cusdis target mapping
 const pageId = Astro.url.pathname;
 ---
 
@@ -228,11 +228,11 @@ const pageId = Astro.url.pathname;
 							<h3>💡 Anonymous Updates & Reader Additions</h3>
 							<p>Have a news tip, correction, or extra context about this story? Post it below anonymously. Submissions appear live on this screen immediately after moderation approval.</p>
 							
-							{/* Secure client-side embedded stream engine container */}
+							{/* Secure client-side embedded stream engine container with your exact ID */}
 							<div 
 								id="cusdis_thread"
 								data-host="https://cusdis.com"
-								data-app-id="958b4ef2-e64b-4b13-911e-0899cc5825bb"
+								data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff"
 								data-page-id={pageId}
 								data-page-url={Astro.url.href}
 								data-page-title={title}
