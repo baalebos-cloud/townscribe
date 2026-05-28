@@ -8,20 +8,59 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+// 1. Get the data Decap CMS injected into the Markdown frontmatter
+const { 
+	title, 
+	description, 
+	pubDate, 
+	updatedDate, 
+	heroImage, 
+	author, 
+	category, 
+	seoTitle, 
+	seoDescription 
+} = Astro.props;
+
+// 2. Fallbacks: If your writer leaves SEO blank, use the standard Title/Description
+const finalTitle = seoTitle || `${title} | TownScribe`;
+const finalDescription = seoDescription || description;
+
+// 3. Automated Canonical URL generation to prevent duplicate content flags
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <html lang="en">
 	<head>
-		{/* 1. Global Base Head Elements */}
-		<BaseHead title={title} description={description} />
-		
-		{/* 2. Dynamic Production-Ready SEO Optimization */}
+		{/* Standard Layout SEO & Core Variables */}
+		<title>{finalTitle}</title>
+		<meta name="description" content={finalDescription} />
+		<link rel="canonical" href={canonicalURL} />
+
+		{/* Open Graph / Facebook (Crucial for Instant Social Shares) */}
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={finalTitle} />
+		<meta property="og:description" content={finalDescription} />
+		<meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+		{pubDate && <meta property="article:published_time" content={new Date(pubDate).toISOString()} />}
+		{updatedDate && <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />}
+		<meta property="article:author" content={author || "TownScribe Staff"} />
+		<meta property="article:section" content={category || "World"} />
+
+		{/* Twitter / X Meta Cards */}
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalURL} />
+		<meta property="twitter:title" content={finalTitle} />
+		<meta property="twitter:description" content={finalDescription} />
+		<meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+
+		{/* Keeping your components safe below for structural configurations */}
+		<BaseHead title={finalTitle} description={finalDescription} />
 		<SEO 
-			title={title} 
-			description={description} 
-			image={heroImage}
-			type={pubDate ? 'article' : 'website'} 
+			title={finalTitle} 
+			description={finalDescription} 
+			image={heroImage || '/townscribe-img.jpg'}
+			type="article" 
 		/>
 
 		<style>
@@ -62,6 +101,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.meta-attribution {
+				font-size: 0.9rem;
+				color: rgb(var(--gray));
+				margin-top: 0.5em;
+				text-transform: capitalize;
+			}
 		</style>
 	</head>
 
@@ -85,6 +130,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 							}
 						</div>
 						<h1>{title}</h1>
+						<div class="meta-attribution">
+							By <strong>{author || "TownScribe Staff"}</strong> in <span>{category || "World"}</span>
+						</div>
 						<hr />
 					</div>
 					<slot />
