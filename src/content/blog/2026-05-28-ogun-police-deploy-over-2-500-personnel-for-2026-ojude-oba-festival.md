@@ -1,7 +1,7 @@
 ---
 title: Ogun Police Deploy Over 2,500 Personnel for 2026 Ojude Oba Festival
 description: Ogun Police Deploy Over 2,500 Personnel for 2026 Ojude Oba Festival
-pubDate: 2026-05-28T12:58:00.000+01:00
+pubDate: 2026-05-28T13:03:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Editor
 category: entertainment
