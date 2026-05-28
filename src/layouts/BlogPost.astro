@@ -23,6 +23,9 @@ const {
 const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Safely generate a unique ID based on the URL path for the comment engine
+const pageId = Astro.url.pathname;
 ---
 
 <html lang="en">
@@ -150,79 +153,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 				font-weight: bold;
 			}
 
-			/* --- ANONYMOUS SUGGESTIONS BOX STYLING --- */
+			/* --- PUBLIC ANONYMOUS SUGGESTIONS CONTAINER --- */
 			.anonymous-feedback-box {
-				padding: 1.5em;
+				padding: 2em;
 				background-color: #f8f9fa;
-				border-radius: 8px;
-				border: 1px solid rgba(var(--gray), 0.2);
+				border-radius: 12px;
+				border: 1px solid rgba(var(--gray), 0.15);
+				margin-top: 2rem;
 			}
 			.anonymous-feedback-box h3 {
 				margin-top: 0;
 				margin-bottom: 0.5em;
-				font-size: 1.3rem;
+				font-size: 1.4rem;
+				color: #111;
 			}
 			.anonymous-feedback-box p {
 				font-size: 0.95rem;
-				color: rgb(var(--gray-dark));
-				margin-bottom: 1em;
-			}
-			.anonymous-feedback-box textarea {
-				width: 100%;
-				padding: 0.75em;
-				border-radius: 6px;
-				border: 1px solid rgb(var(--gray));
-				margin-bottom: 0.5em;
-				font-family: inherit;
-				font-size: 1rem;
-				resize: vertical;
-				box-sizing: border-box;
-			}
-			.anonymous-feedback-box button {
-				background-color: rgb(var(--gray-dark));
-				color: white;
-				padding: 0.6em 1.5em;
-				border: none;
-				border-radius: 4px;
-				cursor: pointer;
-				font-weight: bold;
-				font-size: 0.95rem;
-				transition: background-color 0.2s ease;
-			}
-			.anonymous-feedback-box button:hover {
-				background-color: #000000;
-			}
-			.anonymous-feedback-box button:disabled {
-				background-color: #ccc;
-				cursor: not-allowed;
+				color: #444;
+				margin-bottom: 1.5em;
 			}
 			
-			/* AJAX Messaging Feedback Styles */
-			.form-success-msg {
-				color: #155724;
-				background-color: #d4edda;
-				border: 1px solid #c3e6cb;
-				padding: 0.75rem 1.25rem;
-				border-radius: 6px;
-				margin-bottom: 1rem;
-				display: none;
-				font-weight: 500;
-			}
-			.form-error-msg {
-				color: #721c24;
-				background-color: #f8d7da;
-				border: 1px solid #f5c6cb;
-				padding: 0.75rem 1.25rem;
-				border-radius: 6px;
-				margin-bottom: 1rem;
-				display: none;
-				font-weight: 500;
-			}
-			.field-error {
-				color: #721c24;
-				font-size: 0.85rem;
-				margin-bottom: 1rem;
-				display: block;
+			/* Customizing the Cusdis Open UI injection styling */
+			#cusdis_thread {
+				margin-top: 1rem;
+				min-height: 150px;
 			}
 		</style>
 	</head>
@@ -269,31 +223,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 							</div>
 						</div>
 
-						{/* 2. ANONYMOUS CONTRIBUTION FORM (INTEGRATED WITH FORMSPREE AJAX) */}
+						{/* 2. LIVE ANONYMOUS SUGGESTIONS & UPDATES STREAM (NO EMAIL) */}
 						<div class="anonymous-feedback-box">
-							<h3>💡 Have a Suggestion or News Tip?</h3>
-							<p>Submit your thoughts or additional information regarding this story below. Your submission is completely anonymous.</p>
+							<h3>💡 Anonymous Updates & Reader Additions</h3>
+							<p>Have a news tip, correction, or extra context about this story? Post it below anonymously. Submissions appear live on this screen immediately after moderation approval.</p>
 							
-							{/* Success & Error State Elements */}
-							<div class="form-success-msg" data-fs-success>Thank you! Your anonymous tip has been submitted.</div>
-							<div class="form-error-msg" data-fs-error>Oops! Something went wrong while submitting.</div>
-							
-							<form id="anonymous-tip-form">
-								{/* Hidden subject input to organize incoming emails inside Formspree */}
-								<input type="hidden" name="_subject" value={`Anonymous Tip for: ${title}`} />
-								
-								<textarea 
-									id="suggestion"
-									name="suggestion" 
-									placeholder="Type your suggestions, updates, or news contributions here..." 
-									required 
-									rows="4"
-									data-fs-field
-								></textarea>
-								<span class="field-error" data-fs-error="suggestion"></span>
-								
-								<button type="submit" data-fs-submit-btn>Submit Anonymously</button>
-							</form>
+							{/* Secure client-side embedded stream engine container */}
+							<div 
+								id="cusdis_thread"
+								data-host="https://cusdis.com"
+								data-app-id="958b4ef2-e64b-4b13-911e-0899cc5825bb"
+								data-page-id={pageId}
+								data-page-url={Astro.url.href}
+								data-page-title={title}
+							></div>
 						</div>
 						
 					</div>
@@ -302,12 +245,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		</main>
 		<Footer />
 
-		{/* FORMSPREE AJAX ENGINE LOADER */}
-		<script is:inline>
-			window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-			formspree('initForm', { formElement: '#anonymous-tip-form', formId: 'xredrvge' });
-		</script>
-		<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+		{/* ASYNCHRONOUS ENGINE: Renders forms and updates posts live without page reloads */}
+		<script is:inline async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
 		{/* CLIENT SCRIPT: Handles local UI updates for reactions */}
 		<script>
