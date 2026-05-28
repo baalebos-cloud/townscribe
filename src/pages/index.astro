@@ -1,44 +1,170 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import FormattedDate from '../components/FormattedDate.astro';
+
+// FETCH THE ARTICLES ENGINE: This goes into your content directory and pulls the news
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2rem);
+				margin: 3rem auto;
+				padding: 0 1rem;
+			}
+			.welcome-section {
+				margin-bottom: 4rem;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+				padding-bottom: 2rem;
+			}
+			h1 {
+				font-size: 2.5rem;
+				margin-bottom: 1.5rem;
+			}
+			p {
+				line-height: 1.6;
+				color: #333;
+			}
+			.social-inline-links a {
+				margin-right: 1rem;
+				font-weight: 600;
+				color: #14b8a6;
+				text-decoration: none;
+			}
+			.social-inline-links a:hover {
+				text-decoration: underline;
+			}
+
+			/* --- RECENT ARTICLES GRID LAYOUT --- */
+			.articles-heading {
+				font-size: 1.8rem;
+				margin-bottom: 2rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				position: relative;
+			}
+			.articles-heading::after {
+				content: '';
+				display: block;
+				width: 60px;
+				height: 4px;
+				background: #14b8a6;
+				margin-top: 0.5rem;
+			}
+			.blog-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 2rem;
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			.blog-grid li {
+				width: calc(50% - 1rem);
+			}
+			.blog-grid li * {
+				transition: 0.2s ease;
+			}
+			.blog-grid li img {
+				margin-bottom: 0.5rem;
+				border-radius: 12px;
+				width: 100%;
+				object-fit: cover;
+				aspect-ratio: 16 / 9;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+			}
+			.blog-grid li a {
+				display: block;
+				text-decoration: none;
+			}
+			.blog-grid li a:hover img {
+				transform: translateY(-4px);
+				box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+			}
+			.title {
+				margin: 0.5rem 0 0 0;
+				color: #111;
+				line-height: 1.2;
+				font-size: 1.4rem;
+			}
+			.date {
+				margin: 0.2rem 0 0 0;
+				color: #777;
+				font-size: 0.95rem;
+			}
+			.blog-grid li a:hover .title {
+				color: #14b8a6;
+			}
+
+			@media (max-width: 720px) {
+				.blog-grid {
+					gap: 1.5rem;
+				}
+				.blog-grid li {
+					width: 100%;
+				}
+				h1 {
+					font-size: 2rem;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>Welcome To Townscribe News</h1>
-			<p>
-				Where stories breathe, ideas flourish, and voices truly matter. At TownScribe, we believe every headline has a heartbeat, 
-				Every opinion deserves a platform, and every reader deserves content that informs, inspires, and connects. 
-				This is more than just a blogging and news website, It is a vibrant community built for thinkers, 
-				Dreamers, creators, and everyday people who want to stay informed and inspired.
-			</p>
-			<p>
-				From breaking news to lifestyle, politics, entertainment, culture, technology, and powerful humans stories, 
-				we are committed to delivering fresh, authentic, and engaging content that speaks directly to you.
-				Whether you are here to read, learn, share, or simply explore, we are honored to have you as part of this growing journey.
-			</p>
-			<p>Here are a few ideas on what to expect on this page:</p>
-			<ul>
-				<li>Instant News</li>
-				<li>Footballs News</li>
-				<li>Your Favourite Blog</li>
-				<li>Check out the included blog posts</li>
-				<li>Customize the blog post page layout</li>
-			</ul>
-			<p>
-				Looking for a way to carryout your publicity or your blog? Check out
-				<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==">Townscribe IG</a>
-				<a href="https://www.youtube.com/@townscribeTV">Townscribe YouTube</a>
-				by <a href="https://x.com/townscribenews?s=21">Townscribe X</a>.
-			</p>
+			{/* Intro Welcome Frame */}
+			<div class="welcome-section">
+				<h1>Welcome To Townscribe News</h1>
+				<p>
+					Where stories breathe, ideas flourish, and voices truly matter. At TownScribe, we believe every headline has a heartbeat, 
+					Every opinion deserves a platform, and every reader deserves content that informs, inspires, and connects. 
+					This is more than just a blogging and news website, It is a vibrant community built for thinkers, 
+					Dreamers, creators, and everyday people who want to stay informed and inspired.
+				</p>
+				<p>
+					From breaking news to lifestyle, politics, entertainment, culture, technology, and powerful human stories, 
+					we are committed to delivering fresh, authentic, and engaging content that speaks directly to you.
+					Whether you are here to read, learn, share, or simply explore, we are honored to have you as part of this growing journey.
+				</p>
+				<p class="social-inline-links">
+					Looking for a way to carry out your publicity or your blog? Check out:
+					<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank">Townscribe IG</a>
+					<a href="https://www.youtube.com/@townscribeTV" target="_blank">Townscribe YouTube</a>
+					<a href="https://x.com/townscribenews?s=21" target="_blank">Townscribe X</a>
+				</p>
+			</div>
+
+			{/* --- DYNAMIC AUTOMATED POSTS FEED LOOP --- */}
+			<section>
+				<h2 class="articles-heading">Latest News Updates</h2>
+				<ul class="blog-grid">
+					{
+						posts.map((post) => (
+							<li>
+								{/* Direct link matching to your individual post layout generator file routing */}
+								<a href={`/blog/${post.slug || post.id}/`}>
+									<img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" />
+									<h4 class="title">{post.data.title}</h4>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 		</main>
 		<Footer />
 	</body>
