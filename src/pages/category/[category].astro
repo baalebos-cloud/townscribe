@@ -6,7 +6,7 @@ import BlogPost from '../../layouts/BlogPost.astro';
 export async function getStaticPaths() {
   const categories = [
     'politics', 'business', 'entertainment', 'technology', 
-    'health', 'sport', 'world', 'job'
+    'health', 'sport', 'world', 'News', 'job'
   ];
 
   const allPosts = await getCollection('blog');
