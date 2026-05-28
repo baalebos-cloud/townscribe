@@ -1,7 +1,7 @@
 ---
 title: Tinubu Cares Less About Nigerians
 description: "Politics "
-pubDate: 2026-05-28T12:00:00.000+01:00
+pubDate: 2026-05-28T18:11:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Editor
 category: politics
