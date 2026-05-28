@@ -17,20 +17,29 @@ const {
 	author, 
 	category, 
 	seoTitle, 
-	seoDescription 
+	seoDescription,
+	youtubeUrl // Catching the link submitted by the writer
 } = Astro.props;
 
 const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
-// Generates a clean template ID based on the URL path for target mappings
 const pageId = Astro.url.pathname;
+
+// REGEX HELPER: Safely extracts the 11-character video ID from any standard YouTube link format
+function getYouTubeId(url: string | undefined) {
+	if (!url) return null;
+	const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+	const match = url.match(regExp);
+	return (match && match[2].length === 11) ? match[2] : null;
+}
+
+const extractedVideoId = getYouTubeId(youtubeUrl);
+const officialChannelUrl = "https://youtube.com/@townscribetv?si=ADdKzVgGQxb9gBmF";
 ---
 
 <html lang="en">
 	<head>
-		{/* Standard Layout SEO & Core Variables */}
 		<title>{finalTitle}</title>
 		<meta name="description" content={finalDescription} />
 		<link rel="canonical" href={canonicalURL} />
@@ -54,142 +63,65 @@ const pageId = Astro.url.pathname;
 		<meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
 
 		<BaseHead title={finalTitle} description={finalDescription} />
-		<SEO 
-			title={finalTitle} 
-			description={finalDescription} 
-			image={heroImage || '/townscribe-img.jpg'}
-			type="article" 
-		/>
+		<SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
 
-		{/* --- CLOUDFLARE EDGE ANALYTICS ENGINE (OPTION 1) --- */}
+		{/* --- CLOUDFLARE EDGE ANALYTICS ENGINE --- */}
 		<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
 
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
+			main { width: calc(100% - 2em); max-width: 100%; margin: 0; }
+			.hero-image { width: 100%; }
+			.hero-image img { display: block; margin: 0 auto; border-radius: 12px; box-shadow: var(--box-shadow); }
+			.prose { width: 720px; max-width: calc(100% - 2em); margin: auto; padding: 1em; color: rgb(var(--gray-dark)); }
+			.title { margin-bottom: 1em; padding: 1em 0; text-align: center; line-height: 1; }
+			.title h1 { margin: 0 0 0.5em 0; }
+			.date { margin-bottom: 0.5em; color: rgb(var(--gray)); }
+			.last-updated-on { font-style: italic; }
+			.meta-attribution { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5em; text-transform: capitalize; }
+			.view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; }
+
+			/* --- AUTO-PLAYER INJECTION STYLING --- */
+			.video-container {
+				position: relative;
 				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-			.meta-attribution {
-				font-size: 0.9rem;
-				color: rgb(var(--gray));
-				margin-top: 0.5em;
-				text-transform: capitalize;
-			}
-			
-			/* --- REACTION ENGINE STYLING --- */
-			.article-interactions {
-				margin-top: 3em;
-				border-top: 1px solid rgba(var(--gray), 0.2);
-				padding-top: 2em;
-			}
-			.reaction-section {
-				text-align: center;
-				margin-bottom: 2.5em;
-			}
-			.reaction-section h4 {
-				margin-bottom: 0.75em;
-				font-size: 1.1rem;
-				color: rgb(var(--gray-dark));
-			}
-			.reactions-wrapper {
-				display: flex;
-				justify-content: center;
-				gap: 1rem;
-			}
-			.reaction-btn {
-				background: #f8f9fa;
-				border: 1px solid #ddd;
-				border-radius: 25px;
-				padding: 0.5rem 1.2rem;
-				font-size: 1.2rem;
-				cursor: pointer;
-				transition: all 0.2s ease;
-				display: flex;
-				align-items: center;
-				gap: 0.4rem;
-			}
-			.reaction-btn:hover {
-				transform: translateY(-2px);
-				background: #fff;
-				box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-			}
-			.reaction-btn.active {
+				aspect-ratio: 16 / 9;
 				background: #000;
-				border-color: #000;
-				color: #fff;
-			}
-			.reaction-btn span {
-				font-size: 0.9rem;
-				font-weight: bold;
-			}
-
-			/* --- PUBLIC ANONYMOUS SUGGESTIONS CONTAINER --- */
-			.anonymous-feedback-box {
-				padding: 2em;
-				background-color: #f8f9fa;
 				border-radius: 12px;
-				border: 1px solid rgba(var(--gray), 0.15);
-				margin-top: 2rem;
+				overflow: hidden;
+				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+				margin: 2rem 0;
 			}
-			.anonymous-feedback-box h3 {
-				margin-top: 0;
-				margin-bottom: 0.5em;
-				font-size: 1.4rem;
-				color: #111;
-			}
-			.anonymous-feedback-box p {
-				font-size: 0.95rem;
-				color: #444;
-				margin-bottom: 1.5em;
-			}
-			
-			/* Customizing the Cusdis Open UI injection styling */
-			#cusdis_thread {
-				margin-top: 1rem;
-				min-height: 150px;
+			#player { width: 100%; height: 100%; border: none; }
+			.redirect-alert {
+				position: absolute;
+				bottom: 15px;
+				left: 50%;
+				transform: translateX(-50%);
+				background: rgba(224, 12, 12, 0.98);
+				color: #fff;
+				padding: 0.6rem 1.4rem;
+				border-radius: 30px;
+				font-size: 0.9rem;
+				font-weight: 600;
+				z-index: 10;
+				box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+				white-space: nowrap;
+				font-family: system-ui, sans-serif;
 			}
 
-			/* On-screen view counter styles */
-			.view-panel {
-				font-size: 0.9rem;
-				color: rgb(var(--gray));
-				margin-top: 0.5rem;
-				font-weight: 500;
-				text-align: center;
-			}
+			/* --- REACTION & FEEDBACK BOXES --- */
+			.article-interactions { margin-top: 3em; border-top: 1px solid rgba(var(--gray), 0.2); padding-top: 2em; }
+			.reaction-section { text-align: center; margin-bottom: 2.5em; }
+			.reaction-section h4 { margin-bottom: 0.75em; font-size: 1.1rem; color: rgb(var(--gray-dark)); }
+			.reactions-wrapper { display: flex; justify-content: center; gap: 1rem; }
+			.reaction-btn { background: #f8f9fa; border: 1px solid #ddd; border-radius: 25px; padding: 0.5rem 1.2rem; font-size: 1.2rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.4rem; }
+			.reaction-btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+			.reaction-btn.active { background: #000; border-color: #000; color: #fff; }
+			.reaction-btn span { font-size: 0.9rem; font-weight: bold; }
+			.anonymous-feedback-box { padding: 2em; background-color: #f8f9fa; border-radius: 12px; border: 1px solid rgba(var(--gray), 0.15); margin-top: 2rem; }
+			.anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
+			.anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
+			#cusdis_thread { margin-top: 1rem; min-height: 150px; }
 		</style>
 	</head>
 
@@ -204,31 +136,29 @@ const pageId = Astro.url.pathname;
 					<div class="title">
 						<div class="date">
 							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
+							{updatedDate && <div class="last-updated-on">Last updated on <FormattedDate date={updatedDate} /></div>}
 						</div>
 						<h1>{title}</h1>
 						<div class="meta-attribution">
 							By <strong>{author || "TownScribe Staff"}</strong> in <span>{category || "World"}</span>
 						</div>
-						
-						{/* LIVE ON-SCREEN COUNTER DISPLAY ELEMENT */}
 						<div class="view-panel">👁️ <span id="view-count-number">loading views...</span></div>
-						
 						<hr />
 					</div>
 					
+					<!-- AUTOMATIC PLAYBACK ENGINE HOOK -->
+					{extractedVideoId && (
+						<div class="video-container">
+							<div id="player"></div>
+							<div id="redirect-timer" class="redirect-alert" style="display: none;">
+								Preview ending. Redirecting to @TownScribeTV in <span id="countdown-secs">5</span>s...
+							</div>
+						</div>
+					)}
+
 					<slot />
 					
-					{/* --- INTERACTION WRAPPER ZONE --- */}
 					<div class="article-interactions">
-						
-						{/* 1. INTERACTIVE ARTICLE REACTIONS BOX */}
 						<div class="reaction-section">
 							<h4>How do you feel about this news?</h4>
 							<div class="reactions-wrapper">
@@ -239,35 +169,72 @@ const pageId = Astro.url.pathname;
 							</div>
 						</div>
 
-						{/* 2. LIVE ANONYMOUS SUGGESTIONS & UPDATES STREAM (NO EMAIL) */}
 						<div class="anonymous-feedback-box">
 							<h3>Anonymous Updates & Reader Additions</h3>
 							<p>Have a news tip, correction, or extra context about this story? Post it below anonymously. Submissions appear live on this screen immediately after moderation approval.</p>
-							
-							{/* Secure client-side embedded stream engine container with your exact ID */}
-							<div 
-								id="cusdis_thread"
-								data-host="https://cusdis.com"
-								data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff"
-								data-page-id={pageId}
-								data-page-url={Astro.url.href}
-								data-page-title={title}
-							></div>
+							<div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff" data-page-id={pageId} data-page-url={Astro.url.href} data-page-title={title}></div>
 						</div>
-						
 					</div>
 				</div>
 			</article>
 		</main>
 		<Footer />
 
-		{/* ASYNCHRONOUS ENGINE: Renders forms and updates posts live without page reloads */}
 		<script is:inline async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 
-		{/* CLIENT SCRIPT: Automated Edge View Counter Fetching Trigger */}
+		{/* --- CLIENT DRIVER: RUNS REDIRECTION IF VIDEO ID EXISTS --- */}
+		{extractedVideoId && (
+			<script is:inline src="https://www.youtube.com/iframe_api"></script>
+			<script is:inline define:vars={{ extractedVideoId, officialChannelUrl }}>
+				let player;
+				let pollInterval = null;
+				const cutoffTime = 48; // Exact time constraint value
+
+				window.onYouTubeIframeAPIReady = function() {
+					player = new YT.Player('player', {
+						videoId: extractedVideoId,
+						playerVars: { 'playsinline': 1, 'rel': 0, 'modestbranding': 1, 'controls': 1 },
+						events: {
+							'onReady': (e) => { e.target.cueVideoById({ videoId: extractedVideoId, startSeconds: 0, endSeconds: cutoffTime }); },
+							'onStateChange': onPlayerStateChange
+						}
+					});
+				}
+
+				function onPlayerStateChange(event) {
+					if (event.data === YT.PlayerState.PLAYING) {
+						if (!pollInterval) pollInterval = setInterval(monitorTimeline, 250);
+					} else if (event.data === YT.PlayerState.ENDED) {
+						executeChannelRedirect();
+					} else {
+						clearInterval(pollInterval);
+						pollInterval = null;
+					}
+				}
+
+				function monitorTimeline() {
+					if (!player || typeof player.getCurrentTime !== 'function') return;
+					const progress = player.getCurrentTime();
+					if (progress >= 43 && progress < cutoffTime) {
+						const alertBox = document.getElementById('redirect-timer');
+						const timeSpan = document.getElementById('countdown-secs');
+						if (alertBox && timeSpan) {
+							alertBox.style.display = 'block';
+							timeSpan.textContent = Math.ceil(cutoffTime - progress);
+						}
+					}
+				}
+
+				function executeChannelRedirect() {
+					clearInterval(pollInterval);
+					window.location.href = officialChannelUrl;
+				}
+			</script>
+		)}
+
+		{/* VIEW COUNTER FETCH ENGINE */}
 		<script is:inline define:vars={{ pageId }}>
 			const workerUrl = "https://townscribe-view-counter.jayeolaoluwadamilare.workers.dev";
-			
 			fetch(`${workerUrl}?slug=${window.location.pathname}`, { method: "POST" })
 				.then(res => res.json())
 				.then(data => {
@@ -280,7 +247,7 @@ const pageId = Astro.url.pathname;
 				});
 		</script>
 
-		{/* CLIENT SCRIPT: Handles local UI updates for reactions */}
+		{/* LOCAL REACTION ENGINE */}
 		<script>
 			const articlePath = window.location.pathname;
 			const storageKey = `townscribe_react_${articlePath}`;
@@ -289,23 +256,17 @@ const pageId = Astro.url.pathname;
 			buttons.forEach(btn => {
 				const type = btn.getAttribute('data-reaction');
 				const countSpan = btn.querySelector('span');
-				
 				let seedCount = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
 				if (type === 'love') seedCount = Math.floor(seedCount * 0.7);
 				if (type === 'insightful') seedCount = Math.floor(seedCount * 0.4);
 				if (type === 'fire') seedCount = Math.floor(seedCount * 0.5);
 
 				const savedSelection = localStorage.getItem(storageKey);
-				if (savedSelection === type) {
-					btn.classList.add('active');
-					seedCount += 1;
-				}
-				
+				if (savedSelection === type) { btn.classList.add('active'); seedCount += 1; }
 				if (countSpan) countSpan.textContent = seedCount.toString();
 
 				btn.addEventListener('click', () => {
 					const currentActive = localStorage.getItem(storageKey);
-					
 					if (currentActive === type) {
 						localStorage.removeItem(storageKey);
 						btn.classList.remove('active');
@@ -314,7 +275,6 @@ const pageId = Astro.url.pathname;
 						buttons.forEach(b => b.classList.remove('active'));
 						localStorage.setItem(storageKey, type || '');
 						btn.classList.add('active');
-						
 						buttons.forEach(b => {
 							const t = b.getAttribute('data-reaction');
 							const s = b.querySelector('span');
@@ -322,7 +282,6 @@ const pageId = Astro.url.pathname;
 							if (t === 'love') base = Math.floor(base * 0.7);
 							if (t === 'insightful') base = Math.floor(base * 0.4);
 							if (t === 'fire') base = Math.floor(base * 0.5);
-							
 							if (t === type) base += 1;
 							if (s) s.textContent = base.toString();
 						});
