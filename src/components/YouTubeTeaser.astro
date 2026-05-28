@@ -1,0 +1,134 @@
+---
+interface Props {
+  videoId: string; // The specific 11-character video ID string (e.g., 'dQw4w9WgXcQ')
+}
+
+const { videoId } = Astro.props;
+const officialChannelUrl = "https://youtube.com/@townscribetv?si=ADdKzVgGQxb9gBmF";
+---
+
+<div class="video-container">
+  <!-- The script replaces this target container with the secure iframe engine -->
+  <div id="player"></div>
+  
+  {/* Notification alert banner that activates near the cutoff point */}
+  <div id="redirect-timer" class="redirect-alert" style="display: none;">
+    Preview ending. Redirecting to @TownScribeTV in <span id="countdown-secs">5</span>s...
+  </div>
+</div>
+
+<style>
+  .video-container {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    margin: 2rem auto;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  #player {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .redirect-alert {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(224, 12, 12, 0.98);
+    color: #fff;
+    padding: 0.6rem 1.4rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    white-space: nowrap;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+</style>
+
+<!-- Safely call the YouTube third-party frame injection dependencies -->
+<script is:inline src="https://www.youtube.com/iframe_api"></script>
+
+<script is:inline define:vars={{ videoId, officialChannelUrl }}>
+  let player;
+  let pollInterval = null;
+  const cutoffTime = 20; // Exact hard-stop limit in seconds
+
+  window.onYouTubeIframeAPIReady = function() {
+    player = new YT.Player('player', {
+      videoId: videoId,
+      playerVars: {
+        'playsinline': 1,
+        'rel': 0, // Show related videos only from TownScribeTV channel
+        'modestbranding': 1,
+        'controls': 1
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    // Force the inner YouTube engine to enforce a hard video ceiling cap parameter constraint natively
+    event.target.cueVideoById({
+      videoId: videoId,
+      startSeconds: 0,
+      endSeconds: cutoffTime
+    });
+  }
+
+  function onPlayerStateChange(event) {
+    // State 1 = PLAYING. Monitor timeline position for UI alert triggers
+    if (event.data === YT.PlayerState.PLAYING) {
+      if (!pollInterval) {
+        pollInterval = setInterval(monitorTimeline, 250);
+      }
+    } 
+    // State 0 = ENDED (Automatically fires exactly at 22 seconds due to our cue constraint)
+    else if (event.data === YT.PlayerState.ENDED) {
+      executeChannelRedirect();
+    } 
+    // Any other state (Paused, Buffering) breaks timeline loop tracking to conserve battery/RAM
+    else {
+      clearInterval(pollInterval);
+      pollInterval = null;
+    }
+  }
+
+  function monitorTimeline() {
+    if (!player || typeof player.getCurrentTime !== 'function') return;
+    const currentProgress = player.getCurrentTime();
+
+    // Trigger visual warning alerts exactly 5 seconds before redirection kicks off (at 17s)
+    if (currentProgress >= 17 && currentProgress < cutoffTime) {
+      const alertBox = document.getElementById('redirect-timer');
+      const timeSpan = document.getElementById('countdown-secs');
+      if (alertBox && timeSpan) {
+        alertBox.style.display = 'block';
+        timeSpan.textContent = Math.ceil(cutoffTime - currentProgress);
+      }
+    }
+  }
+
+  function executeChannelRedirect() {
+    clearInterval(pollInterval);
+    
+    // Fire event data back into Cloudflare Web Analytics custom layer tags on autopilot if available
+    if (typeof pfe !== 'undefined') {
+      pfe.cmd.push(function() {
+        pfe.trackEvent({ category: 'YouTubeTeaser', action: '48sRedirect', label: videoId });
+      });
+    }
+
+    // Execute instant outward window location routing push
+    window.location.href = officialChannelUrl;
+  }
+</script>
