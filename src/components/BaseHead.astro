@@ -5,12 +5,11 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
-import { Font } from 'astro:assets';
 
 interface Props {
 	title: string;
 	description: string;
-	image?: ImageMetadata;
+	image?: ImageMetadata | string; // Updated to accept standard strings or dynamic metadata shapes cleanly
 	seoTitle?: string;
 	seoDescription?: string;
 }
@@ -22,6 +21,11 @@ const { title, description, image = FallbackImage, seoTitle, seoDescription } = 
 // Fallback logic: Use the custom SEO fields if the writer sets them, otherwise use standard titles
 const finalTitle = seoTitle || title;
 const finalDescription = seoDescription || description;
+
+// Safely extract the exact URL string whether it's an Astro media object or a flat public asset path
+const finalImageUrl = typeof image === 'string' 
+	? new URL(image, Astro.site) 
+	: new URL(image.src, Astro.site);
 ---
 
 <meta charset="utf-8" />
@@ -37,24 +41,22 @@ const finalDescription = seoDescription || description;
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-atkinson" preload />
-
 <link rel="canonical" href={canonicalURL} />
 
 <title>{finalTitle}</title>
 <meta name="title" content={finalTitle} />
 <meta name="description" content={finalDescription} />
 
+{/* Open Graph / Facebook Meta Cards */}
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={finalTitle} />
 <meta property="og:description" content={finalDescription} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={finalImageUrl} />
 
+{/* Twitter / X Meta Cards */}
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={finalTitle} />
 <meta property="twitter:description" content={finalDescription} />
-<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
-
-<script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<meta property="twitter:image" content={finalImageUrl} />
