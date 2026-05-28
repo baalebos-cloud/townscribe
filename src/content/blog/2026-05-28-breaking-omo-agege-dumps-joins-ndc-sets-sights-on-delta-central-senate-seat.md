@@ -1,5 +1,5 @@
 ---
-title: "BREAKING: Omo-Agege Dumps Joins NDC, Sets Sights on Delta Central Senate Seat"
+title: "BREAKING: Omo-Agege Joins NDC, Sets Sights on Delta Central Senate Seat"
 description: " In a dramatic shift that is set to reshape the political
   landscape of Delta State, former Deputy Senate President"
 pubDate: 2026-05-28T19:07:00.000+01:00
