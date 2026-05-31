@@ -1,6 +1,4 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/townscribe-img.jpg';
@@ -9,11 +7,10 @@ import { SITE_TITLE } from '../consts';
 interface Props {
 	title: string;
 	description: string;
-	image?: ImageMetadata | string; // Updated to accept standard strings or dynamic metadata shapes cleanly
+	image?: ImageMetadata | string;
 	seoTitle?: string;
 	seoDescription?: string;
 	seoKeyword?: string;
-	robotsIndex?: string;
 	author?: string;
 	pubDate?: Date;
 	category?: string;
@@ -28,17 +25,20 @@ const {
 	seoTitle, 
 	seoDescription,
 	seoKeyword,
-	robotsIndex = 'index, follow',
 	author = 'TownScribe Staff',
 	pubDate,
 	category = 'News'
 } = Astro.props;
 
-// Fallback logic: Use the custom SEO fields if the writer sets them, otherwise use standard titles
+// --- AUTOMATED ENGINE: FINALIZE INDEXING DIRECTIVE ---
+// If the writer filled out all SEO panel requirements, allow indexing. Otherwise, protect the site.
+const automatedRobotsIndex = (seoTitle && seoDescription && seoKeyword) 
+	? 'index, follow' 
+	: 'noindex, nofollow';
+
 const finalTitle = seoTitle || title;
 const finalDescription = seoDescription || description;
 
-// Safely extract the exact URL string whether it's an Astro media object or a flat public asset path
 const finalImageUrl = typeof image === 'string' 
 	? new URL(image, Astro.site) 
 	: new URL(image.src, Astro.site);
@@ -64,7 +64,9 @@ const finalImageUrl = typeof image === 'string'
 <meta name="title" content={finalTitle} />
 <meta name="description" content={finalDescription} />
 {seoKeyword && <meta name="keywords" content={seoKeyword} />}
-<meta name="robots" content={robotsIndex} />
+
+<!-- AUTOMATED ROBOTS STATE DIRECTIVE -->
+<meta name="robots" content={automatedRobotsIndex} />
 
 <!-- Open Graph / Facebook Meta Cards -->
 <meta property="og:type" content={pubDate ? "article" : "website"} />
@@ -81,10 +83,7 @@ const finalImageUrl = typeof image === 'string'
 <meta property="twitter:description" content={finalDescription} />
 <meta property="twitter:image" content={finalImageUrl} />
 
-{/* 
-  --- ENGINE INJECTION: GOOGLE RICH SNIPPET STRUCTURED DATA (JSON-LD) ---
-  Generates automated structured news schemas when viewing specific markdown posts!
-*/}
+{/* --- AUTOMATED STRUCTURED DATA SNIPPET (JSON-LD) --- */}
 {pubDate && (
 	<script type="application/ld+json" is:inline set:html={JSON.stringify({
 		"@context": "https://schema.org",
