@@ -67,6 +67,20 @@ collections:
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
       - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)" }
 
-      # --- SEO FIELDS FOR WRITERS ---
-      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: false, hint: "Optional: Custom title for Google search results" }
-      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: true, hint: "Mandatory: A brief summary under 160 characters for search engines" }
+      # --- ADVANCED SEO CONSOLE ENGINE ---
+      - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
+      
+      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for on Google (e.g., 'Local Election Results')." }
+      
+      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: true, hint: "Mandatory: Custom search engine title. Ideal length is 50-60 characters." }
+      
+      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: true, hint: "Mandatory: The summary snippet displayed under your link in search engines. Keep it between 120-160 characters." }
+      
+      - label: "Search Engine Indexing Control"
+        name: "robotsIndex"
+        widget: "select"
+        default: "index, follow"
+        hint: "Advanced: Use 'noindex' if this is a private announcement, hidden page, or temporary placeholder."
+        options:
+          - { label: "🟢 Index & Follow (Default - Let Google Rank It)", value: "index, follow" }
+          - { label: "🔴 Noindex, Nofollow (Hide entirely from Search Engines)", value: "noindex, nofollow" }
