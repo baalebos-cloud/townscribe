@@ -6,7 +6,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://townscribe.org',
+	site: 'https://news.townscribe.org',
 	integrations: [mdx(), sitemap()],
 	fonts: [
 		{
