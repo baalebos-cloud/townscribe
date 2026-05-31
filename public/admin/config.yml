@@ -33,23 +33,23 @@ public_folder: "/"
 collections:
   - name: "blog"
     label: "News Articles"
-    folder: "src/content/blog" # Direct injection path into Astro content directory
+    folder: "src/content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      # --- STRICT 8-WORD HEADLINE ENGINE ---
+      # --- FLEXIBLE HEADLINE TARGET ENGINE ---
       - label: "Title"
         name: "title"
         widget: "string"
-        pattern: ['^\s*([^\s]+\s+){7}[^\s]+\s*$', "Validation Error: Headline must be EXACTLY 8 words long."]
-        hint: "Mandatory: Enter an exact 8-word headline (e.g., 'Local Government Announces New Green Infrastructure Budget')."
+        required: true
+        hint: "Target Metric: An 8-word headline is ideal for mobile scanning rhythm, but you can write past it."
 
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
       
       # --- WRITER & AUTHOR ATTRIBUTION ---
       - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
-      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Editor", "Writer", "Contributor"], default: "Writer" }
+      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Writer", "Contributor"], default: "Writer" }
 
       # --- AUTOMATED CATEGORIES LINKING BAR ---
       - label: "Category"
@@ -69,10 +69,11 @@ collections:
 
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
       
-      # --- CONTENT BODY PROSE ENFORCER ---
+      # --- CONTENT BODY PROSE ENFORCER (With Real-Time Pre-Save Warning) ---
       - label: "Body"
         name: "body"
         widget: "markdown"
+        pattern: ['^([^#\n].*){2,}$', "Readability Pre-Flight: Ensure your body copy utilizes short paragraphs (~18 words), active verbs, and transition hooks (However, Therefore, Furthermore) before saving."]
         hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
@@ -96,11 +97,11 @@ collections:
         required: true
         pattern: ['^.{120,160}$', "Optimization Error: Meta descriptions must be between 120 and 160 characters to fit search screens."]
         hint: "Mandatory: Brief summary under 160 characters for search engines."
-      
-      - label: "Search Engine Indexing Control"
-        name: "robotsIndex"
-        widget: "select"
-        default: "index, follow"
-        options:
-          - { label: "🟢 Index & Follow (Default - Let Google Rank It)", value: "index, follow" }
-          - { label: "🔴 Noindex, Nofollow (Hide entirely from Search Engines)", value: "noindex, nofollow" }
+
+      # --- LIVE PRE-PUBLISH INDEX GATEKEEPER ---
+      - label: "🟢 LIVE SEO INDEX STATUS (Type 'PASS' to verify)"
+        name: "seo_gatekeeper"
+        widget: "string"
+        required: true
+        pattern: ['^(PASS|pass)$', "INDEX DENIED: Review your Meta Title, Meta Description, Focus Keyword, and Body constraints above. If they are compliant, type 'PASS' to authorize indexing configuration."]
+        hint: "Self-Audit Console: Ensure your titles fit character thresholds and your body has transition words. Type PASS when done to greenlight Google indexing."
