@@ -93,10 +93,11 @@ collections:
       
       - label: "SEO Meta Description"
         name: "seoDescription"
-        widget: "text"
+        widget: "string"
         required: true
+        max_length: 160
         pattern: ['^.{120,160}$', "Optimization Error: Meta descriptions must be between 120 and 160 characters to fit search screens."]
-        hint: "Mandatory: Brief summary under 160 characters for search engines."
+        hint: "Mandatory: Brief summary between 120 and 160 characters for search engines. The box will stop typing when you hit the limit."
 
       # --- LIVE PRE-PUBLISH INDEX GATEKEEPER ---
       - label: "🟢 LIVE SEO INDEX STATUS (Type 'PASS' to verify)"
