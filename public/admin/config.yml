@@ -1,9 +1,12 @@
-# Use DecapBridge classic auth (required)
+# Use DecapBridge classic auth with your explicit site token routing mapping
 backend:
   name: git-gateway
   repo: baalebos-cloud/townscribe
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/95458850-880f-4740-8e26-715c035f3ed4
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/pkce
+  auth_token_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/token
   gateway_url: https://gateway.decapbridge.com
 
   # See who did what (optional)
@@ -15,8 +18,8 @@ backend:
     deleteMedia: Delete “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
     openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
 
-# Better Decap + Bridge logo (optional)
-logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+# Updated branding logo to your native townscribe image asset
+logo_url: /townscribe-img.jpg
 
 # Add site links in Decap CMS (optional)
 site_url: https://townscribe.org
@@ -64,6 +67,20 @@ collections:
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
       - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)" }
 
-      # --- SEO FIELDS FOR WRITERS ---
-      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: false, hint: "Optional: Custom title for Google search results" }
-      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: false, hint: "Optional: A brief summary under 160 characters for search engines" }
+      # --- ADVANCED SEO CONSOLE ENGINE ---
+      - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
+      
+      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for on Google (e.g., 'Local Election Results')." }
+      
+      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: true, hint: "Mandatory: Custom search engine title. Ideal length is 50-60 characters." }
+      
+      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: true, hint: "Mandatory: The summary snippet displayed under your link in search engines. Keep it between 120-160 characters." }
+      
+      - label: "Search Engine Indexing Control"
+        name: "robotsIndex"
+        widget: "select"
+        default: "index, follow"
+        hint: "Advanced: Use 'noindex' if this is a private announcement, hidden page, or temporary placeholder."
+        options:
+          - { label: "🟢 Index & Follow (Default - Let Google Rank It)", value: "index, follow" }
+          - { label: "🔴 Noindex, Nofollow (Hide entirely from Search Engines)", value: "noindex, nofollow" }
