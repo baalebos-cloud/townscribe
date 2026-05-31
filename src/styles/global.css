@@ -5,8 +5,8 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+	--accent: #14b8a6; /* Matched to index.astro teal highlighting tone */
+	--accent-dark: #0d9488;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -17,7 +17,11 @@
 		0 16px 32px rgba(var(--gray), 33%);
 }
 body {
-	font-family: var(--font-atkinson);
+	/* --- HIGH-PERFORMANCE SYSTEM FONT STACK (ZERO NETWORK LATENCY) --- */
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -26,14 +30,15 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	font-size: 18px; /* Slightly reduced for a modern editorial feel */
+	line-height: 1.6;
 }
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+	width: 960px; /* Increased to match your index page grid constraints safely */
+	max-width: calc(100% - 2rem);
+	margin: 0 auto;
+	padding: 3rem 1rem;
+	box-sizing: border-box;
 }
 h1,
 h2,
@@ -43,22 +48,23 @@ h5,
 h6 {
 	margin: 0 0 0.5rem 0;
 	color: rgb(var(--black));
-	line-height: 1.2;
+	line-height: 1.25;
+	font-weight: 700;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: 2.5rem;
 }
 h2 {
-	font-size: 2.441em;
+	font-size: 2rem;
 }
 h3 {
-	font-size: 1.953em;
+	font-size: 1.75rem;
 }
 h4 {
-	font-size: 1.563em;
+	font-size: 1.4rem;
 }
 h5 {
-	font-size: 1.25em;
+	font-size: 1.2rem;
 }
 strong,
 b {
@@ -66,60 +72,72 @@ b {
 }
 a {
 	color: var(--accent);
+	text-decoration: none;
+	transition: color 0.2s ease;
 }
 a:hover {
-	color: var(--accent);
+	color: var(--accent-dark);
 }
 p {
-	margin-bottom: 1em;
+	margin: 0 0 1rem 0;
 }
 .prose p {
-	margin-bottom: 2em;
+	margin-bottom: 1.75rem;
 }
 textarea {
 	width: 100%;
 	font-size: 16px;
+	box-sizing: border-box;
 }
 input {
 	font-size: 16px;
 }
 table {
 	width: 100%;
+	border-collapse: collapse;
 }
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 12px; /* Smooth corners matching index grid specs */
 }
 code {
-	padding: 2px 5px;
+	padding: 2px 6px;
 	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	border-radius: 4px;
+	font-size: 0.9em;
 }
 pre {
 	padding: 1.5em;
-	border-radius: 8px;
+	border-radius: 12px;
+	overflow-x: auto;
 }
 pre > code {
 	all: unset;
 }
 blockquote {
 	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	padding: 0.5rem 0 0.5rem 1.5rem;
+	margin: 1.5rem 0;
+	font-size: 1.25rem;
+	font-style: italic;
+	color: rgba(var(--gray-dark), 0.85);
 }
 hr {
 	border: none;
 	border-top: 1px solid rgb(var(--gray-light));
+	margin: 2rem 0;
 }
 @media (max-width: 720px) {
 	body {
-		font-size: 18px;
+		font-size: 16px;
 	}
 	main {
-		padding: 1em;
+		padding: 1.5rem 1rem;
 	}
+	h1 { font-size: 2rem; }
+	h2 { font-size: 1.6rem; }
+	h3 { font-size: 1.4rem; }
 }
 
 .sr-only {
@@ -130,12 +148,8 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
