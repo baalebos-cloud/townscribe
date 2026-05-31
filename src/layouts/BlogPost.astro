@@ -1,6 +1,7 @@
 ---
 import SEO from '../components/SEO.astro';
 import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content'; // Added to pull remaining stories
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -26,30 +27,43 @@ const finalDescription = seoDescription || description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pageId = Astro.url.pathname;
 
+// --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
+// Fetch all active news articles and arrange them with the newest stories matching top ranking positions
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+);
+
+// Determine index slot positioning of current viewing session to establish pagination vectors
+const currentSlug = Astro.params.slug;
+const currentPostIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+
+const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
+const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
+
+// Isolate matching entries by excluding current ID, capping view stack limit at 5 rows
+const relatedPosts = allPosts
+	.filter((post) => post.slug !== currentSlug)
+	.slice(0, 5);
+
 // ULTRA-ROBUST EXTRACTOR: Handles desktop, mobile sharing, parameters, shorts, and queries
 function getYouTubeId(url: string | undefined) {
 	if (!url) return null;
 	
-	// Trim spaces
 	const cleanUrl = url.trim();
 	
-	// Format 1: Standard youtube.com/watch?v=ID or variations
 	if (cleanUrl.includes('watch')) {
 		const searchParams = new URL(cleanUrl).searchParams;
 		return searchParams.get('v');
 	}
 	
-	// Format 2: Shortened share links (youtu.be/ID)
 	if (cleanUrl.includes('youtu.be/')) {
 		return cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
 	}
 	
-	// Format 3: Live streams, shorts, or embeds (youtube.com/embed/ID or youtube.com/shorts/ID)
 	if (cleanUrl.includes('/embed/') || cleanUrl.includes('/shorts/') || cleanUrl.includes('/live/')) {
 		return cleanUrl.split('/').pop()?.split(/[?#]/)[0];
 	}
 	
-	// Fallback: If writer accidentally just pasted the 11 character ID directly
 	if (cleanUrl.length === 11) {
 		return cleanUrl;
 	}
@@ -58,7 +72,6 @@ function getYouTubeId(url: string | undefined) {
 }
 
 const extractedVideoId = getYouTubeId(youtubeUrl);
-// Fallback to the channel URL if a specific video extraction fails entirely
 const fallbackRedirectUrl = "https://youtube.com/@townscribetv?si=ADdKzVgGQxb9gBmF";
 const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl;
 ---
@@ -106,9 +119,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 			.view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; }
 
 			/* --- AUTO-PLAYER INJECTION STYLING --- */
-			.video-wrapper-zone {
-				margin: 2rem 0;
-			}
+			.video-wrapper-zone { margin: 2rem 0; }
 			.video-container {
 				position: relative;
 				width: 100%;
@@ -135,6 +146,95 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 				white-space: nowrap;
 				font-family: system-ui, sans-serif;
 			}
+
+			/* --- EXTRACTED DESIGN STYLES FROM WHATSAPP IMAGE 2026-05-31 AT 13.08.45.JPEG --- */
+			.nav-pagination {
+				display: flex;
+				justify-content: space-between;
+				border-top: 1px solid #edf2f7;
+				border-bottom: 1px solid #edf2f7;
+				padding: 1.5rem 0;
+				margin: 2.5rem 0;
+				font-family: system-ui, -apple-system, sans-serif;
+			}
+			.nav-block {
+				max-width: 47%;
+				text-decoration: none;
+				color: #1a202c;
+				display: flex;
+				flex-direction: column;
+			}
+			.nav-block.next { text-align: right; margin-left: auto; }
+			.nav-label {
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				color: #a0aec0;
+				font-weight: 600;
+				margin-bottom: 0.35rem;
+				letter-spacing: 0.025em;
+			}
+			.nav-title { font-weight: 700; font-size: 0.95rem; line-height: 1.35; color: #2d3748; }
+			.nav-block:hover .nav-title { color: #dc2626; }
+
+			.related-section {
+				margin: 3.5rem 0 2.5rem 0;
+				font-family: system-ui, -apple-system, sans-serif;
+			}
+			.related-header-bar {
+				background-color: #dc2626;
+				color: white;
+				display: inline-block;
+				padding: 0.4rem 1.2rem;
+				font-weight: 700;
+				font-size: 0.85rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+			.related-divider { border-top: 2px solid #dc2626; margin-top: -2px; margin-bottom: 0.5rem; }
+			
+			.related-card {
+				display: flex;
+				gap: 1.25rem;
+				padding: 1.1rem 0;
+				border-bottom: 1px solid #f1f5f9;
+				text-decoration: none;
+				color: inherit;
+				align-items: center;
+			}
+			.related-card:hover .card-title { color: #dc2626; }
+			
+			.image-container {
+				position: relative;
+				width: 130px;
+				height: 85px;
+				flex-shrink: 0;
+				background-color: #e2e8f0;
+				border-radius: 4px;
+				overflow: hidden;
+			}
+			.image-container img { width: 100%; height: 100%; object-fit: cover; }
+			
+			.category-badge {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				background: rgba(17, 24, 39, 0.9);
+				color: #fff;
+				font-size: 0.65rem;
+				font-weight: 600;
+				padding: 0.15rem 0.45rem;
+				text-transform: uppercase;
+				letter-spacing: 0.025em;
+			}
+			.card-info { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+			.card-title {
+				font-size: 1rem;
+				font-weight: 700;
+				margin: 0;
+				line-height: 1.35;
+				color: #1e293b;
+			}
+			.card-date { font-size: 0.75rem; color: #64748b; font-weight: 500; }
 
 			/* --- REACTION & FEEDBACK BOXES --- */
 			.article-interactions { margin-top: 3em; border-top: 1px solid rgba(var(--gray), 0.2); padding-top: 2em; }
@@ -186,6 +286,53 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 					)}
 
 					<slot />
+
+					<!-- ======================================================== -->
+					<!-- EXTRACTED COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS     -->
+					<!-- ======================================================== -->
+					<div class="nav-pagination">
+						{prevPost ? (
+							<a href={`/blog/${prevPost.slug}/`} class="nav-block prev">
+								<span class="nav-label">Previous article</span>
+								<div class="nav-title">{prevPost.data.title}</div>
+							</a>
+						) : (
+							<div class="nav-block"></div> 
+						)}
+
+						{nextPost ? (
+							<a href={`/blog/${nextPost.slug}/`} class="nav-block next">
+								<span class="nav-label">Next article</span>
+								<div class="nav-title">{nextPost.data.title}</div>
+							</a>
+						) : (
+							<div class="nav-block"></div>
+						)}
+					</div>
+
+					<!-- ======================================================== -->
+					<!-- EXTRACTED COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK -->
+					<!-- ======================================================== -->
+					<section class="related-section">
+						<div class="related-header-bar">Related News</div>
+						<div class="related-divider"></div>
+
+						{relatedPosts.map((post) => (
+							<a href={`/blog/${post.slug}/`} class="related-card">
+								<div class="image-container">
+									<img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
+									<span class="category-badge">{post.data.category || 'World'}</span>
+								</div>
+								<div class="card-info">
+									<h3 class="card-title">{post.data.title}</h3>
+									<span class="card-date">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+								</div>
+							</a>
+						))}
+					</section>
+					<!-- ======================================================== -->
 					
 					<div class="article-interactions">
 						<div class="reaction-section">
@@ -219,7 +366,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 				let pollInterval = null;
 				const cutoffTime = 48; 
 
-				// API automatically calls this once script initialization completes
 				window.onYouTubeIframeAPIReady = function() {
 					if (!extractedVideoId) {
 						console.error("TownScribe Engine: Could not process the video ID from the provided URL input configuration string.");
