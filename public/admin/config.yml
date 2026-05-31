@@ -33,17 +33,23 @@ public_folder: "/"
 collections:
   - name: "blog"
     label: "News Articles"
-    folder: "src/content/blog" # Direct injection path into Astro content directory
+    folder: "src/content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
+      # --- FLEXIBLE HEADLINE TARGET ENGINE ---
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+        hint: "Target Metric: An 8-word headline is ideal for mobile scanning rhythm, but you can write past it."
+
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
       
       # --- WRITER & AUTHOR ATTRIBUTION ---
       - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
-      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Editor", "Writer", "Contributor"], default: "Writer" }
+      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Writer", "Contributor"], default: "Writer" }
 
       # --- AUTOMATED CATEGORIES LINKING BAR ---
       - label: "Category"
@@ -62,25 +68,41 @@ collections:
           - { label: "Job", value: "job" }
 
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      
+      # --- CONTENT BODY PROSE ENFORCER (With Real-Time Pre-Save Warning) ---
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        pattern: ['^([^#\n].*){2,}$', "Readability Pre-Flight: Ensure your body copy utilizes short paragraphs (~18 words), active verbs, and transition hooks (However, Therefore, Furthermore) before saving."]
+        hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
-      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)" }
+      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
 
       # --- ADVANCED SEO CONSOLE ENGINE ---
       - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
       
-      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for on Google (e.g., 'Local Election Results')." }
+      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for." }
       
-      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: true, hint: "Mandatory: Custom search engine title. Ideal length is 50-60 characters." }
+      - label: "SEO Meta Title"
+        name: "seoTitle"
+        widget: "string"
+        required: true
+        pattern: ['^.{40,65}$', "Optimization Error: Custom meta title should be between 40 and 65 characters for clean Google snippets."]
+        hint: "Mandatory: Custom search snippet title."
       
-      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: true, hint: "Mandatory: The summary snippet displayed under your link in search engines. Keep it between 120-160 characters." }
-      
-      - label: "Search Engine Indexing Control"
-        name: "robotsIndex"
-        widget: "select"
-        default: "index, follow"
-        hint: "Advanced: Use 'noindex' if this is a private announcement, hidden page, or temporary placeholder."
-        options:
-          - { label: "🟢 Index & Follow (Default - Let Google Rank It)", value: "index, follow" }
-          - { label: "🔴 Noindex, Nofollow (Hide entirely from Search Engines)", value: "noindex, nofollow" }
+      - label: "SEO Meta Description"
+        name: "seoDescription"
+        widget: "string"
+        required: true
+        max_length: 160
+        pattern: ['^.{120,160}$', "Optimization Error: Meta descriptions must be between 120 and 160 characters to fit search screens."]
+        hint: "Mandatory: Brief summary between 120 and 160 characters for search engines. The box will stop typing when you hit the limit."
+
+      # --- LIVE PRE-PUBLISH INDEX GATEKEEPER ---
+      - label: "🟢 LIVE SEO INDEX STATUS (Type 'PASS' to verify)"
+        name: "seo_gatekeeper"
+        widget: "string"
+        required: true
+        pattern: ['^(PASS|pass)$', "INDEX DENIED: Review your Meta Title, Meta Description, Focus Keyword, and Body constraints above. If they are compliant, type 'PASS' to authorize indexing configuration."]
+        hint: "Self-Audit Console: Ensure your titles fit character thresholds and your body has transition words. Type PASS when done to greenlight Google indexing."
