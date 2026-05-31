@@ -1,7 +1,7 @@
 ---
 import SEO from '../components/SEO.astro';
 import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content'; // Added to pull remaining stories
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -28,19 +28,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pageId = Astro.url.pathname;
 
 // --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
-// Fetch all active news articles and arrange them with the newest stories matching top ranking positions
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
-// Determine index slot positioning of current viewing session to establish pagination vectors
 const currentSlug = Astro.params.slug;
 const currentPostIndex = allPosts.findIndex((post) => post.slug === currentSlug);
 
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
 
-// Isolate matching entries by excluding current ID, capping view stack limit at 5 rows
 const relatedPosts = allPosts
 	.filter((post) => post.slug !== currentSlug)
 	.slice(0, 5);
@@ -248,7 +245,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 			.anonymous-feedback-box { padding: 2em; background-color: #f8f9fa; border-radius: 12px; border: 1px solid rgba(var(--gray), 0.15); margin-top: 2rem; }
 			.anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
 			.anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
-			#cusdis_thread { margin-top: 1rem; min-height: 150px; }
+			.giscus { margin-top: 1.5rem; min-height: 150px; }
 		</style>
 	</head>
 
@@ -288,7 +285,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 					<slot />
 
 					<!-- ======================================================== -->
-					<!-- EXTRACTED COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS     -->
+					<!-- COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS              -->
 					<!-- ======================================================== -->
 					<div class="nav-pagination">
 						{prevPost ? (
@@ -311,7 +308,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 					</div>
 
 					<!-- ======================================================== -->
-					<!-- EXTRACTED COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK -->
+					<!-- COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK           -->
 					<!-- ======================================================== -->
 					<section class="related-section">
 						<div class="related-header-bar">Related News</div>
@@ -346,19 +343,11 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 						</div>
 
 						<div class="anonymous-feedback-box">
-							<h3>Anonymous Updates & Reader Additions</h3>
-							<!-- Updated text to reflect immediate, unrestricted publishing -->
-							<p>Have a news tip, correction, or extra context about this story? Post it below anonymously. Submissions appear live on this screen immediately after moderation approval.</p>
+							<h3>Reader Updates & Community Additions</h3>
+							<p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
 							
-							<!-- UNRESTRICTED DYNAMIC COMMENT ENGINE -->
-							<div 
-								id="cusdis_thread" 
-								data-host="https://cusdis.com" 
-								data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff" 
-								data-page-id={currentSlug} 
-								data-page-url={Astro.url.href} 
-								data-page-title={title}
-							></div>
+							<!-- GISCUS LIVE COMMENT STREAM ENGINE -->
+							<div class="giscus"></div>
 						</div>
 					</div>
 				</div>
@@ -366,7 +355,22 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 		</main>
 		<Footer />
 
-		<script is:inline src="https://cusdis.com/js/cusdis.es.js" async defer></script>
+		<!-- --- GISCUS RUNNER INJECTION --- -->
+		<script src="https://giscus.app/client.js"
+        data-repo="baalebos-cloud/townscribe-comments"
+        data-repo-id="R_kgDOStUrLQ"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOStUrLc4C-PE4"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+		</script>
 
 		{/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
 		{youtubeUrl && (
