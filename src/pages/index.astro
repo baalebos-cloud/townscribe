@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets'; // High-performance asset processing engine
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -107,8 +108,10 @@ const posts = (await getCollection('blog')).sort(
 				margin-bottom: 0.5rem;
 				border-radius: 12px;
 				width: 100%;
+				height: auto;
 				object-fit: cover;
-				aspect-ratio: 16 / 9;
+				/* --- CRITICAL: Swapped from 16/9 to 3/2 aspect ratio for 720x480 geometry --- */
+				aspect-ratio: 3 / 2;
 				box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 			}
 			.blog-grid li a {
@@ -177,7 +180,15 @@ const posts = (await getCollection('blog')).sort(
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.slug || post.id}/`}>
-									<img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" />
+									<Image 
+										src={post.data.heroImage || '/townscribe-img.jpg'} 
+										alt=""
+										width={720}
+										height={480}
+										format="webp"
+										loading="lazy"
+										decoding="async"
+									/>
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />
