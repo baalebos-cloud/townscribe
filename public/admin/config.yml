@@ -1,10 +1,13 @@
 # Use DecapBridge classic auth with your explicit site token routing mapping
 backend:
-  name: github
+  name: git-gateway
   repo: baalebos-cloud/townscribe
   branch: main
+  auth_type: pkce
   base_url: https://auth.decapbridge.com
-  auth_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/auth
+  auth_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/pkce
+  auth_token_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/token
+  gateway_url: https://gateway.decapbridge.com
 
   # See who did what (optional)
   commit_messages:
