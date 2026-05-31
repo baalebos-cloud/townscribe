@@ -348,7 +348,16 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 						<div class="anonymous-feedback-box">
 							<h3>Anonymous Updates & Reader Additions</h3>
 							<p>Have a news tip, correction, or extra context about this story? Post it below anonymously. Submissions appear live on this screen immediately after moderation approval.</p>
-							<div id="cusdis_thread" data-host="https://cusdis.com" data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff" data-page-id={pageId} data-page-url={Astro.url.href} data-page-title={title}></div>
+							
+							<!-- UNRESTRICTED DYNAMIC COMMENT ENGINE -->
+							<div 
+								id="cusdis_thread" 
+								data-host="https://cusdis.com" 
+								data-app-id="650636a9-98fe-410b-bbda-43b3e61607ff" 
+								data-page-id={currentSlug} 
+								data-page-url={Astro.url.href} 
+								data-page-title={title}
+							></div>
 						</div>
 					</div>
 				</div>
