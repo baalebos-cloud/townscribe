@@ -16,6 +16,17 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		
+		{/* --- DECOUPLED DECAP SYSTEM ROUTING INTERCEPTOR --- */}
+		<script is:inline>
+			const currentHost = window.location.hostname;
+			if (currentHost === 'admin.townscribe.org') {
+				if (!window.location.pathname.startsWith('/admin')) {
+					window.location.replace('/admin/');
+				}
+			}
+		</script>
+
 		<style>
 			main {
 				width: 960px;
