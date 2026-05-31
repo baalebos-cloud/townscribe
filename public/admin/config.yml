@@ -37,7 +37,13 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
+      # --- STRICT 8-WORD HEADLINE ENGINE ---
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        pattern: ['^\s*([^\s]+\s+){7}[^\s]+\s*$', "Validation Error: Headline must be EXACTLY 8 words long."]
+        hint: "Mandatory: Enter an exact 8-word headline (e.g., 'Local Government Announces New Green Infrastructure Budget')."
+
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
       
@@ -62,25 +68,39 @@ collections:
           - { label: "Job", value: "job" }
 
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      
+      # --- CONTENT BODY PROSE ENFORCER ---
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
-      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)" }
+      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
 
       # --- ADVANCED SEO CONSOLE ENGINE ---
       - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
       
-      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for on Google (e.g., 'Local Election Results')." }
+      - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for." }
       
-      - { label: "SEO Meta Title", name: "seoTitle", widget: "string", required: true, hint: "Mandatory: Custom search engine title. Ideal length is 50-60 characters." }
+      - label: "SEO Meta Title"
+        name: "seoTitle"
+        widget: "string"
+        required: true
+        pattern: ['^.{40,65}$', "Optimization Error: Custom meta title should be between 40 and 65 characters for clean Google snippets."]
+        hint: "Mandatory: Custom search snippet title."
       
-      - { label: "SEO Meta Description", name: "seoDescription", widget: "text", required: true, hint: "Mandatory: The summary snippet displayed under your link in search engines. Keep it between 120-160 characters." }
+      - label: "SEO Meta Description"
+        name: "seoDescription"
+        widget: "text"
+        required: true
+        pattern: ['^.{120,160}$', "Optimization Error: Meta descriptions must be between 120 and 160 characters to fit search screens."]
+        hint: "Mandatory: Brief summary under 160 characters for search engines."
       
       - label: "Search Engine Indexing Control"
         name: "robotsIndex"
         widget: "select"
         default: "index, follow"
-        hint: "Advanced: Use 'noindex' if this is a private announcement, hidden page, or temporary placeholder."
         options:
           - { label: "🟢 Index & Follow (Default - Let Google Rank It)", value: "index, follow" }
           - { label: "🔴 Noindex, Nofollow (Hide entirely from Search Engines)", value: "noindex, nofollow" }
