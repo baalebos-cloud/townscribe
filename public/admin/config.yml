@@ -3,8 +3,8 @@ backend:
   name: github
   repo: baalebos-cloud/townscribe
   branch: main
-  base_url: https://auth.decapbridge.com/sites/95458850-880f-4740-8e26-715c035f3ed4
-  auth_endpoint: /auth
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/auth
 
   # See who did what (optional)
   commit_messages:
