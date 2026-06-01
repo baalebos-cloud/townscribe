@@ -289,34 +289,33 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         <Footer />
 
         <!-- --- REMARK42 LIFECYCLE INJECTOR PIPELINE --- -->
-        <script is:inline define:vars={{ pageId, title }}>
-            var remark_config = {
-                host: 'https://comments.townscribe.org',
-                site_id: 'remark',
-                url: 'https://news.townscribe.org' + window.location.pathname.replace(/\/$/, ""),
-                id: pageId,
-                title: title,
-                locale: 'en',
-                max_ans: 5,
-                show_anonymous: true
-            };
+<script is:inline define:vars={{ pageId, title }}>
+    window.remark_config = {
+        host: 'https://comments.townscribe.org',
+        site_id: 'remark',
+        url: 'https://news.townscribe.org' + window.location.pathname.replace(/\/$/, ""),
+        id: pageId,
+        title: title,
+        locale: 'en',
+        max_ans: 5,
+        show_anonymous: true
+    };
 
-            function loadRemark42() {
-                if (document.getElementById('remark42-script')) return;
-                
-                var d = document, s = d.createElement('script');
-                s.id = 'remark42-script';
-                s.src = remark_config.host + '/web/embed.js';
-                s.defer = true;
-                (d.head || d.body).appendChild(s);
-            }
+    function loadRemark42() {
+        if (document.getElementById('remark42-script')) return;
+        var d = document, s = d.createElement('script');
+        s.id = 'remark42-script';
+        s.src = window.remark_config.host + '/web/embed.js';
+        s.defer = true;
+        (d.head || d.body).appendChild(s);
+    }
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', loadRemark42);
-            } else {
-                loadRemark42();
-            }
-        </script>
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadRemark42);
+    } else {
+        loadRemark42();
+    }
+</script>
 
         <!-- --- TIMELINE COUNTER RUNNER ENGINE --- -->
         {youtubeUrl && (
