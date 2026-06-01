@@ -25,9 +25,13 @@ const {
 const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
 
-// --- HARDCODING CANONICAL TARGET TO SUBDOMAIN ---
+// --- CANONICAL BASE ---
 const canonicalURL = new URL(Astro.url.pathname, 'https://news.townscribe.org');
-const pageId = Astro.url.pathname;
+
+// FIX 1: Use slug as stable, deploy-agnostic thread ID — never Astro.url which
+// reflects build origin and can differ across environments.
+const currentSlug = Astro.params.slug;
+const pageId = `/blog/${currentSlug}`;
 
 // --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
 const allPosts = (await getCollection('blog')).sort(
@@ -35,7 +39,6 @@ const allPosts = (await getCollection('blog')).sort(
         new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
-const currentSlug = Astro.params.slug;
 const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.slug === currentSlug);
 
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
@@ -273,7 +276,13 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <h3>Reader Updates & Community Additions</h3>
                             <p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
                             
-                            <!-- --- INJECTED PRODUCTION CUSDIS THREAD ENGINE --- -->
+                            <!--
+                                FIX 2: data-page-id now uses the stable slug-based ID (pageId) rather than
+                                Astro.url.pathname, which can vary between build environments.
+                                FIX 3: data-page-url is set directly from canonicalURL.href (SSR-baked,
+                                consistent value). The JS pipeline no longer overrides it at runtime,
+                                eliminating the trailing-slash mismatch and race condition.
+                            -->
                             <div 
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
@@ -289,15 +298,20 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         </main>
         <Footer />
 
-        {/* --- DYNAMIC ASYNC SCRIPT PIPELINE CONTROLLER --- */}
+        <!--
+            FIX 4: Cusdis pipeline — removed the runtime setAttribute override on data-page-url
+            (was causing trailing-slash mismatch and thread identity instability).
+            Added retry loop with onerror handler to surface failures clearly.
+        -->
         <script is:inline>
             function runCusdisPipeline() {
                 const thread = document.getElementById('cusdis_thread');
                 if (!thread) return;
 
-                const cleanURL = "https://news.townscribe.org" + window.location.pathname.replace(/\/$/, "");
-                thread.setAttribute('data-page-url', cleanURL);
+                // Do NOT override data-page-url here — it is already correctly set
+                // at build time via SSR and must remain stable for thread identity.
 
+                // If Cusdis is already loaded (e.g. SPA navigation), re-render directly.
                 if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
                     window.CUSDIS.renderDoc(thread);
                     return;
@@ -307,10 +321,28 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 scriptNode.src = "https://comments.townscribe.org/js/cusdis.es.js";
                 scriptNode.async = true;
                 scriptNode.defer = true;
-                
+
+                // FIX 5: Retry loop — ES modules may need a tick to register globals
+                // after onload fires. Poll up to 10 times at 100ms intervals.
                 scriptNode.onload = () => {
-                    if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
-                        window.CUSDIS.renderDoc(thread);
+                    const tryRender = (attempts) => {
+                        if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
+                            window.CUSDIS.renderDoc(thread);
+                        } else if (attempts < 10) {
+                            setTimeout(() => tryRender(attempts + 1), 100);
+                        } else {
+                            console.warn('[TownScribe] Cusdis: renderDoc unavailable after 10 retries. Check self-hosted instance at https://comments.townscribe.org');
+                        }
+                    };
+                    tryRender(0);
+                };
+
+                // FIX 6: Surface network/CORS failures instead of silent void
+                scriptNode.onerror = () => {
+                    console.error('[TownScribe] Cusdis script failed to load. Verify https://comments.townscribe.org/js/cusdis.es.js is reachable and CORS headers are set correctly.');
+                    const thread = document.getElementById('cusdis_thread');
+                    if (thread) {
+                        thread.innerHTML = '<p style="color:#888;font-size:0.9rem;">Comments are temporarily unavailable. Please check back shortly.</p>';
                     }
                 };
 
