@@ -28,8 +28,7 @@ const finalDescription = seoDescription || description;
 // --- CANONICAL BASE ---
 const canonicalURL = new URL(Astro.url.pathname, 'https://news.townscribe.org');
 
-// FIX 1: Use slug as stable, deploy-agnostic thread ID — never Astro.url which
-// reflects build origin and can differ across environments.
+// Use id as stable, deploy-agnostic thread ID (replaces legacy slug)
 const currentSlug = Astro.params.slug;
 const pageId = `/blog/${currentSlug}`;
 
@@ -39,13 +38,15 @@ const allPosts = (await getCollection('blog')).sort(
         new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
-const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.slug === currentSlug);
+// FIX 1 & 2: Changed post.slug to post.id
+const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.id === currentSlug);
 
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
 
+// FIX 3: Changed post.slug to post.id
 const relatedPosts = allPosts
-    .filter((post: CollectionEntry<'blog'>) => post.slug !== currentSlug)
+    .filter((post: CollectionEntry<'blog'>) => post.id !== currentSlug)
     .slice(0, 5);
 
 // ULTRA-ROBUST EXTRACTOR FOR YOUTUBE VIDEOS
@@ -182,8 +183,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
             .anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
             .anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
             
-            #cusdis_thread { margin-top: 2rem; min-height: 250px !important; width: 100%; display: block; }
-            #cusdis_thread iframe { width: 100% !important; min-height: 250px !important; border: none !important; }
+            #remark42 { margin-top: 2rem; min-height: 300px; width: 100%; }
         </style>
     </head>
 
@@ -222,8 +222,9 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                     <slot />
 
                     <div class="nav-pagination">
+                        {/* FIX 4: Changed prevPost.slug to prevPost.id */}
                         {prevPost ? (
-                            <a href={`/blog/${prevPost.slug}/`} class="nav-block prev">
+                            <a href={`/blog/${prevPost.id}/`} class="nav-block prev">
                                 <span class="nav-label">Previous article</span>
                                 <div class="nav-title">{prevPost.data.title}</div>
                             </a>
@@ -231,8 +232,9 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <div class="nav-block"></div> 
                         )}
 
+                        {/* FIX 5: Changed nextPost.slug to nextPost.id */}
                         {nextPost ? (
-                            <a href={`/blog/${nextPost.slug}/`} class="nav-block next">
+                            <a href={`/blog/${nextPost.id}/`} class="nav-block next">
                                 <span class="nav-label">Next article</span>
                                 <div class="nav-title">{nextPost.data.title}</div>
                             </a>
@@ -245,8 +247,9 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         <div class="related-header-bar">Related News</div>
                         <div class="related-divider"></div>
 
+                        {/* FIX 6: Changed post.slug to post.id */}
                         {relatedPosts.map((post: CollectionEntry<'blog'>) => (
-                            <a href={`/blog/${post.slug}/`} class="related-card">
+                            <a href={`/blog/${post.id}/`} class="related-card">
                                 <div class="image-container">
                                     <img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
                                     <span class="category-badge">{post.data.category || 'World'}</span>
@@ -276,21 +279,8 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <h3>Reader Updates & Community Additions</h3>
                             <p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
                             
-                            <!--
-                                FIX 2: data-page-id now uses the stable slug-based ID (pageId) rather than
-                                Astro.url.pathname, which can vary between build environments.
-                                FIX 3: data-page-url is set directly from canonicalURL.href (SSR-baked,
-                                consistent value). The JS pipeline no longer overrides it at runtime,
-                                eliminating the trailing-slash mismatch and race condition.
-                            -->
-                            <div 
-                                id="cusdis_thread"
-                                data-host="https://comments.townscribe.org"
-                                data-app-id="cbf2c391-1e19-461f-a689-bd39c224466f"
-                                data-page-id={pageId}
-                                data-page-url={canonicalURL.href}
-                                data-page-title={title}
-                            ></div>
+                            <!-- REMARK42 TARGET ELEMENT -->
+                            <div id="remark42"></div>
                         </div>
                     </div>
                 </div>
@@ -298,65 +288,37 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         </main>
         <Footer />
 
-        <!--
-            FIX 4: Cusdis pipeline — removed the runtime setAttribute override on data-page-url
-            (was causing trailing-slash mismatch and thread identity instability).
-            Added retry loop with onerror handler to surface failures clearly.
-        -->
-        <script is:inline>
-            function runCusdisPipeline() {
-                const thread = document.getElementById('cusdis_thread');
-                if (!thread) return;
+        <!-- --- REMARK42 LIFECYCLE INJECTOR PIPELINE --- -->
+        <script is:inline define:vars={{ pageId, title }}>
+            var remark_config = {
+                host: 'https://comments.townscribe.org',
+                site_id: 'remark',
+                url: 'https://news.townscribe.org' + window.location.pathname.replace(/\/$/, ""),
+                id: pageId,
+                title: title,
+                locale: 'en',
+                max_ans: 5,
+                show_anonymous: true
+            };
 
-                // Do NOT override data-page-url here — it is already correctly set
-                // at build time via SSR and must remain stable for thread identity.
-
-                // If Cusdis is already loaded (e.g. SPA navigation), re-render directly.
-                if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
-                    window.CUSDIS.renderDoc(thread);
-                    return;
-                }
-
-                const scriptNode = document.createElement('script');
-                scriptNode.src = "https://comments.townscribe.org/js/cusdis.es.js";
-                scriptNode.async = true;
-                scriptNode.defer = true;
-
-                // FIX 5: Retry loop — ES modules may need a tick to register globals
-                // after onload fires. Poll up to 10 times at 100ms intervals.
-                scriptNode.onload = () => {
-                    const tryRender = (attempts) => {
-                        if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
-                            window.CUSDIS.renderDoc(thread);
-                        } else if (attempts < 10) {
-                            setTimeout(() => tryRender(attempts + 1), 100);
-                        } else {
-                            console.warn('[TownScribe] Cusdis: renderDoc unavailable after 10 retries. Check self-hosted instance at https://comments.townscribe.org');
-                        }
-                    };
-                    tryRender(0);
-                };
-
-                // FIX 6: Surface network/CORS failures instead of silent void
-                scriptNode.onerror = () => {
-                    console.error('[TownScribe] Cusdis script failed to load. Verify https://comments.townscribe.org/js/cusdis.es.js is reachable and CORS headers are set correctly.');
-                    const thread = document.getElementById('cusdis_thread');
-                    if (thread) {
-                        thread.innerHTML = '<p style="color:#888;font-size:0.9rem;">Comments are temporarily unavailable. Please check back shortly.</p>';
-                    }
-                };
-
-                document.body.appendChild(scriptNode);
+            function loadRemark42() {
+                if (document.getElementById('remark42-script')) return;
+                
+                var d = document, s = d.createElement('script');
+                s.id = 'remark42-script';
+                s.src = remark_config.host + '/web/embed.js';
+                s.defer = true;
+                (d.head || d.body).appendChild(s);
             }
 
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', runCusdisPipeline);
+                document.addEventListener('DOMContentLoaded', loadRemark42);
             } else {
-                runCusdisPipeline();
+                loadRemark42();
             }
         </script>
 
-        {/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
+        <!-- --- TIMELINE COUNTER RUNNER ENGINE --- -->
         {youtubeUrl && (
             <script is:inline src="https://www.youtube.com/iframe_api"></script>
             <script is:inline define:vars={{ extractedVideoId, finalRedirectTarget }}>
