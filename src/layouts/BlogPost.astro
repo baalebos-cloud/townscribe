@@ -29,17 +29,18 @@ const pageId = Astro.url.pathname;
 
 // --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
 const allPosts = (await getCollection('blog')).sort(
-    (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+    (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => 
+        new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
 const currentSlug = Astro.params.slug;
-const currentPostIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.slug === currentSlug);
 
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
 
 const relatedPosts = allPosts
-    .filter((post) => post.slug !== currentSlug)
+    .filter((post: CollectionEntry<'blog'>) => post.slug !== currentSlug)
     .slice(0, 5);
 
 // ULTRA-ROBUST EXTRACTOR: Handles desktop, mobile sharing, parameters, shorts, and queries
@@ -312,8 +313,8 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         <div class="related-header-bar">Related News</div>
                         <div class="related-divider"></div>
 
-                        {relatedPosts.map((post) => (
-                            <a href={`/blog/${post.slug}/`} class="related-card">
+                        {relatedPosts.map((post: CollectionEntry<'blog'>) => (
+    <a href={`/blog/${post.slug}/`} class="related-card">
                                 <div class="image-container">
                                     <img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
                                     <span class="category-badge">{post.data.category || 'World'}</span>
