@@ -348,10 +348,10 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <div 
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
-                                data-app-id="REPLACE_THIS_WITH_YOUR_ACTUAL_CUSDIS_APP_ID"
-                                data-page-id={pageId}
-                                data-page-url={canonicalURL.href}
-                                data-page-title={title}
+                                data-app-id="e5da87e5-6354-41a5-a4e6-764dcb24b06b"
+                                data-page-id="{{ PAGE_ID }}"
+                                data-page-url="{{ PAGE_URL }}"
+                                data-page-"{{ PAGE_TITLE }}"
                             ></div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         <Footer />
 
         <!-- --- CUSDIS RUNNER ASYNC LOADER --- -->
-        <script async defer src="https://comments.townscribe.news/js/cusdis.es.js"></script>
+        <script async defer src="https://comments.townscribe.org/js/cusdis.es.js"></script>
 
         {/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
         {youtubeUrl && (
