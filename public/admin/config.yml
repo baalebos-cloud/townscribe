@@ -42,7 +42,7 @@ collections:
         name: "title"
         widget: "string"
         required: true
-        hint: "Target Metric: An 8-word headline is ideal for mobile scanning rhythm, but you can write past it."
+        hint: "Write your article headline here."
 
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
