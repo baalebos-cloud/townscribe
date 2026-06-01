@@ -10,16 +10,16 @@ import Header from '../components/Header.astro';
 type Props = CollectionEntry<'blog'>['data'];
 
 const { 
-	title, 
-	description, 
-	pubDate, 
-	updatedDate, 
-	heroImage, 
-	author, 
-	category, 
-	seoTitle, 
-	seoDescription,
-	youtubeUrl
+    title, 
+    description, 
+    pubDate, 
+    updatedDate, 
+    heroImage, 
+    author, 
+    category, 
+    seoTitle, 
+    seoDescription,
+    youtubeUrl
 } = Astro.props;
 
 const finalTitle = seoTitle || `${title} | TownScribe`;
@@ -29,7 +29,7 @@ const pageId = Astro.url.pathname;
 
 // --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
 const allPosts = (await getCollection('blog')).sort(
-	(a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+    (a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
 const currentSlug = Astro.params.slug;
@@ -39,33 +39,33 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
 
 const relatedPosts = allPosts
-	.filter((post) => post.slug !== currentSlug)
-	.slice(0, 5);
+    .filter((post) => post.slug !== currentSlug)
+    .slice(0, 5);
 
 // ULTRA-ROBUST EXTRACTOR: Handles desktop, mobile sharing, parameters, shorts, and queries
 function getYouTubeId(url: string | undefined) {
-	if (!url) return null;
-	
-	const cleanUrl = url.trim();
-	
-	if (cleanUrl.includes('watch')) {
-		const searchParams = new URL(cleanUrl).searchParams;
-		return searchParams.get('v');
-	}
-	
-	if (cleanUrl.includes('youtu.be/')) {
-		return cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
-	}
-	
-	if (cleanUrl.includes('/embed/') || cleanUrl.includes('/shorts/') || cleanUrl.includes('/live/')) {
-		return cleanUrl.split('/').pop()?.split(/[?#]/)[0];
-	}
-	
-	if (cleanUrl.length === 11) {
-		return cleanUrl;
-	}
+    if (!url) return null;
+    
+    const cleanUrl = url.trim();
+    
+    if (cleanUrl.includes('watch')) {
+        const searchParams = new URL(cleanUrl).searchParams;
+        return searchParams.get('v');
+    }
+    
+    if (cleanUrl.includes('youtu.be/')) {
+        return cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
+    }
+    
+    if (cleanUrl.includes('/embed/') || cleanUrl.includes('/shorts/') || cleanUrl.includes('/live/')) {
+        return cleanUrl.split('/').pop()?.split(/[?#]/)[0];
+    }
+    
+    if (cleanUrl.length === 11) {
+        return cleanUrl;
+    }
 
-	return null;
+    return null;
 }
 
 const extractedVideoId = getYouTubeId(youtubeUrl);
@@ -74,427 +74,417 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 ---
 
 <html lang="en">
-	<head>
-		<title>{finalTitle}</title>
-		<meta name="description" content={finalDescription} />
-		<link rel="canonical" href={canonicalURL} />
+    <head>
+        <title>{finalTitle}</title>
+        <meta name="description" content={finalDescription} />
+        <link rel="canonical" href={canonicalURL} />
 
-		{/* Open Graph / Facebook */}
-		<meta property="og:type" content="article" />
-		<meta property="og:url" content={canonicalURL} />
-		<meta property="og:title" content={finalTitle} />
-		<meta property="og:description" content={finalDescription} />
-		<meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
-		{pubDate && <meta property="article:published_time" content={new Date(pubDate).toISOString()} />}
-		{updatedDate && <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />}
-		<meta property="article:author" content={author || "TownScribe Staff"} />
-		<meta property="article:section" content={category || "World"} />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={finalTitle} />
+        <meta property="og:description" content={finalDescription} />
+        <meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+        {pubDate && <meta property="article:published_time" content={new Date(pubDate).toISOString()} />}
+        {updatedDate && <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />}
+        <meta property="article:author" content={author || "TownScribe Staff"} />
+        <meta property="article:section" content={category || "World"} />
 
-		{/* Twitter / X Meta Cards */}
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={canonicalURL} />
-		<meta property="twitter:title" content={finalTitle} />
-		<meta property="twitter:description" content={finalDescription} />
-		<meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+        {/* Twitter / X Meta Cards */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={finalTitle} />
+        <meta property="twitter:description" content={finalDescription} />
+        <meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
 
-		<BaseHead title={finalTitle} description={finalDescription} />
-		<SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
+        <BaseHead title={finalTitle} description={finalDescription} />
+        <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
 
-		{/* --- CLOUDFLARE EDGE ANALYTICS ENGINE --- */}
-		<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
+        {/* --- CLOUDFLARE EDGE ANALYTICS ENGINE --- */}
+        <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
 
-		<style>
-			main { width: calc(100% - 2em); max-width: 100%; margin: 0; }
-			.hero-image { width: 100%; }
-			.hero-image img { display: block; margin: 0 auto; border-radius: 12px; box-shadow: var(--box-shadow); }
-			.prose { width: 720px; max-width: calc(100% - 2em); margin: auto; padding: 1em; color: rgb(var(--gray-dark)); }
-			.title { margin-bottom: 1em; padding: 1em 0; text-align: center; line-height: 1; }
-			.title h1 { margin: 0 0 0.5em 0; }
-			.date { margin-bottom: 0.5em; color: rgb(var(--gray)); }
-			.last-updated-on { font-style: italic; }
-			.meta-attribution { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5em; text-transform: capitalize; }
-			.view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; }
+        <style>
+            main { width: calc(100% - 2em); max-width: 100%; margin: 0; }
+            .hero-image { width: 100%; }
+            .hero-image img { display: block; margin: 0 auto; border-radius: 12px; box-shadow: var(--box-shadow); }
+            .prose { width: 720px; max-width: calc(100% - 2em); margin: auto; padding: 1em; color: rgb(var(--gray-dark)); }
+            .title { margin-bottom: 1em; padding: 1em 0; text-align: center; line-height: 1; }
+            .title h1 { margin: 0 0 0.5em 0; }
+            .date { margin-bottom: 0.5em; color: rgb(var(--gray)); }
+            .last-updated-on { font-style: italic; }
+            .meta-attribution { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5em; text-transform: capitalize; }
+            .view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; }
 
-			/* --- AUTO-PLAYER INJECTION STYLING --- */
-			.video-wrapper-zone { margin: 2rem 0; }
-			.video-container {
-				position: relative;
-				width: 100%;
-				aspect-ratio: 16 / 9;
-				background: #000;
-				border-radius: 12px;
-				overflow: hidden;
-				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-			}
-			.video-container iframe, #player { width: 100%; height: 100%; border: none; }
-			.redirect-alert {
-				position: absolute;
-				bottom: 15px;
-				left: 50%;
-				transform: translateX(-50%);
-				background: rgba(224, 12, 12, 0.98);
-				color: #fff;
-				padding: 0.6rem 1.4rem;
-				border-radius: 30px;
-				font-size: 0.9rem;
-				font-weight: 600;
-				z-index: 10;
-				box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-				white-space: nowrap;
-				font-family: system-ui, sans-serif;
-			}
+            /* --- AUTO-PLAYER INJECTION STYLING --- */
+            .video-wrapper-zone { margin: 2rem 0; }
+            .video-container {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                background: #000;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            }
+            .video-container iframe, #player { width: 100%; height: 100%; border: none; }
+            .redirect-alert {
+                position: absolute;
+                bottom: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(224, 12, 12, 0.98);
+                color: #fff;
+                padding: 0.6rem 1.4rem;
+                border-radius: 30px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                z-index: 10;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                white-space: nowrap;
+                font-family: system-ui, sans-serif;
+            }
 
-			/* --- EXTRACTED DESIGN STYLES FROM WHATSAPP IMAGE 2026-05-31 AT 13.08.45.JPEG --- */
-			.nav-pagination {
-				display: flex;
-				justify-content: space-between;
-				border-top: 1px solid #edf2f7;
-				border-bottom: 1px solid #edf2f7;
-				padding: 1.5rem 0;
-				margin: 2.5rem 0;
-				font-family: system-ui, -apple-system, sans-serif;
-			}
-			.nav-block {
-				max-width: 47%;
-				text-decoration: none;
-				color: #1a202c;
-				display: flex;
-				flex-direction: column;
-			}
-			.nav-block.next { text-align: right; margin-left: auto; }
-			.nav-label {
-				font-size: 0.75rem;
-				text-transform: uppercase;
-				color: #a0aec0;
-				font-weight: 600;
-				margin-bottom: 0.35rem;
-				letter-spacing: 0.025em;
-			}
-			.nav-title { font-weight: 700; font-size: 0.95rem; line-height: 1.35; color: #2d3748; }
-			.nav-block:hover .nav-title { color: #dc2626; }
+            /* --- NAVIGATION & RELATED NEWS STYLES --- */
+            .nav-pagination {
+                display: flex;
+                justify-content: space-between;
+                border-top: 1px solid #edf2f7;
+                border-bottom: 1px solid #edf2f7;
+                padding: 1.5rem 0;
+                margin: 2.5rem 0;
+                font-family: system-ui, -apple-system, sans-serif;
+            }
+            .nav-block {
+                max-width: 47%;
+                text-decoration: none;
+                color: #1a202c;
+                display: flex;
+                flex-direction: column;
+            }
+            .nav-block.next { text-align: right; margin-left: auto; }
+            .nav-label {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: #a0aec0;
+                font-weight: 600;
+                margin-bottom: 0.35rem;
+                letter-spacing: 0.025em;
+            }
+            .nav-title { font-weight: 700; font-size: 0.95rem; line-height: 1.35; color: #2d3748; }
+            .nav-block:hover .nav-title { color: #dc2626; }
 
-			.related-section {
-				margin: 3.5rem 0 2.5rem 0;
-				font-family: system-ui, -apple-system, sans-serif;
-			}
-			.related-header-bar {
-				background-color: #dc2626;
-				color: white;
-				display: inline-block;
-				padding: 0.4rem 1.2rem;
-				font-weight: 700;
-				font-size: 0.85rem;
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-			}
-			.related-divider { border-top: 2px solid #dc2626; margin-top: -2px; margin-bottom: 0.5rem; }
-			
-			.related-card {
-				display: flex;
-				gap: 1.25rem;
-				padding: 1.1rem 0;
-				border-bottom: 1px solid #f1f5f9;
-				text-decoration: none;
-				color: inherit;
-				align-items: center;
-			}
-			.related-card:hover .card-title { color: #dc2626; }
-			
-			.image-container {
-				position: relative;
-				width: 130px;
-				height: 85px;
-				flex-shrink: 0;
-				background-color: #e2e8f0;
-				border-radius: 4px;
-				overflow: hidden;
-			}
-			.image-container img { width: 100%; height: 100%; object-fit: cover; }
-			
-			.category-badge {
-				position: absolute;
-				bottom: 0;
-				left: 0;
-				background: rgba(17, 24, 39, 0.9);
-				color: #fff;
-				font-size: 0.65rem;
-				font-weight: 600;
-				padding: 0.15rem 0.45rem;
-				text-transform: uppercase;
-				letter-spacing: 0.025em;
-			}
-			.card-info { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
-			.card-title {
-				font-size: 1rem;
-				font-weight: 700;
-				margin: 0;
-				line-height: 1.35;
-				color: #1e293b;
-			}
-			.card-date { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+            .related-section {
+                margin: 3.5rem 0 2.5rem 0;
+                font-family: system-ui, -apple-system, sans-serif;
+            }
+            .related-header-bar {
+                background-color: #dc2626;
+                color: white;
+                display: inline-block;
+                padding: 0.4rem 1.2rem;
+                font-weight: 700;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .related-divider { border-top: 2px solid #dc2626; margin-top: -2px; margin-bottom: 0.5rem; }
+            
+            .related-card {
+                display: flex;
+                gap: 1.25rem;
+                padding: 1.1rem 0;
+                border-bottom: 1px solid #f1f5f9;
+                text-decoration: none;
+                color: inherit;
+                align-items: center;
+            }
+            .related-card:hover .card-title { color: #dc2626; }
+            
+            .image-container {
+                position: relative;
+                width: 130px;
+                height: 85px;
+                flex-shrink: 0;
+                background-color: #e2e8f0;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .image-container img { width: 100%; height: 100%; object-fit: cover; }
+            
+            .category-badge {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background: rgba(17, 24, 39, 0.9);
+                color: #fff;
+                font-size: 0.65rem;
+                font-weight: 600;
+                padding: 0.15rem 0.45rem;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+            }
+            .card-info { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+            .card-title {
+                font-size: 1rem;
+                font-weight: 700;
+                margin: 0;
+                line-height: 1.35;
+                color: #1e293b;
+            }
+            .card-date { font-size: 0.75rem; color: #64748b; font-weight: 500; }
 
-			/* --- REACTION & FEEDBACK BOXES --- */
-			.article-interactions { margin-top: 3em; border-top: 1px solid rgba(var(--gray), 0.2); padding-top: 2em; }
-			.reaction-section { text-align: center; margin-bottom: 2.5em; }
-			.reaction-section h4 { margin-bottom: 0.75em; font-size: 1.1rem; color: rgb(var(--gray-dark)); }
-			.reactions-wrapper { display: flex; justify-content: center; gap: 1rem; }
-			.reaction-btn { background: #f8f9fa; border: 1px solid #ddd; border-radius: 25px; padding: 0.5rem 1.2rem; font-size: 1.2rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.4rem; }
-			.reaction-btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-			.reaction-btn.active { background: #000; border-color: #000; color: #fff; }
-			.reaction-btn span { font-size: 0.9rem; font-weight: bold; }
-			.anonymous-feedback-box { padding: 2em; background-color: #f8f9fa; border-radius: 12px; border: 1px solid rgba(var(--gray), 0.15); margin-top: 2rem; }
-			.anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
-			.anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
-			.giscus { margin-top: 1.5rem; min-height: 150px; }
-		</style>
-	</head>
+            /* --- REACTION & FEEDBACK BOXES --- */
+            .article-interactions { margin-top: 3em; border-top: 1px solid rgba(var(--gray), 0.2); padding-top: 2em; }
+            .reaction-section { text-align: center; margin-bottom: 2.5em; }
+            .reaction-section h4 { margin-bottom: 0.75em; font-size: 1.1rem; color: rgb(var(--gray-dark)); }
+            .reactions-wrapper { display: flex; justify-content: center; gap: 1rem; }
+            .reaction-btn { background: #f8f9fa; border: 1px solid #ddd; border-radius: 25px; padding: 0.5rem 1.2rem; font-size: 1.2rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.4rem; }
+            .reaction-btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+            .reaction-btn.active { background: #000; border-color: #000; color: #fff; }
+            .reaction-btn span { font-size: 0.9rem; font-weight: bold; }
+            .anonymous-feedback-box { padding: 2em; background-color: #f8f9fa; border-radius: 12px; border: 1px solid rgba(var(--gray), 0.15); margin-top: 2rem; }
+            .anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
+            .anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
+            
+            /* --- CUSDIS ENGINE CONTAINER MOUNT --- */
+            #cusdis_thread { margin-top: 1.5rem; min-height: 150px; width: 100%; }
+        </style>
+    </head>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{updatedDate && <div class="last-updated-on">Last updated on <FormattedDate date={updatedDate} /></div>}
-						</div>
-						<h1>{title}</h1>
-						<div class="meta-attribution">
-							By <strong>{author || "TownScribe Staff"}</strong> in <span>{category || "World"}</span>
-						</div>
-						<div class="view-panel">👁️ <span id="view-count-number">loading views...</span></div>
-						<hr />
-					</div>
-					
-					<!-- PLAYBACK CONTAINER ENGINE -->
-					{youtubeUrl && (
-						<div class="video-wrapper-zone">
-							<div class="video-container">
-								<div id="player"></div>
-								<div id="redirect-timer" class="redirect-alert" style="display: none;">
-									Preview ending. Redirecting to full video in <span id="countdown-secs">5</span>s...
-								</div>
-							</div>
-						</div>
-					)}
+    <body>
+        <Header />
+        <main>
+            <article>
+                <div class="hero-image">
+                    {heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
+                </div>
+                <div class="prose">
+                    <div class="title">
+                        <div class="date">
+                            <FormattedDate date={pubDate} />
+                            {updatedDate && <div class="last-updated-on">Last updated on <FormattedDate date={updatedDate} /></div>}
+                        </div>
+                        <h1>{title}</h1>
+                        <div class="meta-attribution">
+                            By <strong>{author || "TownScribe Staff"}</strong> in <span>{category || "World"}</span>
+                        </div>
+                        <div class="view-panel">👁️ <span id="view-count-number">loading views...</span></div>
+                        <hr />
+                    </div>
+                    
+                    <!-- PLAYBACK CONTAINER ENGINE -->
+                    {youtubeUrl && (
+                        <div class="video-wrapper-zone">
+                            <div class="video-container">
+                                <div id="player"></div>
+                                <div id="redirect-timer" class="redirect-alert" style="display: none;">
+                                    Preview ending. Redirecting to full video in <span id="countdown-secs">5</span>s...
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
-					<slot />
+                    <slot />
 
-					<!-- ======================================================== -->
-					<!-- COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS              -->
-					<!-- ======================================================== -->
-					<div class="nav-pagination">
-						{prevPost ? (
-							<a href={`/blog/${prevPost.slug}/`} class="nav-block prev">
-								<span class="nav-label">Previous article</span>
-								<div class="nav-title">{prevPost.data.title}</div>
-							</a>
-						) : (
-							<div class="nav-block"></div> 
-						)}
+                    <!-- COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS -->
+                    <div class="nav-pagination">
+                        {prevPost ? (
+                            <a href={`/blog/${prevPost.slug}/`} class="nav-block prev">
+                                <span class="nav-label">Previous article</span>
+                                <div class="nav-title">{prevPost.data.title}</div>
+                            </a>
+                        ) : (
+                            <div class="nav-block"></div> 
+                        )}
 
-						{nextPost ? (
-							<a href={`/blog/${nextPost.slug}/`} class="nav-block next">
-								<span class="nav-label">Next article</span>
-								<div class="nav-title">{nextPost.data.title}</div>
-							</a>
-						) : (
-							<div class="nav-block"></div>
-						)}
-					</div>
+                        {nextPost ? (
+                            <a href={`/blog/${nextPost.slug}/`} class="nav-block next">
+                                <span class="nav-label">Next article</span>
+                                <div class="nav-title">{nextPost.data.title}</div>
+                            </a>
+                        ) : (
+                            <div class="nav-block"></div>
+                        )}
+                    </div>
 
-					<!-- ======================================================== -->
-					<!-- COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK           -->
-					<!-- ======================================================== -->
-					<section class="related-section">
-						<div class="related-header-bar">Related News</div>
-						<div class="related-divider"></div>
+                    <!-- COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK -->
+                    <section class="related-section">
+                        <div class="related-header-bar">Related News</div>
+                        <div class="related-divider"></div>
 
-						{relatedPosts.map((post) => (
-							<a href={`/blog/${post.slug}/`} class="related-card">
-								<div class="image-container">
-									<img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
-									<span class="category-badge">{post.data.category || 'World'}</span>
-								</div>
-								<div class="card-info">
-									<h3 class="card-title">{post.data.title}</h3>
-									<span class="card-date">
-										<FormattedDate date={post.data.pubDate} />
-									</span>
-								</div>
-							</a>
-						))}
-					</section>
-					<!-- ======================================================== -->
-					
-					<div class="article-interactions">
-						<div class="reaction-section">
-							<h4>How do you feel about this news?</h4>
-							<div class="reactions-wrapper">
-								<button class="reaction-btn" data-reaction="like">👍 <span>0</span></button>
-								<button class="reaction-btn" data-reaction="love">❤️ <span>0</span></button>
-								<button class="reaction-btn" data-reaction="insightful">💡 <span>0</span></button>
-								<button class="reaction-btn" data-reaction="fire">🔥 <span>0</span></button>
-							</div>
-						</div>
+                        {relatedPosts.map((post) => (
+                            <a href={`/blog/${post.slug}/`} class="related-card">
+                                <div class="image-container">
+                                    <img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
+                                    <span class="category-badge">{post.data.category || 'World'}</span>
+                                </div>
+                                <div class="card-info">
+                                    <h3 class="card-title">{post.data.title}</h3>
+                                    <span class="card-date">
+                                        <FormattedDate date={post.data.pubDate} />
+                                    </span>
+                                </div>
+                            </a>
+                        ))}
+                    </section>
+                    
+                    <div class="article-interactions">
+                        <div class="reaction-section">
+                            <h4>How do you feel about this news?</h4>
+                            <div class="reactions-wrapper">
+                                <button class="reaction-btn" data-reaction="like">👍 <span>0</span></button>
+                                <button class="reaction-btn" data-reaction="love">❤️ <span>0</span></button>
+                                <button class="reaction-btn" data-reaction="insightful">💡 <span>0</span></button>
+                                <button class="reaction-btn" data-reaction="fire">🔥 <span>0</span></button>
+                            </div>
+                        </div>
 
-						<div class="anonymous-feedback-box">
-							<h3>Reader Updates & Community Additions</h3>
-							<p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
-							
-							<!-- GISCUS LIVE COMMENT STREAM ENGINE -->
-							<div class="giscus"></div>
-						</div>
-					</div>
-				</div>
-			</article>
-		</main>
-		<Footer />
+                        <div class="anonymous-feedback-box">
+                            <h3>Reader Updates & Community Additions</h3>
+                            <p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
+                            
+                            <!-- CUSDIS LIVE COMMENT STREAM NODE -->
+                            <div 
+                                id="cusdis_thread"
+                                data-host="https://comments.townscribe.org"
+                                data-app-id="REPLACE_THIS_WITH_YOUR_ACTUAL_CUSDIS_APP_ID"
+                                data-page-id={pageId}
+                                data-page-url={canonicalURL.href}
+                                data-page-title={title}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </main>
+        <Footer />
 
-		<!-- --- GISCUS RUNNER INJECTION --- -->
-		<script src="https://giscus.app/client.js"
-        data-repo="baalebos-cloud/townscribe-comments"
-        data-repo-id="R_kgDOStUrLQ"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOStUrLc4C-PE4"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
-		</script>
+        <!-- --- CUSDIS RUNNER ASYNC LOADER --- -->
+        <script async defer src="https://comments.townscribe.news/js/cusdis.es.js"></script>
 
-		{/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
-		{youtubeUrl && (
-			<script is:inline src="https://www.youtube.com/iframe_api"></script>
-			<script is:inline define:vars={{ extractedVideoId, finalRedirectTarget }}>
-				let player;
-				let pollInterval = null;
-				const cutoffTime = 48; 
+        {/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
+        {youtubeUrl && (
+            <script is:inline src="https://www.youtube.com/iframe_api"></script>
+            <script is:inline define:vars={{ extractedVideoId, finalRedirectTarget }}>
+                let player;
+                let pollInterval = null;
+                const cutoffTime = 48; 
 
-				window.onYouTubeIframeAPIReady = function() {
-					if (!extractedVideoId) {
-						console.error("TownScribe Engine: Could not process the video ID from the provided URL input configuration string.");
-						return;
-					}
+                window.onYouTubeIframeAPIReady = function() {
+                    if (!extractedVideoId) {
+                        console.error("TownScribe Engine: Could not process the video ID from the provided URL input configuration string.");
+                        return;
+                    }
 
-					player = new YT.Player('player', {
-						videoId: extractedVideoId,
-						playerVars: { 
-							'playsinline': 1, 
-							'rel': 0, 
-							'modestbranding': 1, 
-							'controls': 1
-						},
-						events: {
-							'onReady': (e) => { 
-								e.target.cueVideoById({ 
-									videoId: extractedVideoId, 
-									startSeconds: 0, 
-									endSeconds: cutoffTime 
-								}); 
-							},
-							'onStateChange': onPlayerStateChange
-						}
-					});
-				}
+                    player = new YT.Player('player', {
+                        videoId: extractedVideoId,
+                        playerVars: { 
+                            'playsinline': 1, 
+                            'rel': 0, 
+                            'modestbranding': 1, 
+                            'controls': 1
+                        },
+                        events: {
+                            'onReady': (e) => { 
+                                e.target.cueVideoById({ 
+                                    videoId: extractedVideoId, 
+                                    startSeconds: 0, 
+                                    endSeconds: cutoffTime 
+                                }); 
+                            },
+                            'onStateChange': onPlayerStateChange
+                        }
+                    });
+                }
 
-				function onPlayerStateChange(event) {
-					if (event.data === YT.PlayerState.PLAYING) {
-						if (!pollInterval) pollInterval = setInterval(monitorTimeline, 250);
-					} else if (event.data === YT.PlayerState.ENDED) {
-						executeChannelRedirect();
-					} else {
-						clearInterval(pollInterval);
-						pollInterval = null;
-					}
-				}
+                function onPlayerStateChange(event) {
+                    if (event.data === YT.PlayerState.PLAYING) {
+                        if (!pollInterval) pollInterval = setInterval(monitorTimeline, 250);
+                    } else if (event.data === YT.PlayerState.ENDED) {
+                        executeChannelRedirect();
+                    } else {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                    }
+                }
 
-				function monitorTimeline() {
-					if (!player || typeof player.getCurrentTime !== 'function') return;
-					const progress = player.getCurrentTime();
-					
-					if (progress >= 43 && progress < cutoffTime) {
-						const alertBox = document.getElementById('redirect-timer');
-						const timeSpan = document.getElementById('countdown-secs');
-						if (alertBox && timeSpan) {
-							alertBox.style.display = 'block';
-							timeSpan.textContent = Math.ceil(cutoffTime - progress);
-						}
-					}
-				}
+                function monitorTimeline() {
+                    if (!player || typeof player.getCurrentTime !== 'function') return;
+                    const progress = player.getCurrentTime();
+                    
+                    if (progress >= 43 && progress < cutoffTime) {
+                        const alertBox = document.getElementById('redirect-timer');
+                        const timeSpan = document.getElementById('countdown-secs');
+                        if (alertBox && timeSpan) {
+                            alertBox.style.display = 'block';
+                            timeSpan.textContent = Math.ceil(cutoffTime - progress);
+                        }
+                    }
+                }
 
-				function executeChannelRedirect() {
-					clearInterval(pollInterval);
-					window.location.href = finalRedirectTarget;
-				}
-			</script>
-		)}
+                function executeChannelRedirect() {
+                    clearInterval(pollInterval);
+                    window.location.href = finalRedirectTarget;
+                }
+            </script>
+        )}
 
-		{/* VIEW COUNTER FETCH ENGINE */}
-		<script is:inline define:vars={{ pageId }}>
-			const workerUrl = "https://townscribe-view-counter.jayeolaoluwadamilare.workers.dev";
-			fetch(`${workerUrl}?slug=${window.location.pathname}`, { method: "POST" })
-				.then(res => res.json())
-				.then(data => {
-					const display = document.getElementById("view-count-number");
-					if (display) display.textContent = `${data.views.toLocaleString()} views`;
-				})
-				.catch(() => {
-					const display = document.getElementById("view-count-number");
-					if (display) display.textContent = "— views";
-				});
-		</script>
+        {/* VIEW COUNTER FETCH ENGINE */}
+        <script is:inline define:vars={{ pageId }}>
+            const workerUrl = "https://townscribe-view-counter.jayeolaoluwadamilare.workers.dev";
+            fetch(`${workerUrl}?slug=${window.location.pathname}`, { method: "POST" })
+                .then(res => res.json())
+                .then(data => {
+                    const display = document.getElementById("view-count-number");
+                    if (display) display.textContent = `${data.views.toLocaleString()} views`;
+                })
+                .catch(() => {
+                    const display = document.getElementById("view-count-number");
+                    if (display) display.textContent = "— views";
+                });
+        </script>
 
-		{/* LOCAL REACTION ENGINE */}
-		<script>
-			const articlePath = window.location.pathname;
-			const storageKey = `townscribe_react_${articlePath}`;
-			const buttons = document.querySelectorAll('.reaction-btn');
+        {/* LOCAL REACTION ENGINE */}
+        <script>
+            const articlePath = window.location.pathname;
+            const storageKey = `townscribe_react_${articlePath}`;
+            const buttons = document.querySelectorAll('.reaction-btn');
 
-			buttons.forEach(btn => {
-				const type = btn.getAttribute('data-reaction');
-				const countSpan = btn.querySelector('span');
-				let seedCount = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
-				if (type === 'love') seedCount = Math.floor(seedCount * 0.7);
-				if (type === 'insightful') seedCount = Math.floor(seedCount * 0.4);
-				if (type === 'fire') seedCount = Math.floor(seedCount * 0.5);
+            buttons.forEach(btn => {
+                const type = btn.getAttribute('data-reaction');
+                const countSpan = btn.querySelector('span');
+                let seedCount = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
+                if (type === 'love') seedCount = Math.floor(seedCount * 0.7);
+                if (type === 'insightful') seedCount = Math.floor(seedCount * 0.4);
+                if (type === 'fire') seedCount = Math.floor(seedCount * 0.5);
 
-				const savedSelection = localStorage.getItem(storageKey);
-				if (savedSelection === type) { btn.classList.add('active'); seedCount += 1; }
-				if (countSpan) countSpan.textContent = seedCount.toString();
+                const savedSelection = localStorage.getItem(storageKey);
+                if (savedSelection === type) { btn.classList.add('active'); seedCount += 1; }
+                if (countSpan) countSpan.textContent = seedCount.toString();
 
-				btn.addEventListener('click', () => {
-					const currentActive = localStorage.getItem(storageKey);
-					if (currentActive === type) {
-						localStorage.removeItem(storageKey);
-						btn.classList.remove('active');
-						if (countSpan) countSpan.textContent = (seedCount).toString();
-					} else {
-						buttons.forEach(b => b.classList.remove('active'));
-						localStorage.setItem(storageKey, type || '');
-						btn.classList.add('active');
-						buttons.forEach(b => {
-							const t = b.getAttribute('data-reaction');
-							const s = b.querySelector('span');
-							let base = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
-							if (t === 'love') base = Math.floor(base * 0.7);
-							if (t === 'insightful') base = Math.floor(base * 0.4);
-							if (t === 'fire') base = Math.floor(base * 0.5);
-							if (t === type) base += 1;
-							if (s) s.textContent = base.toString();
-						});
-					}
-				});
-			});
-		</script>
-	</body>
+                btn.addEventListener('click', () => {
+                    const currentActive = localStorage.getItem(storageKey);
+                    if (currentActive === type) {
+                        localStorage.removeItem(storageKey);
+                        btn.classList.remove('active');
+                        if (countSpan) countSpan.textContent = (seedCount).toString();
+                    } else {
+                        buttons.forEach(b => b.classList.remove('active'));
+                        localStorage.setItem(storageKey, type || '');
+                        btn.classList.add('active');
+                        buttons.forEach(b => {
+                            const t = b.getAttribute('data-reaction');
+                            const s = b.querySelector('span');
+                            let base = Math.abs(articlePath.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 24) + 3;
+                            if (t === 'love') base = Math.floor(base * 0.7);
+                            if (t === 'insightful') base = Math.floor(base * 0.4);
+                            if (t === 'fire') base = Math.floor(base * 0.5);
+                            if (t === type) base += 1;
+                            if (s) s.textContent = base.toString();
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
