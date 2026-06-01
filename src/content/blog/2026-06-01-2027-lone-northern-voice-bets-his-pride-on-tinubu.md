@@ -2,14 +2,14 @@
 title: "2027: Lone Northern Voice Bets His Pride on Tinubu"
 description: Presidential aide Ishaq Samaila defends Tinubu’s 2027 second-term
   bid against northern opposition, dismissing critics as propaganda mongers.
-pubDate: 2026-06-01T04:30:00.000+01:00
+pubDate: 2026-06-01T04:56:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
 heroImage: /ishaq-samaila.jpeg
 seo_divider: ""
 seoKeyword: Tinubu 2027, Politics, Election, APC, Ishaq Samalia
-seoTitle: Samaila Slams Northern Opposition, Backs Tinubu 2027
+seoTitle: "2027: Lone Northern Voice Bets His Pride on Tinubu"
 seoDescription: Presidential aide Ishaq Samaila defends Tinubu’s 2027
   second-term bid against northern opposition, dismissing critics as propaganda
   mongers.
