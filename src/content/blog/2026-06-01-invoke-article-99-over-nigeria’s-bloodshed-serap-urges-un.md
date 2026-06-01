@@ -5,7 +5,7 @@ description: SERAP demands António Guterres trigger Article 99 immediately.
 authorRole: Admin
 heroImage: /1000291884.png
 robotsIndex: index, follow
-pubDate: 2026-06-01T15:07:00.000+01:00
+pubDate: 2026-06-01T15:12:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 category: world
 seo_divider: ""
