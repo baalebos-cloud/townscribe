@@ -49,7 +49,7 @@ collections:
       
       # --- WRITER & AUTHOR ATTRIBUTION ---
       - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
-      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Writer", "Contributor"], default: "Writer" }
+      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Writer", "Contributor"], default: "Writer" }
 
       # --- AUTOMATED CATEGORIES LINKING BAR ---
       - label: "Category"
@@ -88,7 +88,7 @@ collections:
         name: "seoTitle"
         widget: "string"
         required: true
-        pattern: ['^.{40,65}$', "Optimization Error: Custom meta title should be between 40 and 65 characters for clean Google snippets."]
+        pattern: ['^.{60,120}$', "Optimization Error: Custom meta title should be between 60 and 120 characters for clean Google snippets."]
         hint: "Mandatory: Custom search snippet title."
       
       - label: "SEO Meta Description"
