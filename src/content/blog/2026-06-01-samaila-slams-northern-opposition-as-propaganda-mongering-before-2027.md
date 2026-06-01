@@ -1,20 +1,17 @@
 ---
-title: Samaila Slams Northern Opposition as Propaganda-Mongering Before 2027
-description: "Ishaq Samaila, Media Aide to the Special Adviser to the President
-  on Political Matters, declared unwavering support for President Bola Ahmed
-  Tinubu’s "
+title: "Samaila Slams Northern Opposition as Propaganda-Mongering Before 2027"
+description: "Ishaq Samaila, Media Aide to the Special Adviser to the President on Political Matters, declared unwavering support for President Bola Ahmed Tinubu’s second-term bid."
 pubDate: 2026-06-01T02:57:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
 heroImage: /ishaq-samaila.jpeg
 seo_divider: ""
-seoKeyword: Tinubu 2027, Tinubu, APC, Election, North. Ishaq Samaila
-seoTitle: Samaila Slams Northern Opposition as Propaganda
-seoDescription: Ishaq Samaila, Media Aide to the Special Adviser to the
-  President on Political Matters, declared unwavering support for President Bola
-  Ahmed Tinubu’
+seoKeyword: "Tinubu 2027"
+seoTitle: "Samaila Slams Northern Opposition as Propaganda"
+seoDescription: "Presidential aide Ishaq Samaila defends Tinubu’s 2027 second-term bid against northern opposition, dismissing critics as propaganda mongers."
 robotsIndex: index, follow
+seo_gatekeeper: "PASS"
 ---
 **Abuja, Nigeria – June 1, 2026**
 
