@@ -247,8 +247,18 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
             .anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
             .anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
             
-            /* --- CUSDIS ENGINE CONTAINER MOUNT --- */
-            #cusdis_thread { margin-top: 1.5rem; min-height: 150px; width: 100%; }
+            /* --- FORCE CONTAINER FOOTPRINT TO PREVENT 0PX COLLAPSE --- */
+            #cusdis_thread { 
+                margin-top: 2rem; 
+                min-height: 250px !important; 
+                width: 100%; 
+                display: block;
+            }
+            #cusdis_thread iframe {
+                width: 100% !important;
+                min-height: 250px !important;
+                border: none !important;
+            }
         </style>
     </head>
 
@@ -341,10 +351,10 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         </div>
 
                         <div class="anonymous-feedback-box">
-                            <h3>Reader Updates & Community Additions</h3>
+                            <h3>Community Additions</h3>
                             <p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
                             
-                            <!-- CUSDIS LIVE COMMENT STREAM NODE -->
+                            <!-- CUSDIS LIVE COMMENT STREAM NODE WITH RUNTIME ASSIGNED FALLBACKS -->
                             <div 
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
@@ -360,34 +370,42 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         </main>
         <Footer />
 
-        {/* --- CUSDIS RUNNER LOADER (ASTRO LIFECYCLE INLINE INTERACTION) --- */}
+        {/* --- DYNAMIC RENDERING LIFECYCLE CONTROLLER --- */}
         <script is:inline>
-            function bootCusdisEngine() {
-                // If instance is active inside scope, execute reset call natively
-                if (window.CUSDIS && typeof window.CUSDIS.initial === 'function') {
-                    window.CUSDIS.initial();
+            function runCusdisPipeline() {
+                const thread = document.getElementById('cusdis_thread');
+                if (!thread) return;
+
+                // Strip trailing slashes client-side to enforce clean matching paths 
+                const cleanURL = window.location.origin + window.location.pathname.replace(/\/$/, "");
+                thread.setAttribute('data-page-url', cleanURL);
+
+                // If instance is already inside memory map, run native re-hydration render loop
+                if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
+                    window.CUSDIS.renderDoc(thread);
                     return;
                 }
 
-                const targetScript = document.createElement('script');
-                targetScript.src = "https://comments.townscribe.org/js/cusdis.es.js";
-                targetScript.async = true;
-                targetScript.defer = true;
+                // Append runtime bundle to DOM safely
+                const scriptNode = document.createElement('script');
+                scriptNode.src = "https://comments.townscribe.org/js/cusdis.es.js";
+                scriptNode.async = true;
+                scriptNode.defer = true;
                 
-                targetScript.onload = () => {
-                    if (window.CUSDIS && typeof window.CUSDIS.initial === 'function') {
-                        window.CUSDIS.initial();
+                scriptNode.onload = () => {
+                    if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
+                        window.CUSDIS.renderDoc(thread);
                     }
                 };
 
-                document.body.appendChild(targetScript);
+                document.body.appendChild(scriptNode);
             }
 
-            // Bind explicitly across initial execution or framework state modifications
+            // Fire pipeline instantly across layout states
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', bootCusdisEngine);
+                document.addEventListener('DOMContentLoaded', runCusdisPipeline);
             } else {
-                bootCusdisEngine();
+                runCusdisPipeline();
             }
         </script>
 
