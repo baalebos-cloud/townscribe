@@ -276,8 +276,8 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <!-- --- INJECTED PRODUCTION CUSDIS THREAD ENGINE --- -->
                             <div 
                                 id="cusdis_thread"
-                                data-host="https://comments.townscribe.org"
-                                data-app-id="c59f265f-6321-44f6-b7d7-21e7ba7fec4c"
+                                data-host="http://localhost:3000"
+                                data-app-id="cbf2c391-1e19-461f-a689-bd39c224466f"
                                 data-page-id={pageId}
                                 data-page-url={canonicalURL.href}
                                 data-page-title={title}
@@ -304,7 +304,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 }
 
                 const scriptNode = document.createElement('script');
-                scriptNode.src = "https://comments.townscribe.org/js/cusdis.es.js";
+                scriptNode.src = "http://localhost:3000/js/cusdis.es.js";
                 scriptNode.async = true;
                 scriptNode.defer = true;
                 
