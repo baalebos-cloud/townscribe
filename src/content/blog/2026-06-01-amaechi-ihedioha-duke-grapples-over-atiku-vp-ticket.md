@@ -1,15 +1,15 @@
 ---
-title: Amaechi, Ihedioha, Duke Grapples Over Atiku VP Ticket
+title: "Three Political Heavyweights Jostle Over Atiku's VP Ticket "
 description: Intense horse-trading has gripped the African Democratic Congress
   (ADC) as three heavyweight politicians emerge as frontrunners
-pubDate: 2026-06-01T02:06:00.000+01:00
+pubDate: 2026-06-01T02:48:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
 heroImage: /atiku-amaechi.webp
 seo_divider: ""
 seoKeyword: Atiku, Amaechi, Ihedioha, Donald Duke, Vice President, ADC, 2027 election
-seoTitle: Amaechi Ihedioha Duke Lock Horns Over Atiku VP Ticket
+seoTitle: "Three Political Heavyweights Jostle Over Atiku's VP Ticket "
 seoDescription: "Intense horse-trading has gripped the African Democratic
   Congress (ADC) as three heavyweight politicians emerge as frontrunners for the
   vice presidential slot. "
