@@ -24,7 +24,9 @@ const {
 
 const finalTitle = seoTitle || `${title} | TownScribe`;
 const finalDescription = seoDescription || description;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// --- HARDCODING CANONICAL TARGET TO SUBDOMAIN ---
+const canonicalURL = new URL(Astro.url.pathname, 'https://news.townscribe.org');
 const pageId = Astro.url.pathname;
 
 // --- DYNAMIC CONTENT NAVIGATION LOGIC FOR RELATED FEED ---
@@ -43,29 +45,23 @@ const relatedPosts = allPosts
     .filter((post: CollectionEntry<'blog'>) => post.slug !== currentSlug)
     .slice(0, 5);
 
-// ULTRA-ROBUST EXTRACTOR: Handles desktop, mobile sharing, parameters, shorts, and queries
+// ULTRA-ROBUST EXTRACTOR FOR YOUTUBE VIDEOS
 function getYouTubeId(url: string | undefined) {
     if (!url) return null;
-    
     const cleanUrl = url.trim();
-    
     if (cleanUrl.includes('watch')) {
         const searchParams = new URL(cleanUrl).searchParams;
         return searchParams.get('v');
     }
-    
     if (cleanUrl.includes('youtu.be/')) {
         return cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
     }
-    
     if (cleanUrl.includes('/embed/') || cleanUrl.includes('/shorts/') || cleanUrl.includes('/live/')) {
         return cleanUrl.split('/').pop()?.split(/[?#]/)[0];
     }
-    
     if (cleanUrl.length === 11) {
         return cleanUrl;
     }
-
     return null;
 }
 
@@ -85,7 +81,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:title" content={finalTitle} />
         <meta property="og:description" content={finalDescription} />
-        <meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+        <meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', 'https://news.townscribe.org')} />
         {pubDate && <meta property="article:published_time" content={new Date(pubDate).toISOString()} />}
         {updatedDate && <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />}
         <meta property="article:author" content={author || "TownScribe Staff"} />
@@ -96,12 +92,11 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         <meta property="twitter:url" content={canonicalURL} />
         <meta property="twitter:title" content={finalTitle} />
         <meta property="twitter:description" content={finalDescription} />
-        <meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', Astro.site)} />
+        <meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', 'https://news.townscribe.org')} />
 
         <BaseHead title={finalTitle} description={finalDescription} />
         <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
 
-        {/* --- CLOUDFLARE EDGE ANALYTICS ENGINE --- */}
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
 
         <style>
@@ -116,7 +111,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
             .meta-attribution { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5em; text-transform: capitalize; }
             .view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; }
 
-            /* --- AUTO-PLAYER INJECTION STYLING --- */
             .video-wrapper-zone { margin: 2rem 0; }
             .video-container {
                 position: relative;
@@ -145,7 +139,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 font-family: system-ui, sans-serif;
             }
 
-            /* --- NAVIGATION & RELATED NEWS STYLES --- */
             .nav-pagination {
                 display: flex;
                 justify-content: space-between;
@@ -155,86 +148,24 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 margin: 2.5rem 0;
                 font-family: system-ui, -apple-system, sans-serif;
             }
-            .nav-block {
-                max-width: 47%;
-                text-decoration: none;
-                color: #1a202c;
-                display: flex;
-                flex-direction: column;
-            }
+            .nav-block { max-width: 47%; text-decoration: none; color: #1a202c; display: flex; flex-direction: column; }
             .nav-block.next { text-align: right; margin-left: auto; }
-            .nav-label {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                color: #a0aec0;
-                font-weight: 600;
-                margin-bottom: 0.35rem;
-                letter-spacing: 0.025em;
-            }
+            .nav-label { font-size: 0.75rem; text-transform: uppercase; color: #a0aec0; font-weight: 600; margin-bottom: 0.35rem; letter-spacing: 0.025em; }
             .nav-title { font-weight: 700; font-size: 0.95rem; line-height: 1.35; color: #2d3748; }
             .nav-block:hover .nav-title { color: #dc2626; }
 
-            .related-section {
-                margin: 3.5rem 0 2.5rem 0;
-                font-family: system-ui, -apple-system, sans-serif;
-            }
-            .related-header-bar {
-                background-color: #dc2626;
-                color: white;
-                display: inline-block;
-                padding: 0.4rem 1.2rem;
-                font-weight: 700;
-                font-size: 0.85rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-            }
+            .related-section { margin: 3.5rem 0 2.5rem 0; font-family: system-ui, -apple-system, sans-serif; }
+            .related-header-bar { background-color: #dc2626; color: white; display: inline-block; padding: 0.4rem 1.2rem; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
             .related-divider { border-top: 2px solid #dc2626; margin-top: -2px; margin-bottom: 0.5rem; }
-            
-            .related-card {
-                display: flex;
-                gap: 1.25rem;
-                padding: 1.1rem 0;
-                border-bottom: 1px solid #f1f5f9;
-                text-decoration: none;
-                color: inherit;
-                align-items: center;
-            }
+            .related-card { display: flex; gap: 1.25rem; padding: 1.1rem 0; border-bottom: 1px solid #f1f5f9; text-decoration: none; color: inherit; align-items: center; }
             .related-card:hover .card-title { color: #dc2626; }
-            
-            .image-container {
-                position: relative;
-                width: 130px;
-                height: 85px;
-                flex-shrink: 0;
-                background-color: #e2e8f0;
-                border-radius: 4px;
-                overflow: hidden;
-            }
+            .image-container { position: relative; width: 130px; height: 85px; flex-shrink: 0; background-color: #e2e8f0; border-radius: 4px; overflow: hidden; }
             .image-container img { width: 100%; height: 100%; object-fit: cover; }
-            
-            .category-badge {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                background: rgba(17, 24, 39, 0.9);
-                color: #fff;
-                font-size: 0.65rem;
-                font-weight: 600;
-                padding: 0.15rem 0.45rem;
-                text-transform: uppercase;
-                letter-spacing: 0.025em;
-            }
+            .category-badge { position: absolute; bottom: 0; left: 0; background: rgba(17, 24, 39, 0.9); color: #fff; font-size: 0.65rem; font-weight: 600; padding: 0.15rem 0.45rem; text-transform: uppercase; letter-spacing: 0.025em; }
             .card-info { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
-            .card-title {
-                font-size: 1rem;
-                font-weight: 700;
-                margin: 0;
-                line-height: 1.35;
-                color: #1e293b;
-            }
+            .card-title { font-size: 1rem; font-weight: 700; margin: 0; line-height: 1.35; color: #1e293b; }
             .card-date { font-size: 0.75rem; color: #64748b; font-weight: 500; }
 
-            /* --- REACTION & FEEDBACK BOXES --- */
             .article-interactions { margin-top: 3em; border-top: 1px solid rgba(var(--gray), 0.2); padding-top: 2em; }
             .reaction-section { text-align: center; margin-bottom: 2.5em; }
             .reaction-section h4 { margin-bottom: 0.75em; font-size: 1.1rem; color: rgb(var(--gray-dark)); }
@@ -243,12 +174,13 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
             .reaction-btn:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
             .reaction-btn.active { background: #000; border-color: #000; color: #fff; }
             .reaction-btn span { font-size: 0.9rem; font-weight: bold; }
+            
             .anonymous-feedback-box { padding: 2em; background-color: #f8f9fa; border-radius: 12px; border: 1px solid rgba(var(--gray), 0.15); margin-top: 2rem; }
             .anonymous-feedback-box h3 { margin-top: 0; margin-bottom: 0.5em; font-size: 1.4rem; color: #111; }
             .anonymous-feedback-box p { font-size: 0.95rem; color: #444; margin-bottom: 1.5em; }
             
-            /* --- CUSDIS ENGINE CONTAINER MOUNT --- */
-            #cusdis_thread { margin-top: 1.5rem; min-height: 150px; width: 100%; }
+            #cusdis_thread { margin-top: 2rem; min-height: 250px !important; width: 100%; display: block; }
+            #cusdis_thread iframe { width: 100% !important; min-height: 250px !important; border: none !important; }
         </style>
     </head>
 
@@ -273,7 +205,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         <hr />
                     </div>
                     
-                    <!-- PLAYBACK CONTAINER ENGINE -->
                     {youtubeUrl && (
                         <div class="video-wrapper-zone">
                             <div class="video-container">
@@ -287,7 +218,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
 
                     <slot />
 
-                    <!-- COMPONENT 1: CHRONOLOGICAL NAVIGATION LINKS -->
                     <div class="nav-pagination">
                         {prevPost ? (
                             <a href={`/blog/${prevPost.slug}/`} class="nav-block prev">
@@ -308,13 +238,12 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         )}
                     </div>
 
-                    <!-- COMPONENT 2: RELATED NEWS BOTTOM CONTENT STACK -->
                     <section class="related-section">
                         <div class="related-header-bar">Related News</div>
                         <div class="related-divider"></div>
 
                         {relatedPosts.map((post: CollectionEntry<'blog'>) => (
-    <a href={`/blog/${post.slug}/`} class="related-card">
+                            <a href={`/blog/${post.slug}/`} class="related-card">
                                 <div class="image-container">
                                     <img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
                                     <span class="category-badge">{post.data.category || 'World'}</span>
@@ -344,11 +273,11 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                             <h3>Reader Updates & Community Additions</h3>
                             <p>Have a news tip, correction, or extra context about this story? Post it below instantly. All submissions appear live on this screen immediately.</p>
                             
-                            <!-- CUSDIS LIVE COMMENT STREAM NODE -->
+                            <!-- --- INJECTED PRODUCTION CUSDIS THREAD ENGINE --- -->
                             <div 
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
-                                data-app-id="REPLACE_THIS_WITH_YOUR_ACTUAL_CUSDIS_APP_ID"
+                                data-app-id="c59f265f-6321-44f6-b7d7-21e7ba7fec4c"
                                 data-page-id={pageId}
                                 data-page-url={canonicalURL.href}
                                 data-page-title={title}
@@ -360,8 +289,40 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         </main>
         <Footer />
 
-        <!-- --- CUSDIS RUNNER ASYNC LOADER --- -->
-        <script async defer src="https://comments.townscribe.news/js/cusdis.es.js"></script>
+        {/* --- DYNAMIC ASYNC SCRIPT PIPELINE CONTROLLER --- */}
+        <script is:inline>
+            function runCusdisPipeline() {
+                const thread = document.getElementById('cusdis_thread');
+                if (!thread) return;
+
+                const cleanURL = "https://news.townscribe.org" + window.location.pathname.replace(/\/$/, "");
+                thread.setAttribute('data-page-url', cleanURL);
+
+                if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
+                    window.CUSDIS.renderDoc(thread);
+                    return;
+                }
+
+                const scriptNode = document.createElement('script');
+                scriptNode.src = "https://comments.townscribe.org/js/cusdis.es.js";
+                scriptNode.async = true;
+                scriptNode.defer = true;
+                
+                scriptNode.onload = () => {
+                    if (window.CUSDIS && typeof window.CUSDIS.renderDoc === 'function') {
+                        window.CUSDIS.renderDoc(thread);
+                    }
+                };
+
+                document.body.appendChild(scriptNode);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', runCusdisPipeline);
+            } else {
+                runCusdisPipeline();
+            }
+        </script>
 
         {/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
         {youtubeUrl && (
@@ -372,27 +333,12 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 const cutoffTime = 48; 
 
                 window.onYouTubeIframeAPIReady = function() {
-                    if (!extractedVideoId) {
-                        console.error("TownScribe Engine: Could not process the video ID from the provided URL input configuration string.");
-                        return;
-                    }
-
+                    if (!extractedVideoId) return;
                     player = new YT.Player('player', {
                         videoId: extractedVideoId,
-                        playerVars: { 
-                            'playsinline': 1, 
-                            'rel': 0, 
-                            'modestbranding': 1, 
-                            'controls': 1
-                        },
+                        playerVars: { 'playsinline': 1, 'rel': 0, 'modestbranding': 1, 'controls': 1 },
                         events: {
-                            'onReady': (e) => { 
-                                e.target.cueVideoById({ 
-                                    videoId: extractedVideoId, 
-                                    startSeconds: 0, 
-                                    endSeconds: cutoffTime 
-                                }); 
-                            },
+                            'onReady': (e) => { e.target.cueVideoById({ videoId: extractedVideoId, startSeconds: 0, endSeconds: cutoffTime }); },
                             'onStateChange': onPlayerStateChange
                         }
                     });
@@ -412,7 +358,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 function monitorTimeline() {
                     if (!player || typeof player.getCurrentTime !== 'function') return;
                     const progress = player.getCurrentTime();
-                    
                     if (progress >= 43 && progress < cutoffTime) {
                         const alertBox = document.getElementById('redirect-timer');
                         const timeSpan = document.getElementById('countdown-secs');
