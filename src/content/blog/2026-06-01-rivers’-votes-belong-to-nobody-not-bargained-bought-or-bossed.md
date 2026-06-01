@@ -3,11 +3,11 @@ title: Rivers’ Votes Belong to Nobody - Not Bargained, Bought, or Bossed
 description: Atiku Abubakar, the presidential candidate of the African
   Democratic Congress (ADC), has rejected Minister of the Federal Capital
   Territory Nyesom Wike’s
-pubDate: 2026-06-01T08:17:00.000+01:00
+pubDate: 2026-06-01T08:20:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /atiku.jpeg
+heroImage: /atiku-with-mic.webp
 seo_divider: ""
 seoKeyword: Rivers’ Votes Belong to Nobody - Not Bargained, Bought, or Bossed
 seoTitle: Rivers’ Votes Belong to Nobody - Not Bargained, Bought, or Bossed
