@@ -161,7 +161,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 color: #1a202c;
                 display: flex;
                 flex-direction: column;
-            }
+                }
             .nav-block.next { text-align: right; margin-left: auto; }
             .nav-label {
                 font-size: 0.75rem;
@@ -314,7 +314,7 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         <div class="related-divider"></div>
 
                         {relatedPosts.map((post: CollectionEntry<'blog'>) => (
-    <a href={`/blog/${post.slug}/`} class="related-card">
+                            <a href={`/blog/${post.slug}/`} class="related-card">
                                 <div class="image-container">
                                     <img src={post.data.heroImage || '/townscribe-img.jpg'} alt="" loading="lazy" />
                                     <span class="category-badge">{post.data.category || 'World'}</span>
@@ -349,9 +349,9 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
                                 data-app-id="e5da87e5-6354-41a5-a4e6-764dcb24b06b"
-                                data-page-id={frontmatter.title}
-                                data-page-url={Astro.url.href}
-                                data-page-{frontmatter.title}
+                                data-page-id={pageId}
+                                data-page-url={canonicalURL.href}
+                                data-page-title={title}
                             ></div>
                         </div>
                     </div>
