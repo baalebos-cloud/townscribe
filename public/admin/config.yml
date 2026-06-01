@@ -49,7 +49,7 @@ collections:
       
       # --- WRITER & AUTHOR ATTRIBUTION ---
       - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
-      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Writer", "Contributor"], default: "Writer" }
+      - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Writer", "Contributor"], default: "Writer" }
 
       # --- AUTOMATED CATEGORIES LINKING BAR ---
       - label: "Category"
@@ -73,7 +73,7 @@ collections:
       - label: "Body"
         name: "body"
         widget: "markdown"
-        pattern: ['^([^#\n].*){2,}$', "Readability Pre-Flight: Ensure your body copy utilizes short paragraphs (~18 words), active verbs, and transition hooks (However, Therefore, Furthermore) before saving."]
+        # pattern: ['^([^#\n].*){2,}$', "Readability Pre-Flight: Ensure your body copy utilizes short paragraphs (~18 words), active verbs, and transition hooks (However, Therefore, Furthermore) before saving."]
         hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
@@ -88,7 +88,7 @@ collections:
         name: "seoTitle"
         widget: "string"
         required: true
-        pattern: ['^.{40,65}$', "Optimization Error: Custom meta title should be between 40 and 65 characters for clean Google snippets."]
+        pattern: ['^.{10,200}$', "Optimization Error: Meta title should be a complete thought."]
         hint: "Mandatory: Custom search snippet title."
       
       - label: "SEO Meta Description"
