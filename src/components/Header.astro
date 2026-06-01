@@ -60,6 +60,9 @@ import HeaderLink from './HeaderLink.astro';
 			</div>
 		</div>
 		<div id="drawer-overlay" class="drawer-overlay"></div>
+		<button id="push-subscribe-btn" class="push-notify-btn" title="Get news alerts">
+    		🔔
+		</button>
 	</nav>
 </header>
 
@@ -102,6 +105,21 @@ import HeaderLink from './HeaderLink.astro';
 		background-size: 38px 38px;
 		border-radius: 4px;
 	}
+	.push-notify-btn {
+    background: #dc2626;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+  	}
+	.push-notify-btn:hover { transform: scale(1.1); background: #b91c1c; }
+	.push-notify-btn.subscribed { background: #16a34a; }
 	
 	.brand-logo-wrapper a { color: #000; text-decoration: none; font-weight: 700; z-index: 2; }
 	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }

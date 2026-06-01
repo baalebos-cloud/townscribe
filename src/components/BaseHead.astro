@@ -109,3 +109,103 @@ const finalImageUrl = typeof image === 'string'
 		"articleSection": category
 	})} />
 )}
+
+<!-- WEB PUSH NOTIFICATION ENGINE -->
+<script is:inline>
+    const WORKER_URL = 'https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev';
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const rawData = atob(base64);
+        return new Uint8Array([...rawData].map(c => c.charCodeAt(0)));
+    }
+
+    async function subscribeToPush() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+            alert('Push notifications are not supported in this browser.');
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') return;
+
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            const { key } = await fetch(`${WORKER_URL}/vapid-public-key`).then(r => r.json());
+
+            const subscription = await reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(key)
+            });
+
+            await fetch(`${WORKER_URL}/subscribe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(subscription)
+            });
+
+            localStorage.setItem('ts_push_subscribed', 'true');
+            updateButtonState(true);
+            alert('You are now subscribed to TownScribe news alerts!');
+        } catch (err) {
+            console.error('[TownScribe] Push subscription failed:', err);
+            alert('Failed to subscribe. Please try again.');
+        }
+    }
+
+    function updateButtonState(subscribed) {
+        const btn = document.getElementById('push-subscribe-btn');
+        if (!btn) return;
+        if (subscribed) {
+            btn.textContent = '✅';
+            btn.classList.add('subscribed');
+            btn.title = 'Already subscribed to TownScribe news alerts';
+        } else {
+            btn.textContent = '🔔';
+            btn.classList.remove('subscribed');
+            btn.title = 'Get news alerts';
+        }
+    }
+
+    async function initPush() {
+        if (!('serviceWorker' in navigator)) return;
+
+        // Register service worker
+        await navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.error('[TownScribe] Service worker registration failed:', err);
+        });
+
+        const btn = document.getElementById('push-subscribe-btn');
+        if (!btn) return;
+
+        // Check existing subscription state
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            const existing = await reg.pushManager.getSubscription();
+            updateButtonState(!!(existing || localStorage.getItem('ts_push_subscribed')));
+        } catch {
+            // Non-fatal — button stays in default state
+        }
+
+        btn.addEventListener('click', async () => {
+            try {
+                const reg = await navigator.serviceWorker.ready;
+                const existing = await reg.pushManager.getSubscription();
+                if (existing) {
+                    alert('You are already subscribed to TownScribe news alerts!');
+                    return;
+                }
+                await subscribeToPush();
+            } catch (err) {
+                console.error('[TownScribe] Push init error:', err);
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPush);
+    } else {
+        initPush();
+    }
+</script>

@@ -1,0 +1,26 @@
+name: Notify subscribers on deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Pages deploy
+        run: sleep 60
+
+      - name: Send push notification to subscribers
+        run: |
+          curl -s -X POST \
+            https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
+            -H "Authorization: Bearer ${{ secrets.NOTIFY_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "title": "🗞️ New on TownScribe",
+              "body": "A new article has just been published. Tap to read.",
+              "url": "https://news.townscribe.org",
+              "icon": "https://news.townscribe.org/townscribe-img.jpg"
+            }'
