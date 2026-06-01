@@ -349,9 +349,9 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                                 id="cusdis_thread"
                                 data-host="https://comments.townscribe.org"
                                 data-app-id="e5da87e5-6354-41a5-a4e6-764dcb24b06b"
-                                data-page-id=`${pageId}`
-                                data-page-url=`${canonicalURL}`
-                                data-page-title=`${title}`
+                                data-page-id={pageId}
+                                data-page-url={canonicalURL.href}
+                                data-page-title={title}
                             ></div>
                         </div>
                     </div>
@@ -360,8 +360,36 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
         </main>
         <Footer />
 
-        <!-- --- CUSDIS RUNNER ASYNC LOADER --- -->
-        <script async defer src="https://comments.townscribe.org/js/cusdis.es.js"></script>
+        {/* --- CUSDIS RUNNER LOADER (ASTRO LIFECYCLE INLINE INTERACTION) --- */}
+        <script is:inline>
+            function bootCusdisEngine() {
+                // If instance is active inside scope, execute reset call natively
+                if (window.CUSDIS && typeof window.CUSDIS.initial === 'function') {
+                    window.CUSDIS.initial();
+                    return;
+                }
+
+                const targetScript = document.createElement('script');
+                targetScript.src = "https://comments.townscribe.org/js/cusdis.es.js";
+                targetScript.async = true;
+                targetScript.defer = true;
+                
+                targetScript.onload = () => {
+                    if (window.CUSDIS && typeof window.CUSDIS.initial === 'function') {
+                        window.CUSDIS.initial();
+                    }
+                };
+
+                document.body.appendChild(targetScript);
+            }
+
+            // Bind explicitly across initial execution or framework state modifications
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bootCusdisEngine);
+            } else {
+                bootCusdisEngine();
+            }
+        </script>
 
         {/* --- TIMELINE COUNTER RUNNER ENGINE --- */}
         {youtubeUrl && (
