@@ -17,19 +17,18 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 					</svg>
 				</button>
 				<h2 class="brand-logo-wrapper">
-						<a href="/" aria-label="Go to home">
-								<img 
-										src="/townscribe-img.jpg" 
-										alt="TownScribe Media Logo" 
-										class="site-logo-graphic"
-								/>
-						</a>
+					<a href="/" aria-label="Go to home">
+						<img 
+							src="/townscribe-img.jpg" 
+							alt="TownScribe Media Logo" 
+							class="site-logo-graphic"
+						/>
+					</a>
 				</h2>
-
 			</div>
 			
 			<div class="internal-links">
-				<HeaderLink href="/">Blog</HeaderLink>
+				<HeaderLink href="/">Media</HeaderLink>
 			</div>
 
 			<div class="right-actions">
@@ -281,6 +280,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		if (el) { el.textContent = msg; el.style.display = 'block'; }
 	}
 
+	// --- LOGISTICS ---
 	function setLoading(btnTextId, spinnerId, loading) {
 		const btnText = document.getElementById(btnTextId);
 		const spinner = document.getElementById(spinnerId);
@@ -310,7 +310,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 				saveAuth(data.token, data.user);
 				renderLoggedIn(data.user);
 				closeModal();
-				// Show verified success if redirected from email verification
 				if (window.location.search.includes('verified=1')) {
 					window.history.replaceState({}, '', window.location.pathname);
 				}
@@ -371,12 +370,10 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	document.addEventListener('DOMContentLoaded', () => {
 		initAuthState();
 
-		// Open modal
 		document.getElementById('auth-signin-btn')?.addEventListener('click', () => openModal('login'));
 		document.getElementById('auth-modal-close')?.addEventListener('click', closeModal);
 		document.getElementById('auth-modal-overlay')?.addEventListener('click', closeModal);
 
-		// Tab switching
 		document.querySelectorAll('.auth-tab').forEach(tab => {
 			tab.addEventListener('click', () => switchTab(tab.dataset.tab));
 		});
@@ -384,31 +381,25 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 			btn.addEventListener('click', () => switchTab(btn.dataset.switch));
 		});
 
-		// Form submissions
 		document.getElementById('login-submit')?.addEventListener('click', handleLogin);
 		document.getElementById('register-submit')?.addEventListener('click', handleRegister);
 
-		// Enter key support
 		document.getElementById('login-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 		document.getElementById('register-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
 
-		// User dropdown toggle
 		document.getElementById('user-avatar-btn')?.addEventListener('click', (e) => {
 			e.stopPropagation();
 			const dd = document.getElementById('user-dropdown');
 			if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
 		});
 
-		// Close dropdown on outside click
 		document.addEventListener('click', () => {
 			const dd = document.getElementById('user-dropdown');
 			if (dd) dd.style.display = 'none';
 		});
 
-		// Sign out
 		document.getElementById('signout-btn')?.addEventListener('click', handleSignOut);
 
-		// Show verified banner if redirected from email verification
 		if (window.location.search.includes('verified=1')) {
 			openModal('login');
 			showSuccess('login-success', '✅ Email verified! You can now sign in.');
@@ -416,7 +407,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		}
 	});
 
-	// Expose auth helpers globally for use in other scripts (bookmarks, etc.)
 	window.TSAuth = {
 		getToken,
 		getUser,
@@ -428,20 +418,35 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 <style>
 	header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 5%); position: sticky; top: 0; z-index: 100; }
 	.main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-	.brand-row { display: flex; align-items: center; justify-content: space-between; }
-	.left-brand-group { display: flex; align-items: center; gap: 0.75rem; }
+	.brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
+	.left-brand-group { display: flex; align-items: center; gap: 0.85rem; height: 100%; }
 	.right-actions { display: flex; align-items: center; gap: 0.75rem; }
 
+	/* Logo layout container fixes matching media logo.jpeg spacing metrics */
 	.brand-logo-wrapper { 
-		margin: 0; font-size: 1.25rem; position: relative;
-		padding: 1rem 0.5rem 1rem 48px; display: flex; align-items: center;
-		background-image: url('/townscribe-img.jpg'); background-repeat: no-repeat;
-		background-position: left center; background-size: 38px 38px; border-radius: 4px;
+		margin: 0; 
+		padding: 0;
+		display: flex; 
+		align-items: center;
+		height: 100%;
 	}
-	.brand-logo-wrapper a { color: #000; text-decoration: none; font-weight: 700; z-index: 2; }
+	.brand-logo-wrapper a { 
+		display: flex; 
+		align-items: center; 
+		height: 100%;
+	}
+	
+	/* Form factor scaling adjustments for the inline logo element */
+	.site-logo-graphic {
+		height: 48px;  /* Compact structural size layer to match your image constraints perfectly */
+		width: auto;
+		object-fit: contain;
+		display: block;
+	}
+
 	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
 	.internal-links { display: flex; }
-	.internal-links :global(a) { padding: 1rem 0.5rem; color: #000; text-decoration: none; border-bottom: 4px solid transparent; }
+	.internal-links :global(a) { padding: 1rem 0.5rem; color: #000; text-decoration: none; border-bottom: 4px solid transparent; font-weight: 600; }
 	.internal-links :global(a.active) { border-bottom-color: var(--accent, #14b8a6); }
 
 	/* AUTH CONTROLS */
@@ -512,4 +517,8 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	@keyframes spin { to { transform: rotate(360deg); } }
 
 	@media (max-width: 720px) { .social-links { display: none; } }
+	@media (max-width: 480px) {
+		.brand-row { height: 65px; }
+		.site-logo-graphic { height: 38px; }
+	}
 </style>
