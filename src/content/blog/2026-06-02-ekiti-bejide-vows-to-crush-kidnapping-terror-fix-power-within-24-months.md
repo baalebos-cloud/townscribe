@@ -1,15 +1,15 @@
 ---
-title: "Ekiti: Bejide Vows to Crush Kidnapping Terror, Fix Power Within 24 Months"
+title: "Ekiti: Bejide Vows to Crush Insecurity, Fix Power Within 24 Months"
 description: In a bold promise that resonates deeply with anxious residents, the
   African Democratic Congress (ADC) governorship candidate
-pubDate: 2026-06-02T07:30:00.000+01:00
+pubDate: 2026-06-02T07:38:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: politics
 heroImage: /1000291910.jpg
 seo_divider: ""
 seoKeyword: Bejide, ADC, EKITI, EKITI 2026 Governorship election, June 20
-seoTitle: "Ekiti: Bejide Vows to Crush Kidnapping Terror, Fix Power Within 24 Months"
+seoTitle: "Ekiti: Bejide Vows to Crush Insecurity, Fix Power Within 24 Months"
 seoDescription: In a bold promise that resonates deeply with anxious residents,
   the African Democratic Congress (ADC) governorship candidate
 seo_gatekeeper: PASS
