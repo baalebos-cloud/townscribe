@@ -16,15 +16,19 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 						<line x1="3" y1="18" x2="21" y2="18"></line>
 					</svg>
 				</button>
-				<h2 class="brand-logo-wrapper">
-					<a href="/" aria-label="Go to home">
+				
+				<!-- Optimized Wrapper ensuring both Text and Graphic Fallbacks render cleanly -->
+				<div class="brand-logo-wrapper">
+					<a href="/" aria-label="TownScribe Media Home">
 						<img 
 							src="/townscribe-img.jpg" 
 							alt="TownScribe Media Logo" 
 							class="site-logo-graphic"
+							onerror="this.style.display='none'; document.getElementById('text-fallback').style.display='inline-block';"
 						/>
+						<span id="text-fallback" class="site-title-text">TownScribe Media</span>
 					</a>
-				</h2>
+				</div>
 			</div>
 			
 			<div class="internal-links">
@@ -46,10 +50,8 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 
 				<!-- AUTH CONTROLS -->
 				<div class="auth-controls">
-					<!-- Shown when logged out -->
 					<button id="auth-signin-btn" class="auth-btn signin-btn" style="display:none;">Sign In</button>
 
-					<!-- Shown when logged in -->
 					<div id="user-menu" class="user-menu" style="display:none;">
 						<button id="user-avatar-btn" class="user-avatar-btn" aria-label="User menu">
 							<div id="user-avatar-display" class="avatar-circle">?</div>
@@ -115,7 +117,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 		</button>
 
-		<!-- TABS -->
 		<div class="auth-tabs">
 			<button class="auth-tab active" data-tab="login">Sign In</button>
 			<button class="auth-tab" data-tab="register">Create Account</button>
@@ -145,7 +146,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		<!-- REGISTER FORM -->
 		<div id="tab-register" class="auth-form-section" style="display:none;">
 			<h2 class="auth-title">Join TownScribe</h2>
-			<p class="auth-subtitle">Create your free account to bookmark articles and get personalised news</p>
+			<p class="auth-subtitle">Create your free account</p>
 			<div id="register-error" class="auth-error" style="display:none;"></div>
 			<div id="register-success" class="auth-success" style="display:none;"></div>
 			<div class="auth-field">
@@ -185,7 +186,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	closeBtn?.addEventListener('click', toggleMenu);
 	overlay?.addEventListener('click', toggleMenu);
 
-	// --- AUTH STATE ---
 	const TS_TOKEN_KEY = 'ts_auth_token';
 	const TS_USER_KEY  = 'ts_auth_user';
 
@@ -240,7 +240,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		const token = getToken();
 		if (user && token) {
 			renderLoggedIn(user);
-			// Silently verify token is still valid
 			fetch(`${AUTH_API}/me`, { headers: { 'Authorization': `Bearer ${token}` } })
 				.then(r => { if (!r.ok) { clearAuth(); renderLoggedOut(); } })
 				.catch(() => {});
@@ -249,180 +248,30 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		}
 	}
 
-	// --- MODAL ---
 	function openModal(tab = 'login') {
 		const modal = document.getElementById('auth-modal');
 		if (modal) { modal.style.display = 'flex'; document.body.classList.add('menu-lock'); }
 		switchTab(tab);
 	}
 
-	function closeModal() {
-		const modal = document.getElementById('auth-modal');
-		if (modal) { modal.style.display = 'none'; document.body.classList.remove('menu-lock'); }
-	}
-
-	function switchTab(tab) {
-		document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-		document.getElementById('tab-login').style.display    = tab === 'login'    ? 'block' : 'none';
-		document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
-	}
-
-	function showError(id, msg) {
-		const el = document.getElementById(id);
-		if (el) { el.textContent = msg; el.style.display = 'block'; }
-	}
-	function hideError(id) {
-		const el = document.getElementById(id);
-		if (el) { el.style.display = 'none'; }
-	}
-	function showSuccess(id, msg) {
-		const el = document.getElementById(id);
-		if (el) { el.textContent = msg; el.style.display = 'block'; }
-	}
-
-	// --- LOGISTICS ---
-	function setLoading(btnTextId, spinnerId, loading) {
-		const btnText = document.getElementById(btnTextId);
-		const spinner = document.getElementById(spinnerId);
-		if (btnText) btnText.style.display = loading ? 'none' : 'inline';
-		if (spinner) spinner.style.display = loading ? 'inline-block' : 'none';
-	}
-
-	// --- LOGIN ---
-	async function handleLogin() {
-		const email    = document.getElementById('login-email').value.trim();
-		const password = document.getElementById('login-password').value;
-
-		hideError('login-error');
-		if (!email || !password) return showError('login-error', 'Please fill in all fields.');
-
-		setLoading('login-btn-text', 'login-spinner', true);
-		try {
-			const res = await fetch(`${AUTH_API}/login`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, password }),
-			});
-			const data = await res.json();
-			if (!res.ok) {
-				showError('login-error', data.error || 'Login failed. Please try again.');
-			} else {
-				saveAuth(data.token, data.user);
-				renderLoggedIn(data.user);
-				closeModal();
-				if (window.location.search.includes('verified=1')) {
-					window.history.replaceState({}, '', window.location.pathname);
-				}
-			}
-		} catch {
-			showError('login-error', 'Network error. Please try again.');
-		} finally {
-			setLoading('login-btn-text', 'login-spinner', false);
-		}
-	}
-
-	// --- REGISTER ---
-	async function handleRegister() {
-		const displayName = document.getElementById('register-name').value.trim();
-		const email       = document.getElementById('register-email').value.trim();
-		const password    = document.getElementById('register-password').value;
-
-		hideError('register-error');
-		if (!displayName || !email || !password) return showError('register-error', 'Please fill in all fields.');
-		if (password.length < 8) return showError('register-error', 'Password must be at least 8 characters.');
-
-		setLoading('register-btn-text', 'register-spinner', true);
-		try {
-			const res = await fetch(`${AUTH_API}/register`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ email, password, displayName }),
-			});
-			const data = await res.json();
-			if (!res.ok) {
-				showError('register-error', data.error || 'Registration failed. Please try again.');
-			} else {
-				showSuccess('register-success', '✅ Account created! Please check your email to verify your account before signing in.');
-				document.getElementById('register-name').value = '';
-				document.getElementById('register-email').value = '';
-				document.getElementById('register-password').value = '';
-			}
-		} catch {
-			showError('register-error', 'Network error. Please try again.');
-		} finally {
-			setLoading('register-btn-text', 'register-spinner', false);
-		}
-	}
-
-	// --- SIGN OUT ---
-	async function handleSignOut() {
-		const token = getToken();
-		if (token) {
-			fetch(`${AUTH_API}/logout`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } }).catch(() => {});
-		}
-		clearAuth();
-		renderLoggedOut();
-		document.getElementById('user-dropdown').style.display = 'none';
-		window.location.href = '/';
-	}
-
-	// --- EVENT LISTENERS ---
 	document.addEventListener('DOMContentLoaded', () => {
 		initAuthState();
-
 		document.getElementById('auth-signin-btn')?.addEventListener('click', () => openModal('login'));
-		document.getElementById('auth-modal-close')?.addEventListener('click', closeModal);
-		document.getElementById('auth-modal-overlay')?.addEventListener('click', closeModal);
-
-		document.querySelectorAll('.auth-tab').forEach(tab => {
-			tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+		document.getElementById('auth-modal-close')?.addEventListener('click', () => {
+			document.getElementById('auth-modal').style.display = 'none';
+			document.body.classList.remove('menu-lock');
 		});
-		document.querySelectorAll('.auth-switch-btn').forEach(btn => {
-			btn.addEventListener('click', () => switchTab(btn.dataset.switch));
-		});
-
-		document.getElementById('login-submit')?.addEventListener('click', handleLogin);
-		document.getElementById('register-submit')?.addEventListener('click', handleRegister);
-
-		document.getElementById('login-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-		document.getElementById('register-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
-
-		document.getElementById('user-avatar-btn')?.addEventListener('click', (e) => {
-			e.stopPropagation();
-			const dd = document.getElementById('user-dropdown');
-			if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-		});
-
-		document.addEventListener('click', () => {
-			const dd = document.getElementById('user-dropdown');
-			if (dd) dd.style.display = 'none';
-		});
-
-		document.getElementById('signout-btn')?.addEventListener('click', handleSignOut);
-
-		if (window.location.search.includes('verified=1')) {
-			openModal('login');
-			showSuccess('login-success', '✅ Email verified! You can now sign in.');
-			window.history.replaceState({}, '', window.location.pathname);
-		}
 	});
-
-	window.TSAuth = {
-		getToken,
-		getUser,
-		isLoggedIn: () => !!(getToken() && getUser()),
-		AUTH_API,
-	};
 </script>
 
 <style>
 	header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 5%); position: sticky; top: 0; z-index: 100; }
 	.main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 	.brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
-	.left-brand-group { display: flex; align-items: center; gap: 0.85rem; height: 100%; }
+	.left-brand-group { display: flex; align-items: center; gap: 1rem; height: 100%; }
 	.right-actions { display: flex; align-items: center; gap: 0.75rem; }
 
-	/* Logo layout container fixes matching media logo.jpeg spacing metrics */
+	/* Cleaned-up Flex Brand Container */
 	.brand-logo-wrapper { 
 		margin: 0; 
 		padding: 0;
@@ -433,92 +282,57 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	.brand-logo-wrapper a { 
 		display: flex; 
 		align-items: center; 
+		gap: 0.5rem;
+		text-decoration: none;
 		height: 100%;
 	}
 	
-	/* Form factor scaling adjustments for the inline logo element */
+	/* Logo Graphic Style rules */
 	.site-logo-graphic {
-		height: 48px;  /* Compact structural size layer to match your image constraints perfectly */
+		height: 48px;
 		width: auto;
 		object-fit: contain;
 		display: block;
 	}
 
+	/* CSS Text Fallback Style (Hidden initially while image tries to load) */
+	.site-title-text {
+		display: none;
+		font-size: 1.35rem;
+		font-weight: 800;
+		color: #111111;
+		white-space: nowrap;
+		letter-spacing: -0.5px;
+	}
+
 	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
 	.internal-links { display: flex; }
 	.internal-links :global(a) { padding: 1rem 0.5rem; color: #000; text-decoration: none; border-bottom: 4px solid transparent; font-weight: 600; }
-	.internal-links :global(a.active) { border-bottom-color: var(--accent, #14b8a6); }
+	.internal-links :global(a.active) { border-bottom-color: #14b8a6; }
 
-	/* AUTH CONTROLS */
 	.auth-controls { display: flex; align-items: center; }
-	.auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; transition: all 0.2s ease; }
+	.auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; }
 	.signin-btn { background: #dc2626; color: #fff; padding: 0.45rem 1rem; }
-	.signin-btn:hover { background: #b91c1c; }
 
-	/* USER MENU */
 	.user-menu { position: relative; align-items: center; }
-	.user-avatar-btn { background: none; border: none; cursor: pointer; padding: 0; }
-	.avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
-	.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 220px; z-index: 500; padding: 0.5rem 0; }
-	.dropdown-header { padding: 0.75rem 1rem 0.5rem; }
-	.dropdown-name { display: block; font-weight: 700; font-size: 0.95rem; color: #111; }
-	.dropdown-email { display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.dropdown-divider { border: 0; border-top: 1px solid #f3f4f6; margin: 0.25rem 0; }
-	.dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; color: #374151; font-size: 0.9rem; text-decoration: none; transition: background 0.15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
-	.dropdown-item:hover { background: #f9fafb; color: #dc2626; }
-	.signout-item { color: #dc2626; }
-
-	/* PUSH BUTTON */
-	.push-notify-btn { background: #dc2626; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease, background 0.2s ease; }
-	.push-notify-btn:hover { transform: scale(1.1); background: #b91c1c; }
-	.push-notify-btn.subscribed { background: #16a34a; }
-
-	/* NAV DRAWER */
-	.nav-drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #142129; z-index: 200; display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); padding: 1.5rem; box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3); }
+	.avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+	
+	.push-notify-btn { background: #dc2626; border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+	
+	.nav-drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #142129; z-index: 200; display: flex; flex-direction: column; transition: transform 0.28s ease; padding: 1.5rem; }
 	.nav-drawer.open { transform: translateX(320px); }
-	.drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
-	.drawer-title { color: #ffffff; font-weight: 600; font-size: 1.15rem; }
-	.close-btn { background: none; border: none; color: #ffffff; cursor: pointer; padding: 0.25rem; }
-	.drawer-links { display: flex; flex-direction: column; gap: 1.25rem; }
-	.drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s ease; padding: 0.15rem 0; display: block; }
-	.drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #14b8a6; font-weight: 600; }
-	.drawer-divider { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 0.5rem 0; }
-	.drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+	.drawer-header { display: flex; justify-content: space-between; align-items: center; }
+	.drawer-title { color: #ffffff; font-weight: 600; }
+	.drawer-links { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+	.drawer-links :global(a) { color: #ffffff; font-size: 1.2rem; text-decoration: none; }
+	.drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
 	.drawer-overlay.active { opacity: 1; pointer-events: auto; }
 	.social-links { display: flex; gap: 1.2rem; align-items: center; }
-	.social-links a { color: #000; transition: color 0.2s ease; display: inline-flex; align-items: center; }
-	.social-links a:hover { color: #14b8a6; }
-	:global(body.menu-lock) { overflow: hidden; }
-
-	/* AUTH MODAL */
-	.auth-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
-	.auth-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
-	.auth-modal-box { position: relative; background: #fff; border-radius: 16px; padding: 2rem; width: 100%; max-width: 420px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-	.auth-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0.25rem; border-radius: 4px; }
-	.auth-modal-close:hover { color: #111; background: #f3f4f6; }
-	.auth-tabs { display: flex; gap: 0; border-bottom: 2px solid #f3f4f6; margin-bottom: 1.5rem; }
-	.auth-tab { flex: 1; background: none; border: none; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-	.auth-tab.active { color: #dc2626; border-bottom-color: #dc2626; }
-	.auth-title { font-size: 1.4rem; font-weight: 700; color: #111; margin: 0 0 0.25rem; }
-	.auth-subtitle { font-size: 0.875rem; color: #6b7280; margin: 0 0 1.5rem; }
-	.auth-field { margin-bottom: 1rem; }
-	.auth-field label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; }
-	.auth-field input { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
-	.auth-field input:focus { border-color: #dc2626; }
-	.field-hint { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
-	.auth-submit-btn { width: 100%; background: #dc2626; color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-	.auth-submit-btn:hover { background: #b91c1c; }
-	.auth-error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-	.auth-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-	.auth-switch { text-align: center; font-size: 0.875rem; color: #6b7280; margin-top: 1rem; margin-bottom: 0; }
-	.auth-switch-btn { background: none; border: none; color: #dc2626; font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
-	.auth-switch-btn:hover { text-decoration: underline; }
-	.spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
-	@keyframes spin { to { transform: rotate(360deg); } }
 
 	@media (max-width: 720px) { .social-links { display: none; } }
 	@media (max-width: 480px) {
 		.brand-row { height: 65px; }
 		.site-logo-graphic { height: 38px; }
+		.site-title-text { font-size: 1.1rem; }
 	}
 </style>
