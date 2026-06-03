@@ -7,7 +7,7 @@ pubDate: 2026-06-03T14:46:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /1000292079.jpg
+heroImage: /1000292092.jpg
 seo_divider: ""
 seoKeyword: Insecurity, Eda Oniyo, Ekiti, Kidnappers, Ilejemeje
 seoTitle: "Ekiti: 37 Days After Kidnappings, Group Gives Governor 6-day Deadline"
