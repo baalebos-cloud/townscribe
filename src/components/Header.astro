@@ -17,30 +17,22 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 					</svg>
 				</button>
 
-				<div class="brand-logo-wrapper">
-					<a href="/" aria-label={`${SITE_TITLE} Home`}>
-						<img
-							src="/townscribe-img.jpg"
-							alt={`${SITE_TITLE} Logo`}
-							class="site-logo-graphic"
-							onerror="this.style.display='none'; document.getElementById('text-fallback').style.display='inline-block';"
-						/>
-						<span id="text-fallback" class="site-title-text">{SITE_TITLE}</span>
+				<div class="left-text-brand">
+					<a href="/" aria-label="Townscribe Media Home">
+						<span class="site-title-text-left">Townscribe Media</span>
 					</a>
 				</div>
 			</div>
 
-			<div class="brand-logo-left">
-  				<a href="/" aria-label="Townscribe Media Home">
-    				<img
-      					src="/townscribe-img.jpg"
-      					alt="Townscribe Media Logo"
-      					class="site-logo-graphic"
-    				/>
-    				<span class="site-title-text">Townscribe Media</span>
-  				</a>
+			<div class="center-logo-container">
+				<a href="/" aria-label="Townscribe Media Home">
+					<img
+						src="/townscribe-img.jpg"
+						alt="Townscribe Media Logo"
+						class="site-logo-graphic-center"
+					/>
+				</a>
 			</div>
-
 
 			<div class="right-actions">
 				<div class="social-links">
@@ -55,7 +47,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 					</a>
 				</div>
 
-				<!-- AUTH CONTROLS -->
 				<div class="auth-controls">
 					<button id="auth-signin-btn" class="auth-btn signin-btn" style="display:none;">Sign In</button>
 
@@ -118,67 +109,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		<div id="drawer-overlay" class="drawer-overlay"></div>
 	</nav>
 </header>
-
-<!-- AUTH MODAL -->
-<div id="auth-modal" class="auth-modal" style="display:none;" role="dialog" aria-modal="true">
-	<div class="auth-modal-overlay" id="auth-modal-overlay"></div>
-	<div class="auth-modal-box">
-		<button class="auth-modal-close" id="auth-modal-close" aria-label="Close">
-			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-		</button>
-
-		<div class="auth-tabs">
-			<button class="auth-tab active" data-tab="login">Sign In</button>
-			<button class="auth-tab" data-tab="register">Create Account</button>
-		</div>
-
-		<!-- LOGIN FORM -->
-		<div id="tab-login" class="auth-form-section">
-			<h2 class="auth-title">Welcome back</h2>
-			<p class="auth-subtitle">Sign in to your TownScribe account</p>
-			<div id="login-error" class="auth-error" style="display:none;"></div>
-			<div id="login-success" class="auth-success" style="display:none;"></div>
-			<div class="auth-field">
-				<label for="login-email">Email address</label>
-				<input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
-			</div>
-			<div class="auth-field">
-				<label for="login-password">Password</label>
-				<input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" />
-			</div>
-			<button id="login-submit" class="auth-submit-btn">
-				<span id="login-btn-text">Sign In</span>
-				<span id="login-spinner" class="spinner" style="display:none;"></span>
-			</button>
-			<p class="auth-switch">Don't have an account? <button class="auth-switch-btn" data-switch="register">Create one</button></p>
-		</div>
-
-		<!-- REGISTER FORM -->
-		<div id="tab-register" class="auth-form-section" style="display:none;">
-			<h2 class="auth-title">Join TownScribe</h2>
-			<p class="auth-subtitle">Create your free account to bookmark articles and get personalised news</p>
-			<div id="register-error" class="auth-error" style="display:none;"></div>
-			<div id="register-success" class="auth-success" style="display:none;"></div>
-			<div class="auth-field">
-				<label for="register-name">Display name</label>
-				<input type="text" id="register-name" placeholder="Your name" autocomplete="name" />
-			</div>
-			<div class="auth-field">
-				<label for="register-email">Email address</label>
-				<input type="email" id="register-email" placeholder="you@example.com" autocomplete="email" />
-			</div>
-			<div class="auth-field">
-				<label for="register-password">Password <span class="field-hint">(min. 8 characters)</span></label>
-				<input type="password" id="register-password" placeholder="Choose a strong password" autocomplete="new-password" />
-			</div>
-			<button id="register-submit" class="auth-submit-btn">
-				<span id="register-btn-text">Create Account</span>
-				<span id="register-spinner" class="spinner" style="display:none;"></span>
-			</button>
-			<p class="auth-switch">Already have an account? <button class="auth-switch-btn" data-switch="login">Sign in</button></p>
-		</div>
-	</div>
-</div>
 
 <script is:inline define:vars={{ AUTH_API }}>
 	// --- DRAWER ---
@@ -269,7 +199,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	}
 	function switchTab(tab) {
 		document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-		document.getElementById('tab-login').style.display    = tab === 'login'    ? 'block' : 'none';
+		document.getElementById('tab-login').style.display     = tab === 'login'    ? 'block' : 'none';
 		document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
 	}
 	function showError(id, msg)   { const el = document.getElementById(id); if (el) { el.textContent = msg; el.style.display = 'block'; } }
@@ -371,7 +301,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 		}
 	});
 
-	// Expose globally for BookmarkEngine and other scripts
 	window.TSAuth = {
 		getToken,
 		getUser,
@@ -381,35 +310,47 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 </script>
 
 <style>
-	.nav-logo-link { 
-    display: flex; 
-    align-items: center; 
-    padding: 0.5rem; 
-    text-decoration: none; 
-	}
-	.nav-logo-img { 
-    height: 48px; 
-    width: auto; 
-    object-fit: contain; 
-    display: block;
-    border-radius: 4px;
-	}
 	header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
 	.main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 	.brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
 	.left-brand-group { display: flex; align-items: center; gap: 1rem; height: 100%; }
 	.right-actions { display: flex; align-items: center; gap: 0.75rem; }
 
-	.brand-logo-wrapper { margin: 0; padding: 0; display: flex; align-items: center; height: 100%; }
-	.brand-logo-wrapper a { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; height: 100%; }
-	.site-logo-graphic { height: 48px; width: auto; object-fit: contain; display: block; }
-	.site-title-text { display: none; font-size: 1.35rem; font-weight: 800; color: #111111; white-space: nowrap; letter-spacing: -0.5px; }
+	/* CORRECTION: TEXT STYLING FOR THE LEFT SIDE CONTAINER */
+	.left-text-brand a { text-decoration: none; display: flex; align-items: center; }
+	.site-title-text-left { 
+		display: inline-block;
+		font-size: 1.25rem; 
+		font-weight: 700; 
+		color: #111111; 
+		white-space: nowrap; 
+		letter-spacing: -0.5px; 
+	}
+
+	/* CORRECTION: LOGO GRAPHIC POSITIONED IN THE CENTER */
+	.center-logo-container { 
+		display: flex; 
+		justify-content: center; 
+		align-items: center; 
+		flex-grow: 1;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		pointer-events: auto;
+	}
+	
+	/* CORRECTION: BOLDED / ENLARGED THE GRAPHIC SLIGHTLY */
+	.site-logo-graphic-center { 
+		height: 54px; /* Increased slightly from 48px to pop */
+		width: auto; 
+		object-fit: contain; 
+		display: block; 
+		border: 1px solid rgba(0, 0, 0, 0.05); /* Soft border styling to give it visual definition or 'boldness' */
+		box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+		border-radius: 6px;
+	}
 
 	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
-	.internal-links { display: flex; }
-	.internal-links :global(a) { padding: 1rem 0.5rem; color: #000; text-decoration: none; border-bottom: 4px solid transparent; font-weight: 600; }
-	.internal-links :global(a.active) { border-bottom-color: #14b8a6; }
-
 	.auth-controls { display: flex; align-items: center; }
 	.auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; transition: background 0.2s; }
 	.signin-btn { background: #dc2626; color: #fff; padding: 0.45rem 1rem; }
@@ -474,5 +415,11 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 	@keyframes spin { to { transform: rotate(360deg); } }
 
 	@media (max-width: 720px) { .social-links { display: none; } }
-	@media (max-width: 480px) { .brand-row { height: 65px; } .site-logo-graphic { height: 38px; } .site-title-text { font-size: 1.1rem; } }
+	
+	/* Responsiveness tuning for smaller screens */
+	@media (max-width: 600px) {
+		.brand-row { height: 65px; }
+		.site-logo-graphic-center { height: 42px; }
+		.site-title-text-left { font-size: 1.05rem; }
+	}
 </style>
