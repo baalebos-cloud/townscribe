@@ -6,6 +6,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import InArticleAd from '../components/InArticleAd.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -194,6 +195,9 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
                     )}
 
                     <slot />
+
+                    <!-- INJECTED IN-ARTICLE AD UNIT -->
+                    <InArticleAd />
 
                     <div class="nav-pagination">
                         {prevPost ? (
