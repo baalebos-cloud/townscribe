@@ -1,17 +1,106 @@
-# Terms of Service
+---
+import Layout from '../layouts/BlogPost.astro';
+---
 
-**Last Updated:** June 2026
+<Layout
+	title="Terms of Service - Townscribe Media"
+	description="Terms of service and legal agreement for using the Townscribe platform."
+	pubDate={new Date('June 04, 2026')}
+>
+  <main class="legal-container">
+    <article class="legal-content">
+      <h1>Terms of Service</h1>
+      <p class="effective-date"><strong>Last Updated:</strong> June 2026</p>
 
-Welcome to Townscribe (news.townscribe.org). By accessing or using our website, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you are prohibited from using this site.
+      <p>
+        Welcome to Townscribe (<a href="https://news.townscribe.org" target="_blank" rel="noopener noreferrer">news.townscribe.org</a>). By accessing or using our website, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you are prohibited from using this site.
+      </p>
 
-### Intellectual Property Rights
-Unless otherwise stated, Townscribe and/or its licensors own the intellectual property rights for all material on Townscribe. All intellectual property rights are reserved. You may access this from Townscribe for your own personal use subjected to restrictions set in these terms and conditions.
+      <hr />
 
-### User Content
-In these Terms of Service, "Your Content" shall mean any audio, video text, images, or other material you choose to display on this Website (such as comments). By displaying Your Content, you grant Townscribe a non-exclusive, worldwide irrevocable, sub-licensable license to use, reproduce, adapt, publish, translate, and distribute it in any and all media.
+      <h2>Intellectual Property Rights</h2>
+      <p>
+        Unless otherwise stated, Townscribe and/or its licensors own the intellectual property rights for all material on Townscribe. All intellectual property rights are reserved. You may access this from Townscribe for your own personal use subjected to restrictions set in these terms and conditions.
+      </p>
 
-### Limitations of Liability
-In no event shall Townscribe, nor any of its officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this Website. 
+      <h2>User Content</h2>
+      <p>
+        In these Terms of Service, "Your Content" shall mean any audio, video text, images, or other material you choose to display on this Website (such as comments). By displaying Your Content, you grant Townscribe a non-exclusive, worldwide irrevocable, sub-licensable license to use, reproduce, adapt, publish, translate, and distribute it in any and all media.
+      </p>
 
-### Governing Law
-These Terms will be governed by and interpreted in accordance with the laws of your country/state, and you submit to the non-exclusive jurisdiction of the state and federal courts located there for the resolution of any disputes.
+      <h2>Limitations of Liability</h2>
+      <p>
+        In no event shall Townscribe, nor any of its officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this Website. 
+      </p>
+
+      <h2>Governing Law</h2>
+      <p>
+        These Terms will be governed by and interpreted in accordance with the laws of your country/state, and you submit to the non-exclusive jurisdiction of the state and federal courts located there for the resolution of any disputes.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.7;
+    color: #1e293b;
+  }
+
+  .legal-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
+  }
+
+  .effective-date {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .legal-content p {
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .legal-content hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 2.5rem 0;
+  }
+
+  .legal-content a {
+    color: #14b8a6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .legal-content a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .legal-container {
+      padding: 2rem 1rem;
+    }
+    .legal-content h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
