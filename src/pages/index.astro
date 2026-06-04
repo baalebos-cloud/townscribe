@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets'; // High-performance asset processing engine
 import BaseHead from '../components/BaseHead.astro';
@@ -17,6 +18,7 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<Analytics />
 		
 		{/* --- DECOUPLED DECAP SYSTEM ROUTING INTERCEPTOR --- */}
 		<script is:inline>
