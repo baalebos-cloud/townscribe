@@ -66,7 +66,7 @@ const finalImageUrl = typeof image === 'string'
 {seoKeyword && <meta name="keywords" content={seoKeyword} />}
 
 <!-- AUTOMATED ROBOTS STATE DIRECTIVE -->
-<meta name="robots" content={automatedRobotsIndex} />
+<meta name="robots" content="index, follow" />
 
 <!-- Open Graph / Facebook Meta Cards -->
 <meta property="og:type" content={pubDate ? "article" : "website"} />
