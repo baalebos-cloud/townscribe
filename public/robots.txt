@@ -1,0 +1,6 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Link to your automated XML sitemap
+Sitemap: https://news.townscribe.org/sitemap-index.xml
