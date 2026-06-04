@@ -1,21 +1,148 @@
-# Privacy Policy for Townscribe
+---
+import Layout from '../layouts/Layout.astro'; // Adjust this path if your main layout file is named differently
+---
 
-**Effective Date:** June 2026
+<Layout title="Privacy Policy - Townscribe">
+  <main class="legal-container">
+    <article class="legal-content">
+      <h1>Privacy Policy for Townscribe</h1>
+      <p class="effective-date"><strong>Effective Date:</strong> June 2026</p>
 
-At Townscribe, accessible from news.townscribe.org, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Townscribe and how we use it.
+      <p>
+        At Townscribe, accessible from <strong>news.townscribe.org</strong>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Townscribe and how we use it.
+      </p>
 
-### Log Files
-Townscribe follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+      <hr />
 
-### Cookies and Web Beacons
-Like any other website, Townscribe uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
+      <h2>Log Files</h2>
+      <p>
+        Townscribe follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+      </p>
 
-### Google DoubleClick DART Cookie (Crucial for AdSense)
-Google is one of the third-party vendors on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to townscribe.org and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – https://policies.google.com/technologies/ads
+      <h2>Cookies and Web Beacons</h2>
+      <p>
+        Like any other website, Townscribe uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
+      </p>
 
-### Our Advertising Partners
-Some of advertisers on our site may use cookies and web beacons. Our advertising partners include:
-* Google AdSense
+      <div class="highlight-box">
+        <h2>Google DoubleClick DART Cookie</h2>
+        <p>
+          Google is one of the third-party vendors on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to <strong>news.townscribe.org</strong> and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL:
+        </p>
+        <p class="link-wrapper">
+          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">
+            https://policies.google.com/technologies/ads
+          </a>
+        </p>
+      </div>
 
-### Contact Us
-If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at info@townscribe.org.
+      <h2>Our Advertising Partners</h2>
+      <p>Some of advertisers on our site may use cookies and web beacons. Our advertising partners include:</p>
+      <ul>
+        <li><strong>Google AdSense</strong></li>
+      </ul>
+
+      <h2>Contact Us</h2>
+      <p>
+        If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at 
+        <a href="mailto:info@townscribe.org" class="email-link">info@townscribe.org</a>.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.7;
+    color: #1e293b; /* Premium slate gray for readability */
+  }
+
+  .legal-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
+  }
+
+  .effective-date {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .legal-content p {
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .legal-content hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 2.5rem 0;
+  }
+
+  /* Styling for the Google AdSense specific section to make it look intentional */
+  .highlight-box {
+    background-color: #f8fafc;
+    border-left: 4px solid #14b8a6; /* Matches your footer teal link color */
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .highlight-box h2 {
+    margin-top: 0;
+  }
+
+  .legal-content ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .legal-content li {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-content a {
+    color: #14b8a6;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .legal-content a:hover {
+    text-decoration: underline;
+  }
+
+  .link-wrapper {
+    word-break: break-all; /* Prevents long URLs from breaking layout on mobile mobile devices */
+    font-size: 0.95rem !important;
+  }
+
+  .email-link {
+    border-bottom: 1px dashed #14b8a6;
+  }
+
+  @media (max-width: 640px) {
+    .legal-container {
+      padding: 2rem 1rem;
+    }
+    .legal-content h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
