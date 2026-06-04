@@ -1,8 +1,116 @@
-# Contact Us
+---
+import Layout from '../layouts/BlogPost.astro';
+---
 
-Have a question, feedback, or a story pitch for our writing team? We would love to hear from you. 
+<Layout
+	title="Contact Us - Townscribe Media"
+	description="Get in touch with the Townscribe editorial and support team."
+	pubDate={new Date('June 04, 2026')}
+>
+  <main class="contact-container">
+    <article class="contact-content">
+      <h1>Contact Us</h1>
+      
+      <p class="lead-text">
+        Have a question, feedback, or a story pitch for our writing team? We would love to hear from you.
+      </p>
 
-You can reach the Townscribe editorial and support team directly at our professional inbox:
-📧 **info@townscribe.org**
+      <div class="email-card">
+        <div class="card-icon">📧</div>
+        <div class="card-info">
+          <p class="card-label">You can reach the Townscribe editorial and support team directly at our professional inbox:</p>
+          <a href="mailto:info@townscribe.org" class="email-link">info@townscribe.org</a>
+        </div>
+      </div>
 
-We typically respond to all inquiries within 24–48 business hours.
+      <p class="notice-text">
+        We typically respond to all inquiries within 24–48 business hours.
+      </p>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.7;
+    color: #1e293b;
+  }
+
+  .contact-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.5rem;
+    color: #0f172a;
+  }
+
+  .lead-text {
+    font-size: 1.2rem;
+    color: #334155;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Elegant card styling for your brand email */
+  .email-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #14b8a6; /* Premium teal accent matching your footer */
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2.5rem;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .card-label {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.05rem;
+    color: #475569;
+  }
+
+  .email-link {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #14b8a6;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .email-link:hover {
+    color: #0d9488;
+    text-decoration: underline;
+  }
+
+  .notice-text {
+    font-style: italic;
+    color: #64748b;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .contact-container {
+      padding: 2rem 1rem;
+    }
+    .contact-content h1 {
+      font-size: 2rem;
+    }
+    .email-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .email-link {
+      font-size: 1.15rem;
+    }
+  }
+</style>
