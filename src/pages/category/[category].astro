@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
 // 1. Generate static URL paths for all 8 required categories
+export const prerender = true;
 export async function getStaticPaths() {
   const categories = [
     'politics', 'business', 'entertainment', 'technology', 
