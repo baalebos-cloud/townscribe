@@ -10,7 +10,7 @@ category: news
 heroImage: /1000292329.jpg
 seo_divider: ""
 seoKeyword: "Ogbomosho, Oyo, kidnap, "
-seoTitle: Six Arrested As Ogbomoso Kidnap Network Unravels Further
+seoTitle: "BREAKING: Six Arrested As Ogbomoso Kidnap Network Unravels Further"
 seoDescription: A major breakthrough has been recorded in the investigation of
   the recent school abduction in Ogbomoso, Oyo State, following the arrest of
   six suspected
