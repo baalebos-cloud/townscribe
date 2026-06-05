@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import SEO from '../components/SEO.astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
@@ -92,6 +93,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 
         <BaseHead title={finalTitle} description={finalDescription} />
         <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
+        <Analytics />
 
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
 

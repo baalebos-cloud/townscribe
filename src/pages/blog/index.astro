@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -15,6 +16,7 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<Analytics />
 		<style>
 			main {
 				width: 960px;
