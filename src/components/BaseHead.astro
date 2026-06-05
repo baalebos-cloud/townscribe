@@ -66,7 +66,7 @@ const finalImageUrl = typeof image === 'string'
 {seoKeyword && <meta name="keywords" content={seoKeyword} />}
 
 <!-- AUTOMATED ROBOTS STATE DIRECTIVE -->
-<meta name="robots" content="index, follow" />
+<meta name="robots" content={automatedRobotsIndex} />
 
 <!-- Open Graph / Facebook Meta Cards -->
 <meta property="og:type" content={pubDate ? "article" : "website"} />
@@ -208,4 +208,25 @@ const finalImageUrl = typeof image === 'string'
     } else {
         initPush();
     }
+</script>
+
+<!-- GOOGLE AD BLOCKING RECOVERY ENGINE -->
+<script async src="https://fundingchoicesmessages.google.com/i/pub-2369234321458849?ers=1"></script>
+<script is:inline>
+  (function() {
+    function signalGooglefcPresent() {
+      if (!window.frames['googlefcPresent']) {
+        if (document.body) {
+          const iframe = document.createElement('iframe'); 
+          iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; 
+          iframe.style.display = 'none'; 
+          iframe.name = 'googlefcPresent'; 
+          document.body.appendChild(iframe);
+        } else {
+          setTimeout(signalGooglefcPresent, 0);
+        }
+      }
+    }
+    signalGooglefcPresent();
+  })();
 </script>
