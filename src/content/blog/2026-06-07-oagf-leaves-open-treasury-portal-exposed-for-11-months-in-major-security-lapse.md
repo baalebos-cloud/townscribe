@@ -2,10 +2,10 @@
 title: OAGF Leaves Open Treasury Portal Exposed for 11 Months in Major Security Lapse
 description: The Office of the Accountant-General of the Federation (OAGF) has
   allowed the SSL certificate on its flagship Open Treasury Portal to expire
-pubDate: 2026-06-07T22:47:00.000+01:00
-author: TownScribe Staff
-authorRole: Writer
-category: world
+pubDate: 2026-06-07T22:48:00.000+01:00
+author: Afolabi Olaiya Idowu
+authorRole: Admin
+category: business
 heroImage: /oagfs.png
 seo_divider: ""
 seoKeyword: Accountant-General of the Federation, Treasury Portal, SSL
