@@ -5,9 +5,9 @@ description: "Weeks of covert intelligence and precision action ended with one
   Task Force (North East) "
 pubDate: 2026-06-07T10:12:00.000+01:00
 author: Afolabi Olaiya Idowu
-authorRole: Writer
-category: world
-heroImage: /townscribe-img.jpg
+authorRole: Admin
+category: news
+heroImage: /1000292462.jpg
 seo_divider: ""
 seoKeyword: "Boko Haram, Nigerian Army, "
 seoTitle: 360 Hostages Freed as Nigerian Forces Break Boko Haram Stronghold in Mandara
