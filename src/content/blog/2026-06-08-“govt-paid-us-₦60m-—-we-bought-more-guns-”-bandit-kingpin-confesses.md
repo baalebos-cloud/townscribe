@@ -3,7 +3,7 @@ title: "VIDEO: “Govt Paid Us ₦60M — We Bought More Guns!” Bandit Kingpin
 description: In a startling BBC interview, a masked bandit leader says a ₦60
   million ransom for abducted schoolgirls bought more rifles and fuelled
   violence.
-pubDate: 2026-06-08T20:52:00.000+01:00
+pubDate: 2026-06-08T21:27:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
@@ -11,7 +11,7 @@ heroImage: /confessing-bandit.jpeg
 youtubeUrl: https://youtu.be/0ceieo05gKk
 seo_divider: ""
 seoKeyword: "Banditry, Kidnappings, Ransom, Federal Government, "
-seoTitle: “Govt Paid Us ₦60M — We Bought More Guns!” Bandit Kingpin Confesses
+seoTitle: "VIDEO: “Govt Paid Us ₦60M — We Bought More Guns!” Bandit Kingpin Confesses"
 seoDescription: In a startling BBC interview, a masked bandit leader says a ₦60
   million ransom for abducted schoolgirls bought more rifles and fuelled
   violence.
