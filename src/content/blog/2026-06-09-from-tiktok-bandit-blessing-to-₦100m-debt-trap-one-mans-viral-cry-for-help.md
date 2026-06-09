@@ -7,7 +7,7 @@ pubDate: 2026-06-09T13:23:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /1000292278.jpg
+heroImage: /bandits.webp
 seo_divider: ""
 seoKeyword: "Giveaway, Bandits, "
 seoTitle: "From TikTok Bandit \"Blessing\" to ₦100M Debt Trap: One Man's Viral
