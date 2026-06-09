@@ -5,7 +5,7 @@ description: Nigerian music mogul Don Jazzy has opened up about the emotional
 pubDate: 2026-06-09T09:45:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
-category: news
+category: entertainment
 heroImage: /1000292669.jpg
 seo_divider: ""
 seoKeyword: "Don Jazzy, "
