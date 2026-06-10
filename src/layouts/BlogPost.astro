@@ -71,6 +71,12 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 
 <html lang="en">
     <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+
         <title>{finalTitle}</title>
         <meta name="description" content={finalDescription} />
         <link rel="canonical" href={canonicalURL} />
@@ -92,7 +98,8 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
         <meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', 'https://news.townscribe.org')} />
 
         <BaseHead title={finalTitle} description={finalDescription} />
-        <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" />
+        
+        <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" noindex={false} />
         <Analytics />
 
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d503922d74b2443ca33ae2ba8bd66afc"}'></script>
@@ -109,7 +116,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
             .meta-attribution { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5em; text-transform: capitalize; }
             .view-panel { font-size: 0.9rem; color: rgb(var(--gray)); margin-top: 0.5rem; font-weight: 500; text-align: center; display: flex; align-items: center; justify-content: center; gap: 1rem; }
 
-            /* BOOKMARK BUTTON */
             .bookmark-btn { display: inline-flex; align-items: center; gap: 0.4rem; background: none; border: 1.5px solid #e5e7eb; border-radius: 20px; padding: 0.3rem 0.85rem; font-size: 0.85rem; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.2s ease; font-family: system-ui, sans-serif; }
             .bookmark-btn:hover { border-color: #dc2626; color: #dc2626; }
             .bookmark-btn.bookmarked { background: #dc2626; border-color: #dc2626; color: #fff; }
@@ -198,7 +204,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 
                     <slot />
 
-                    <!-- INJECTED IN-ARTICLE AD UNIT -->
                     <InArticleAd />
 
                     <div class="nav-pagination">
@@ -260,7 +265,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
         <div id="bookmark-toast" class="bookmark-toast"></div>
         <Footer />
 
-        <!-- BOOKMARK ENGINE -->
         <script is:inline define:vars={{ 
             AUTH_API,
             currentSlug,
@@ -349,7 +353,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
             }
         </script>
 
-        <!-- REMARK42 -->
         <script is:inline define:vars={{ pageId, title }}>
             window.remark_config = {
                 host: 'https://comments.townscribe.org',
@@ -376,7 +379,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
             }
         </script>
 
-        <!-- YOUTUBE TIMELINE ENGINE -->
         {youtubeUrl && (
             <script is:inline src="https://www.youtube.com/iframe_api"></script>
             <script is:inline define:vars={{ extractedVideoId, finalRedirectTarget }}>
@@ -420,7 +422,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
             </script>
         )}
 
-        <!-- VIEW COUNTER -->
         <script is:inline define:vars={{ pageId }}>
             const workerUrl = "https://townscribe-view-counter.jayeolaoluwadamilare.workers.dev";
             fetch(`${workerUrl}?slug=${window.location.pathname}`, { method: "POST" })
@@ -435,7 +436,6 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
                 });
         </script>
 
-        <!-- REACTION ENGINE -->
         <script>
             const articlePath = window.location.pathname;
             const storageKey = `townscribe_react_${articlePath}`;
