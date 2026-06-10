@@ -32,9 +32,7 @@ const {
 
 // --- AUTOMATED ENGINE: FINALIZE INDEXING DIRECTIVE ---
 // If the writer filled out all SEO panel requirements, allow indexing. Otherwise, protect the site.
-const automatedRobotsIndex = (seoTitle && seoDescription && seoKeyword) 
-	? 'index, follow' 
-	: 'noindex, nofollow';
+const automatedRobotsIndex = 'index, follow';
 
 const finalTitle = seoTitle || title;
 const finalDescription = seoDescription || description;
