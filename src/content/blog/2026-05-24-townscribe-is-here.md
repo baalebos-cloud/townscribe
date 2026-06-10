@@ -1,6 +1,6 @@
 ---
 title: TownScribe is here
-description: WELCOME TO TownScribe
+description: WELCOME TO TownScribe Media
 pubDate: 2026-05-24T18:58:00.000+01:00
 ---
 
