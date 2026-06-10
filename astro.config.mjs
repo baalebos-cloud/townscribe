@@ -1,7 +1,6 @@
 // @ts-check
 
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import { defineConfig, fontProviders } from 'astro/config';
 
@@ -14,7 +13,7 @@ export default defineConfig({
 			enabled: true,
 		},
 	}),
-	integrations: [mdx(), sitemap()],
+	integrations: [mdx()],
 	fonts: [
 		{
 			provider: fontProviders.local(),
