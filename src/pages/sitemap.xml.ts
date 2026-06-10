@@ -5,6 +5,9 @@ export const GET: APIRoute = async ({ site }) => {
   // 1. Fetch your actual blog posts collection dynamically
   const posts = await getCollection('blog');
   
+  // Clean trailing slash from base site URL to prevent double slashes
+  const baseUrl = site ? site.toString().replace(/\/$/, '') : 'https://news.townscribe.org';
+  
   // 2. Base platform utility pages
   const basePages = [
     '',
@@ -35,16 +38,19 @@ export const GET: APIRoute = async ({ site }) => {
 
   // 4. Generate XML tags for base configurations and clean categories
   const pageEntries = allStaticRoutes
-    .map(route => `<url><loc>${site}${route}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`)
+    .map(route => `<url><loc>${baseUrl}${route}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`)
     .join('');
 
   // 5. Generate XML tags for individual blog records
   const blogEntries = posts
     .map(post => {
-      const postDate = post.data.pubDate ? new Date(post.data.pubDate).toISOString() : new Date().toISOString();
+      // Fallback fallback selector if post.slug is not explicitly assigned by your schema
+      const slug = post.slug || post.id || post.data?.slug;
+      const postDate = post.data?.pubDate ? new Date(post.data.pubDate).toISOString() : new Date().toISOString();
+      
       return `
         <url>
-          <loc>${site}/blog/${post.slug}</loc>
+          <loc>${baseUrl}/blog/${slug}</loc>
           <lastmod>${postDate}</lastmod>
           <changefreq>weekly</changefreq>
           <priority>1.0</priority>
