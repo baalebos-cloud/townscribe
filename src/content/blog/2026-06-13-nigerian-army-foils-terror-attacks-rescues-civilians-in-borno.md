@@ -7,7 +7,7 @@ pubDate: 2026-06-13T20:53:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /1000293717.webp
 seo_divider: ""
 seoKeyword: Nigerian Army, OPHK, NORTH-EAST
 seoTitle: Nigerian Army Foils Terror Attacks, Rescues Civilians in Borno
