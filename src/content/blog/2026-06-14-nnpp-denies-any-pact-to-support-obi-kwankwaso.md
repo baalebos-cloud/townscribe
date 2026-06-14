@@ -1,5 +1,5 @@
 ---
-title: NNPP Denies Any Pact To Support Obi Kwankwaso
+title: "2027: NNPP Denies Any Pact To Support Obi Kwankwaso"
 description: The New Nigeria People’s Party (NNPP) has firmly denied entering
   into any secret pact or arrangement to collapse its structure in support of
   Peter Obi
