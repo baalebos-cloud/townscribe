@@ -10,7 +10,7 @@ category: politics
 heroImage: /1000294072.jpg
 seo_divider: ""
 seoKeyword: "NNPP, NDC, OBI-KWANKWASO, POLITICS, 2027 election "
-seoTitle: NNPP Denies Any Pact To Support Obi Kwankwaso
+seoTitle: "2027: NNPP Denies Any Pact To Support Obi Kwankwaso"
 seoDescription: The New Nigeria People’s Party (NNPP) has firmly denied entering
   into any secret pact or arrangement to collapse its structure in support of
   Peter Obi
