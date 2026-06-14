@@ -58,8 +58,8 @@ collections:
         default: "world"
         options:
           - { label: "Articles", value: "articles" }
-          - {label: "News", value: "news" }
-          - {label: "Pigin News", value: "pigin news" }
+          - { label: "News", value: "news" }
+          - { label: "Pigin News", value: "pigin news" }
           - { label: "Politics", value: "politics" }
           - { label: "Business", value: "business" }
           - { label: "Entertainment", value: "entertainment" }
