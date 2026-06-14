@@ -7,7 +7,7 @@ pubDate: 2026-06-14T17:32:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /1000294159.jpg
 seo_divider: ""
 seoKeyword: "Ido Ekiti, "
 seoTitle: Mother of Three Hacked to Death in Ido Ekiti
