@@ -9,26 +9,20 @@ backend:
   auth_token_endpoint: /sites/95458850-880f-4740-8e26-715c035f3ed4/token
   gateway_url: https://gateway.decapbridge.com
 
-  # See who did what (optional)
   commit_messages:
-    create: Create {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-    update: Update {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-    delete: Delete {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-    uploadMedia: Upload “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
-    deleteMedia: Delete “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
+    create: Create {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    update: Update {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    delete: Delete {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    uploadMedia: Upload "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    deleteMedia: Delete "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
     openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
 
-# Updated branding logo to your native townscribe image asset
 logo_url: /townscribe-img.jpg
-
-# Add site links in Decap CMS (optional)
 site_url: https://townscribe.org
-
-# Activates "Editorial Workflow" for a neat Drafts vs Published kanban board layout
 publish_mode: editorial_workflow
 
-media_folder: "public" 
-public_folder: "/"     
+media_folder: "public"
+public_folder: "/"
 
 collections:
   - name: "blog"
@@ -37,7 +31,6 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      # --- FLEXIBLE HEADLINE TARGET ENGINE ---
       - label: "Title"
         name: "title"
         widget: "string"
@@ -46,12 +39,10 @@ collections:
 
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Publish Date", name: "pubDate", widget: "datetime" }
-      
-      # --- WRITER & AUTHOR ATTRIBUTION ---
+
       - { label: "Author Name", name: "author", widget: "string", default: "TownScribe Staff", hint: "Type your name as it should appear on the article" }
       - { label: "Author Role", name: "authorRole", widget: "select", options: ["Admin", "Writer", "Contributor"], default: "Writer" }
 
-      # --- AUTOMATED CATEGORIES LINKING BAR ---
       - label: "Category"
         name: "category"
         widget: "select"
@@ -59,7 +50,7 @@ collections:
         options:
           - { label: "Articles", value: "articles" }
           - { label: "News", value: "news" }
-          - { label: "Pigin News", value: "pigin news" }
+          - { label: "Pigin News", value: "pigin-news" }
           - { label: "Politics", value: "politics" }
           - { label: "Business", value: "business" }
           - { label: "Entertainment", value: "entertainment" }
@@ -67,42 +58,37 @@ collections:
           - { label: "Health", value: "health" }
           - { label: "Sport", value: "sport" }
           - { label: "World", value: "world" }
-          - { label: "News", value: "news" }
           - { label: "Job", value: "job" }
 
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
-      
-      # --- CONTENT BODY PROSE ENFORCER (With Real-Time Pre-Save Warning) ---
+
       - label: "Body"
         name: "body"
         widget: "markdown"
-        # pattern: ['^([^#\n].*){2,}$', "Readability Pre-Flight: Ensure your body copy utilizes short paragraphs (~18 words), active verbs, and transition hooks (However, Therefore, Furthermore) before saving."]
         hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
-      # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
-      -{ label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
+      # ✅ Fixed: added space after dash
+      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
 
-      # --- ADVANCED SEO CONSOLE ENGINE ---
       - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
-      
+
       - { label: "SEO Focus Keyword", name: "seoKeyword", widget: "string", required: true, hint: "Mandatory: The primary search phrase you want this article to rank for." }
-      
+
       - label: "SEO Meta Title"
         name: "seoTitle"
         widget: "string"
         required: true
         pattern: ['^.{10,200}$', "Optimization Error: Meta title should be a complete thought."]
         hint: "Mandatory: Custom search snippet title."
-      
+
       - label: "SEO Meta Description"
         name: "seoDescription"
         widget: "string"
         required: true
         max_length: 160
         pattern: ['^.{120,160}$', "Optimization Error: Meta descriptions must be between 120 and 160 characters to fit search screens."]
-        hint: "Mandatory: Brief summary between 120 and 160 characters for search engines. The box will stop typing when you hit the limit."
+        hint: "Mandatory: Brief summary between 120 and 160 characters for search engines."
 
-      # --- LIVE PRE-PUBLISH INDEX GATEKEEPER ---
       - label: "🟢 LIVE SEO INDEX STATUS (Type 'PASS' to verify)"
         name: "seo_gatekeeper"
         widget: "string"
