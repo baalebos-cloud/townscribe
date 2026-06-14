@@ -57,6 +57,9 @@ collections:
         widget: "select"
         default: "world"
         options:
+          - { label: "Articles", value: "articles" }
+          - {label: "News", value: "news" }
+          - {label: "Pigin News", value: "pigin news" }
           - { label: "Politics", value: "politics" }
           - { label: "Business", value: "business" }
           - { label: "Entertainment", value: "entertainment" }
@@ -77,7 +80,7 @@ collections:
         hint: "Readability Rule: Write crisp paragraphs (target ~18 words), lead with active verbs, and inject clear transition phrases."
 
       # --- AUTOMATED YOUTUBE REDIRECT TIMELINE ENGINE ---
-      - { label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
+      -{ label: "YouTube Video URL", name: "youtubeUrl", widget: "string", required: false, hint: "Paste the full YouTube link here" }
 
       # --- ADVANCED SEO CONSOLE ENGINE ---
       - { label: "---- SEO META CONSOLE ----", name: "seo_divider", widget: "hidden", default: "" }
