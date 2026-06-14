@@ -7,7 +7,7 @@ pubDate: 2026-06-14T19:02:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /1000294158.jpg
 seo_divider: ""
 seoKeyword: Senator Adams Oshiomhole has launched a blistering attack on the
   Nigerian National Petroleum Company Limited (NNPCL), describing it as “a huge
