@@ -8,6 +8,10 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://news.townscribe.org',
 	output: 'server',
+	
+	// Force Astro to strictly match and generate routes without trailing slashes
+	trailingSlash: 'never',
+
 	adapter: vercel({
 		webAnalytics: {
 			enabled: true,
