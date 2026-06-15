@@ -6,7 +6,7 @@ pubDate: 2026-06-15T20:22:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /1000293717.webp
+heroImage: /1000294415.jpg
 seo_divider: ""
 seoKeyword: Troop, Gen Rabe Abubakar, Hajiya Amina Abubakar
 seoTitle: "BREAKING: Troops Rescue Wife of Late General Rabe From Bandit Captivity"
