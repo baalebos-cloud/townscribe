@@ -5,7 +5,7 @@ description: The brutal killing of four Nigerian generals by terrorists and
 pubDate: 2026-06-15T15:15:00.000+01:00
 author: TownScribe Staff
 authorRole: Writer
-category: world
+category: articles
 heroImage: /1000294281.jpg
 seo_divider: ""
 seoKeyword: "Insecurity, "
