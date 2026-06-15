@@ -1,5 +1,6 @@
 ---
-title: Oshiomhole Accuses Akpabio of NNPCL Cover-Up Over Nepotism
+title: Oshiomhole Claims Akpabio Allegedly Shielded NNPCL Probe Over Daughter’s
+  Position
 description: In a dramatic escalation of long-simmering tensions inside
   Nigeria’s upper legislative chamber, Senator Adams Oshiomhole
 pubDate: 2026-06-15T19:53:00.000+01:00
@@ -9,7 +10,8 @@ category: news
 heroImage: /1000294158.jpg
 seo_divider: ""
 seoKeyword: Oshiomole, Akpabio, NNPCL, Nepotism
-seoTitle: Oshiomhole Accuses Akpabio of NNPCL Cover-Up Over Nepotism
+seoTitle: Oshiomhole Claims Akpabio Allegedly Shielded NNPCL Probe Over
+  Daughter’s Position
 seoDescription: In a dramatic escalation of long-simmering tensions inside
   Nigeria’s upper legislative chamber, Senator Adams Oshiomhole
 seo_gatekeeper: PASS
