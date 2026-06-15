@@ -6,7 +6,7 @@ pubDate: 2026-06-15T17:44:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /1000291856.png
+heroImage: /1000294314.jpg
 seo_divider: ""
 seoKeyword: AGRO Nigeria, Court, ADC, ACCORD
 seoTitle: AGRO Nigeria Slams Court Ruling, Seeks Probe of Judge
@@ -24,7 +24,7 @@ According to him, the decision could be interpreted as an attempt to diminish th
 
 He specifically called on the National Judicial Council (NJC) to investigate the presiding judge, Justice Peter Lifu, over what he termed a controversial judgment that has generated widespread public debate.
 
-“It is difficult to understand the legal foundation of a ruling seeking the deregistration of parties that currently have elected governors and lawmakers serving at both state and national levels,” Fadumiye said.
+*“It is difficult to understand the legal foundation of a ruling seeking the deregistration of parties that currently have elected governors and lawmakers serving at both state and national levels,”* Fadumiye said.
 
 The AGRO Nigeria leader argued that the ADC and Accord Party remain active political platforms with elected officials occupying strategic positions across the country, making the judgment particularly contentious.
 
@@ -32,7 +32,7 @@ He urged the NJC to thoroughly review the circumstances surrounding the ruling a
 \
 Fadumiye also called on the leadership of both the ADC and Accord Party to immediately challenge the judgment at the Court of Appeal, insisting that all lawful avenues should be explored to safeguard the parties’ rights and participation in Nigeria’s democratic process.
 
-“The affected parties must seek immediate judicial redress to ensure that their constitutional rights are protected and that they remain eligible to participate fully in future elections, including the forthcoming governorship polls in Ekiti and Osun states,” he stated.
+“*The affected parties must seek immediate judicial redress to ensure that their constitutional rights are protected and that they remain eligible to participate fully in future elections, including the forthcoming governorship polls in Ekiti and Osun states,*” he stated.
 
 He further warned that judicial actions perceived as weakening opposition parties could have far-reaching consequences for democratic governance and political stability in Nigeria.
 
@@ -40,4 +40,4 @@ Emphasizing the importance of political plurality, Fadumiye noted that democracy
 
 He therefore urged the judiciary to uphold its reputation as an impartial institution committed to justice, fairness, and the rule of law.
 
-“The judiciary must continue to serve as the guardian of democracy and constitutional order. Nigeria’s democratic future depends on the protection of justice, fairness, and political plurality,” he said.
+“*The judiciary must continue to serve as the guardian of democracy and constitutional order. Nigeria’s democratic future depends on the protection of justice, fairness, and political plurality*,” he said.
