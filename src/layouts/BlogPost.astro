@@ -37,12 +37,13 @@ const allPosts = (await getCollection('blog')).sort(
         new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
 );
 
-const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.id === currentSlug);
+// Enhanced matching fallback to support multiple Astro collection version definitions
+const currentPostIndex = allPosts.findIndex((post: CollectionEntry<'blog'>) => post.id === currentSlug || (post as any).slug === currentSlug);
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
 
 const relatedPosts = allPosts
-    .filter((post: CollectionEntry<'blog'>) => post.id !== currentSlug)
+    .filter((post: CollectionEntry<'blog'>) => post.id !== currentSlug && (post as any).slug !== currentSlug)
     .slice(0, 5);
 
 function getYouTubeId(url: string | undefined) {
@@ -81,24 +82,8 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
         <meta name="description" content={finalDescription} />
         <link rel="canonical" href={canonicalURL} />
 
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={canonicalURL} />
-        <meta property="og:title" content={finalTitle} />
-        <meta property="og:description" content={finalDescription} />
-        <meta property="og:image" content={new URL(heroImage || '/townscribe-img.jpg', 'https://news.townscribe.org')} />
-        {pubDate && <meta property="article:published_time" content={new Date(pubDate).toISOString()} />}
-        {updatedDate && <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />}
-        <meta property="article:author" content={author || "TownScribe Staff"} />
-        <meta property="article:section" content={category || "World"} />
-
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={canonicalURL} />
-        <meta property="twitter:title" content={finalTitle} />
-        <meta property="twitter:description" content={finalDescription} />
-        <meta property="twitter:image" content={new URL(heroImage || '/townscribe-img.jpg', 'https://news.townscribe.org')} />
-
+        {/* Note: Redundant hardcoded OpenGraph metadata blocks removed to lean on unified components */}
         <BaseHead title={finalTitle} description={finalDescription} />
-        
         <SEO title={finalTitle} description={finalDescription} image={heroImage || '/townscribe-img.jpg'} type="article" noindex={false} />
         <Analytics />
 
@@ -279,6 +264,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
             let isBookmarked = false;
 
             function showToast(msg) {
+                if (!bookmarkToast) return;
                 bookmarkToast.textContent = msg;
                 bookmarkToast.classList.add('show');
                 setTimeout(() => bookmarkToast.classList.remove('show'), 2500);
@@ -286,6 +272,7 @@ const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 
             function setBookmarked(state) {
                 isBookmarked = state;
+                if (!bookmarkBtn || !bookmarkLabel || !bookmarkIcon) return;
                 bookmarkBtn.classList.toggle('bookmarked', state);
                 bookmarkLabel.textContent = state ? 'Saved' : 'Save';
                 bookmarkIcon.setAttribute('fill', state ? 'currentColor' : 'none');
