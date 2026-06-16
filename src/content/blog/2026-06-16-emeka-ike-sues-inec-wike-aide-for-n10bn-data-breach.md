@@ -3,11 +3,11 @@ title: Emeka Ike Sues INEC, Wike Aide for N10bn Data Breach
 description: Veteran Nollywood actor and aspiring politician Emeka Ike has filed
   a landmark ₦10 billion lawsuit against the Independent National Electoral
   Commission (INEC)
-pubDate: 2026-06-16T09:29:00.000+01:00
+pubDate: 2026-06-16T09:30:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /1000294501.jpg
 seo_divider: ""
 seoKeyword: "Emeka Ike, INEC, Lere Olayinka "
 seoTitle: Emeka Ike Sues INEC, Wike Aide for N10bn Data Breach
