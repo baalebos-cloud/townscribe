@@ -3,7 +3,7 @@ title: Court Remands Activist Sowore in Kuje Prison Amid Bias Claims
 description: In a development that has reignited debates over judicial
   impartiality, free speech, and political dissent in Nigeria, the Federal High
   Court
-pubDate: 2026-06-22T13:00:00.000+01:00
+pubDate: 2026-06-22T13:23:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
