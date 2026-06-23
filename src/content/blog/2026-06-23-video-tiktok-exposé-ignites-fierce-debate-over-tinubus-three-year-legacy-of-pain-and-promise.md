@@ -8,7 +8,7 @@ pubDate: 2026-06-23T09:44:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: politics
-heroImage: ""
+heroImage: /tinubu-new.jpeg
 youtubeUrl: https://youtu.be/s3SiNBd_KWk?si=Ib3gupEeXt-DABDI
 seo_divider: ""
 seoKeyword: Video, Tinubu's three years, Social media, townscribetv
