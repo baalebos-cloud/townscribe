@@ -3,7 +3,7 @@ title: "Senate Passes Landmark State Police Bill: Nigeria's Security
   Architecture Poised for Historic Overhaul"
 description: In a decisive move that could reshape the nation's long-troubled
   security landscape, the Nigerian Senate on Wednesday passed
-pubDate: 2026-06-24T17:47:00.000+01:00
+pubDate: 2026-06-24T18:02:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
