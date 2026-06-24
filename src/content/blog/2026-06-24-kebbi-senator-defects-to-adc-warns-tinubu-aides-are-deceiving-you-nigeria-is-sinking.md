@@ -8,7 +8,7 @@ pubDate: 2026-06-24T17:25:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /1000295575.jpg
 seo_divider: ""
 seoKeyword: Maidoki, ADC, Tinubu, Kebbi Senator
 seoTitle: 'Kebbi Senator Defects to ADC, Warns Tinubu: "Aides Are Deceiving You
