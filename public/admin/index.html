@@ -6,9 +6,23 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>TownScribe Content Manager</title>
     
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <link href="https://admin.townscribe.org/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>
