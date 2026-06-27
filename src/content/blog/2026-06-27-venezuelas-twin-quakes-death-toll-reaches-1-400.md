@@ -1,5 +1,5 @@
 ---
-title: "Venezuela's Twin Quakes: Death Toll Reaches 1,400+"
+title: "Venezuela's Twin Quakes: 1,400+ Confirmed Dead"
 description: "In a devastating blow to a country already strained by years of
   challenges, two powerful earthquakes struck northern Venezuela "
 pubDate: 2026-06-27T19:45:00.000+01:00
