@@ -1,5 +1,5 @@
 ---
-title: Canada Produces Stoppage-Time Magic to Storm into World Cup Last 16
+title: Eustaquio’s Stoppage-Time Thunderbolt Propels Canada Into Historic Last 16
 description: "In a match that tested nerves, resilience, and belief until the
   final seconds, Canada delivered one of the most dramatic results in its soccer
   history. "
@@ -10,7 +10,7 @@ category: sport
 heroImage: /1000296557.jpg
 seo_divider: ""
 seoKeyword: Canada vs South Africa, last 16
-seoTitle: Canada Produces Stoppage-Time Magic to Storm into World Cup Last 16
+seoTitle: Eustaquio’s Stoppage-Time Thunderbolt Propels Canada Into Historic Last 16
 seoDescription: "In a match that tested nerves, resilience, and belief until the
   final seconds, Canada delivered one of the most dramatic results in its soccer
   history. "
