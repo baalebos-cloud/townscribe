@@ -1,5 +1,5 @@
 ---
-title: "First Lady Fires Back: Akara Critics Won't Stop Us"
+title: "First Lady Fires Back: \"Akara Critics Won't Stop Us\""
 description: "In a no-nonsense response that's lighting up social media,
   Nigeria’s First Lady, Senator Oluremi Tinubu, has clapped back at fierce
   criticism "
