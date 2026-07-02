@@ -1,5 +1,5 @@
 ---
-title: "*EFCC Hunts 61-Year-Old Ekiti Native in Major Forgery and Fraud Probe"
+title: EFCC Hunts 61-Year-Old Ekiti Native in Major Forgery and Fraud Probe
 description: Anti-graft agency issues public wanted notice as investigation into
   alleged conspiracy and false pretence deepens, urging nationwide tips on
   suspect's whereabouts
