@@ -6,7 +6,7 @@ pubDate: 2026-07-02T20:23:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: world
-heroImage: /ekunola.jpeg
+heroImage: /ekunolaa.jpeg
 seo_divider: ""
 seoKeyword: "Ekiti , ADC, Dr. Dele Ekunola, "
 seoTitle: "Pain to Power: ADC Ekiti Launches Post-Election Ad-Hoc Committees"
