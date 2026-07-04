@@ -1,18 +1,15 @@
 ---
-title: Iran's New Supreme Leader Barred from Father's Funeral Amid Security Fears
-description: Mojtaba Khamenei's request to attend slain Ayatollah Ali Khamenei's
-  burial rites denied by IRGC officials citing assassination risks, as massive
-  multi-day funeral processions grip Tehran and beyond.
+title: "Iran's New Supreme Leader Barred from Father's Funeral Amid Security Fears"
+description: "Mojtaba Khamenei's request to attend slain Ayatollah Ali Khamenei's burial rites denied by IRGC officials citing assassination risks, as massive multi-day funeral processions grip Tehran and beyond."
 pubDate: 2026-07-04T15:51:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: world
 heroImage: /mojtaba-khamenei.webp
 seo_divider: ""
-seoKeyword: "Iran Supreme Leader, "
-seoTitle: Iran's New Supreme Leader Barred from Father's Funeral Amid Security Fears
-seoDescription: " In a striking sign of the perilous security landscape gripping
-  post-war Iran, the country's new Supreme Leader, Mojtaba Khamenei,"
+seoKeyword: "Iran Supreme Leader"
+seoTitle: "Iran's New Supreme Leader Barred from Father's Funeral Amid Security Fears"
+seoDescription: "In a striking sign of the perilous security landscape gripping post-war Iran, the country's new Supreme Leader, Mojtaba Khamenei,"
 seo_gatekeeper: PASS
 ---
 **TEHRAN** — In a striking sign of the perilous security landscape gripping post-war Iran, the country's new Supreme Leader, Mojtaba Khamenei, has reportedly been prevented from publicly attending his father's funeral amid fears he could be assassinated or his location compromised.
