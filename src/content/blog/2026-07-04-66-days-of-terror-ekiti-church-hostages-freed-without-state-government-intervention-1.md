@@ -1,8 +1,6 @@
 ---
-title: "66 Days of Terror: Ekiti Church Hostages Freed Without State Government
-  Intervention"
-description: Survivors return broken after bandit ordeal that claimed a pastor
-  and one captive — with zero official rescue reported.
+title: "66 Days of Terror: Ekiti Church Hostages Freed Without State Government Intervention"
+description: "Survivors return broken after bandit ordeal that claimed a pastor and one captive — with zero official rescue reported."
 pubDate: 2026-07-04T14:18:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
@@ -10,12 +8,9 @@ category: news
 heroImage: /1000298128.jpg
 youtubeUrl: https://youtube.com/shorts/eLyqtv1HmeU?si=ApiKueEjMF3G2V5H
 seo_divider: ""
-seoKeyword: "Ekiti kidnapped victims, "
-seoTitle: "66 Days of Terror: Ekiti Church Hostages Freed Without State
-  Government Intervention"
-seoDescription: "In a story that blends relief with profound frustration, 14
-  surviving worshippers abducted from a Christ Apostolic Church (CAC) crusade in
-  Eda Oniyo-Ekiti "
+seoKeyword: "Ekiti kidnapped victims"
+seoTitle: "66 Days of Terror: Ekiti Church Hostages Freed Without State Government Intervention"
+seoDescription: "In a story that blends relief with profound frustration, 14 surviving worshippers abducted from a Christ Apostolic Church (CAC) crusade in Eda Oniyo-Ekiti"
 seo_gatekeeper: PASS
 ---
 Ado-Ekiti, Nigeria – July 4, 2026 — In a story that blends relief with profound frustration, 14 surviving worshippers abducted from a Christ Apostolic Church (CAC) crusade in Eda Oniyo-Ekiti have regained their freedom after 66 harrowing days in the hands of terrorists. 
