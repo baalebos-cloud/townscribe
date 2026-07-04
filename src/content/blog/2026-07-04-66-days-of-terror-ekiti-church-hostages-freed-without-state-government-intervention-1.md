@@ -8,6 +8,7 @@ author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
 heroImage: /1000298128.jpg
+youtubeUrl: https://youtube.com/shorts/eLyqtv1HmeU?si=ApiKueEjMF3G2V5H
 seo_divider: ""
 seoKeyword: "Ekiti kidnapped victims, "
 seoTitle: "66 Days of Terror: Ekiti Church Hostages Freed Without State
