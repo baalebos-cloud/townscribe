@@ -1,20 +1,15 @@
 ---
-title: 'Be Disciplined or Fail Nigeria": Nigerian Army Inspires Kano Youth with
-  Careers, Nation-Building'
-description: 3 Brigade engages students on discipline, nation-building, and
-  military opportunities amid 163rd anniversary celebrations
+title: "Be Disciplined or Fail Nigeria: Nigerian Army Inspires Kano Youth with Careers, Nation-Building"
+description: "3 Brigade engages students on discipline, nation-building, and military opportunities amid 163rd anniversary celebrations"
 pubDate: 2026-07-04T15:07:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
 heroImage: /1000298178.jpg
 seo_divider: ""
-seoKeyword: NADCEL 2026, Nigerian Army, Kano
-seoTitle: 'Be Disciplined or Fail Nigeria": Nigerian Army Inspires Kano Youth
-  with Careers and Nation-Building'
-seoDescription: In a heartening display of civil-military partnership, the
-  Nigerian Army’s 3 Brigade has reached out to the next generation, inspiring
-  hundreds of students
+seoKeyword: "NADCEL 2026, Nigerian Army, Kano"
+seoTitle: "Be Disciplined or Fail Nigeria: Nigerian Army Inspires Kano Youth with Careers and Nation-Building"
+seoDescription: "In a heartening display of civil-military partnership, the Nigerian Army’s 3 Brigade has reached out to the next generation, inspiring hundreds of students"
 seo_gatekeeper: PASS
 ---
 **Kano, Nigeria – July 4, 2026** — In a heartening display of civil-military partnership, the Nigerian Army’s 3 Brigade has reached out to the next generation, inspiring hundreds of students and teachers at Tony Cheta International Group of Schools in Kano through a vibrant public speaking engagement. 
