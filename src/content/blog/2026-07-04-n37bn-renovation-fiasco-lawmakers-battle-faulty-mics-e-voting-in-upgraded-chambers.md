@@ -1,19 +1,15 @@
 ---
-title: "N37bn Renovation Fiasco: Lawmakers Battle Faulty Mics, E-Voting in
-  'Upgraded' Chambers"
-description: Despite massive spending, Nigeria’s National Assembly grapples with
-  malfunctioning equipment and transparency concerns in key votes
+title: "N37bn Renovation Fiasco: Lawmakers Battle Faulty Mics, E-Voting in 'Upgraded' Chambers"
+description: "Despite massive spending, Nigeria’s National Assembly grapples with malfunctioning equipment and transparency concerns in key votes"
 pubDate: 2026-07-04T13:57:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
 heroImage: /1000293581.jpg
 seo_divider: ""
-seoKeyword: "Lawmakers "
-seoTitle: "N37bn Renovation Fiasco: Lawmakers Battle Faulty Mics, E-Voting in
-  'Upgraded' Chambers"
-seoDescription: Despite massive spending, Nigeria’s National Assembly grapples
-  with malfunctioning equipment and transparency concerns in key votes
+seoKeyword: "Lawmakers, National Assembly, N37bn renovation, electronic voting failure, Nigeria politics"
+seoTitle: "N37bn Renovation Fiasco: Lawmakers Battle Faulty Mics, E-Voting in 'Upgraded' Chambers"
+seoDescription: "Despite massive spending, Nigeria’s National Assembly grapples with malfunctioning equipment and transparency concerns in key votes"
 seo_gatekeeper: PASS
 ---
 **Abuja, Nigeria – July 4, 2026** — Two years after lawmakers were displaced from their chambers for a lavish renovation project costing Nigerians an eye-watering N37 billion, the return to the “upgraded” facilities has proven anything but smooth. 
