@@ -1,22 +1,15 @@
 ---
-title: IMF Bombshell Reveals ₦8.8 Trillion Unrecorded Spending Under Tinubu
-  Administration
-description: ADC Presidential Candidate Atiku Abubakar demands urgent probe into
-  massive off-budget expenditures as Nigerians endure severe economic hardship
-  ahead of 2027 elections
+title: "IMF Bombshell Reveals ₦8.8 Trillion Unrecorded Spending Under Tinubu Administration"
+description: "ADC Presidential Candidate Atiku Abubakar demands urgent probe into massive off-budget expenditures as Nigerians endure severe economic hardship ahead of 2027 elections"
 pubDate: 2026-07-04T17:24:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
 heroImage: /atiku-with-mic.webp
 seo_divider: ""
-seoKeyword: Atiku Abubakar 2027, IMF Nigeria report ₦8.8 trillion, Tinubu
-  off-budget spending, unrecorded expenditures Nigeria, fiscal transparency 2026
-seoTitle: IMF Bombshell Reveals ₦8.8 Trillion Unrecorded Spending Under Tinubu
-  Administration
-seoDescription: Former Vice President and ADC Presidential Candidate for the
-  2027 elections, Atiku Abubakar, has issued a scathing indictment of the Tinubu
-  administration
+seoKeyword: "Atiku Abubakar 2027, IMF Nigeria report ₦8.8 trillion, Tinubu off-budget spending, unrecorded expenditures Nigeria, fiscal transparency 2026"
+seoTitle: "IMF Bombshell Reveals ₦8.8 Trillion Unrecorded Spending Under Tinubu Administration"
+seoDescription: "Former Vice President and ADC Presidential Candidate for the 2027 elections, Atiku Abubakar, has issued a scathing indictment of the Tinubu administration"
 seo_gatekeeper: PASS
 ---
 **ABUJA, Nigeria**— Former Vice President and ADC Presidential Candidate for the 2027 elections, Atiku Abubakar, has issued a scathing indictment of the Tinubu administration following a major International Monetary Fund (IMF) disclosure. 
