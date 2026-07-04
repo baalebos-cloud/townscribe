@@ -7,6 +7,7 @@ pubDate: 2026-07-04T14:18:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
+heroImage: /1000298128.jpg
 heroImage: /townscribe-img.jpg
 seo_divider: ""
 seoKeyword: "Ekiti kidnapped victims, "
