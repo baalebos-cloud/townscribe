@@ -1,19 +1,15 @@
 ---
-title: EFCC Cracks Down on N1.07 Billion Fuel Supply Scam in Lagos
-description: Anti-graft agency re-arraigns suspects and firms over alleged false
-  pretenses fraud as one defendant finally faces justice after remaining at
-  large
+title: "EFCC Cracks Down on N1.07 Billion Fuel Supply Scam in Lagos"
+description: "Anti-graft agency re-arraigns suspects and firms over alleged false pretenses fraud as one defendant finally faces justice after remaining at large"
 pubDate: 2026-07-04T15:35:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
 heroImage: /1000298190.jpg
 seo_divider: ""
-seoKeyword: "Efcc, money laundering "
-seoTitle: EFCC Cracks Down on N1.07 Billion Fuel Supply Scam in Lagos
-seoDescription: In a significant move underscoring the Economic and Financial
-  Crimes Commission’s (EFCC) relentless pursuit of economic predators, the
-  agency has brought
+seoKeyword: "Efcc, money laundering"
+seoTitle: "EFCC Cracks Down on N1.07 Billion Fuel Supply Scam in Lagos"
+seoDescription: "In a significant move underscoring the Economic and Financial Crimes Commission’s (EFCC) relentless pursuit of economic predators, the agency has brought"
 seo_gatekeeper: PASS
 ---
 **LAGOS, Nigeria** — In a significant move underscoring the Economic and Financial Crimes Commission’s (EFCC) relentless pursuit of economic predators, the agency has brought fresh charges against two individuals and their companies in a high-stakes case involving over N1.07 billion allegedly obtained through deceitful fuel supply schemes.
