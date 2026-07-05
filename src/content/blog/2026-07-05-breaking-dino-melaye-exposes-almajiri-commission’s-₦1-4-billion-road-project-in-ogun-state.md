@@ -1,6 +1,6 @@
 ---
 title: "BREAKING:  Dino Melaye Exposes Almajiri Commission’s ₦1.4 Billion Road
-  Project in Ogun State"
+  Project Scam in Ogun State"
 description: Senator Dino Melaye flags controversial allocation by Abuja-based
   Almajiri Commission for distant township roads in Ogun State, sparking fresh
   outrage over budget irregularities under Tinubu administration
