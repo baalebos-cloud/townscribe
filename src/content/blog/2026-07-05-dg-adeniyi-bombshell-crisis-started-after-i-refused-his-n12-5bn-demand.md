@@ -1,5 +1,6 @@
 ---
-title: '"DG Adeniyi Bombshell: Crisis Started After I Refused His N12.5bn Demand"'
+title: "\"DG Adeniyi Bombshell: Crisis Started After I Refused Gbajabiamila's
+  N12.5bn Demand\""
 description: Fake Agency DG Adeniyi Adeyemi accuses Tinubu’s Chief of Staff Femi
   Gbajabiamila of massive bribe demand as ghost council controversy deepens
   ahead of 2027.
