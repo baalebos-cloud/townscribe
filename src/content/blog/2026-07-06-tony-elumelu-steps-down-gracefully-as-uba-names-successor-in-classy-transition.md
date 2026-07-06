@@ -7,7 +7,7 @@ pubDate: 2026-07-06T16:51:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: business
-heroImage: /townscribe-img.jpg
+heroImage: /1000298650.jpg
 seo_divider: ""
 seoKeyword: Tony Elumelu retires UBA 2026, Emmanuel Nnorom UBA Chairman, UBA
   leadership transition, Tony Elumelu legacy banking Nigeria, CBN 12-year tenure
