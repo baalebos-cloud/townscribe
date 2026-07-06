@@ -1,5 +1,5 @@
 ---
-title: "INSECURITY: Obi Demands Tinubu Resign or Drop 2027 Re-Election Bid"
+title: "Obi to Tinubu: Resign or Abandon 2027 Bid Amid Growing Insecurity"
 description: NDC 2027 Presidential Candidate Peter Obi blasts Tinubu
   administration over worsening insecurity and alleged lack of compassion for
   victims amid national crisis
@@ -7,7 +7,7 @@ pubDate: 2026-07-06T11:35:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /peter-obi.webp
+heroImage: /1000298595.jpg
 seo_divider: ""
 seoKeyword: Peter Obi 2027, Peter Obi calls Tinubu resign, NDC Presidential
   Candidate, Nigeria insecurity crisis 2026, Obi vs Tinubu 2027 election.
