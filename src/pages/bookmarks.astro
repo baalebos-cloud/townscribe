@@ -1,60 +1,45 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Layout from '../layouts/BlogPost.astro';
 ---
 
-<BaseLayout title="My Bookmarks | TownScribe" description="Your saved TownScribe articles">
-  <main class="bookmarks-page">
-    <div class="page-container">
+<Layout
+  title="My Bookmarks | TownScribe"
+  description="Your saved TownScribe articles"
+  pubDate={new Date()}
+  heroImage="/townscribe-img.jpg"
+>
 
-      <div class="page-header">
-        <h1 class="page-title">
-          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-          My Bookmarks
-        </h1>
-        <p class="page-subtitle">Articles you've saved for later</p>
-      </div>
-
-      <!-- Auth gate — shown if not logged in -->
-      <div id="auth-gate" class="auth-gate" style="display:none;">
-        <div class="gate-card">
-          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#dc2626" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-          <h2>Sign in to view bookmarks</h2>
-          <p>Create an account or sign in to save and access your bookmarked articles.</p>
-          <button id="gate-signin-btn" class="btn-primary">Sign In</button>
-        </div>
-      </div>
-
-      <!-- Loading skeleton -->
-      <div id="bookmarks-loading" class="skeleton-grid" style="display:none;">
-        {Array(6).fill(0).map(() => (
-          <div class="skeleton-card">
-            <div class="skeleton-img"></div>
-            <div class="skeleton-body">
-              <div class="skeleton-line wide"></div>
-              <div class="skeleton-line medium"></div>
-              <div class="skeleton-line narrow"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <!-- Empty state -->
-      <div id="bookmarks-empty" class="empty-state" style="display:none;">
-        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-        <h2>No bookmarks yet</h2>
-        <p>When you save articles, they'll appear here.</p>
-        <a href="/" class="btn-primary">Browse Articles</a>
-      </div>
-
-      <!-- Bookmarks grid -->
-      <div id="bookmarks-grid" class="bookmarks-grid" style="display:none;"></div>
-
+  <!-- Auth gate -->
+  <div id="auth-gate" class="auth-gate" style="display:none;">
+    <div class="gate-card">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#dc2626" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+      <h2>Sign in to view bookmarks</h2>
+      <p>Create an account or sign in to save and access your bookmarked articles.</p>
+      <button id="gate-signin-btn" class="btn-primary">Sign In</button>
     </div>
-  </main>
-</BaseLayout>
+  </div>
+
+  <!-- Loading skeleton -->
+  <div id="bookmarks-loading" class="skeleton-grid" style="display:none;">
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div></div></div>
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line wide"></div><div class="skeleton-line medium"></div><div class="skeleton-line narrow"></div></div></div>
+  </div>
+
+  <!-- Empty state -->
+  <div id="bookmarks-empty" class="empty-state" style="display:none;">
+    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+    <h2>No bookmarks yet</h2>
+    <p>When you save articles, they'll appear here.</p>
+    <a href="/" class="btn-primary">Browse Articles</a>
+  </div>
+
+  <!-- Bookmarks grid -->
+  <div id="bookmarks-grid" class="bookmarks-grid" style="display:none;"></div>
+
+</Layout>
 
 <script is:inline>
-  const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
   const TS_BOOKMARKS_KEY = 'ts_bookmarks';
 
   function getToken() { return localStorage.getItem('ts_auth_token'); }
@@ -62,33 +47,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     try { return JSON.parse(localStorage.getItem('ts_auth_user') || 'null'); }
     catch { return null; }
   }
-
-  // Local bookmark storage helpers
   function getBookmarks() {
     try { return JSON.parse(localStorage.getItem(TS_BOOKMARKS_KEY) || '[]'); }
     catch { return []; }
   }
   function removeBookmark(slug) {
-    const bookmarks = getBookmarks().filter(b => b.slug !== slug);
-    localStorage.setItem(TS_BOOKMARKS_KEY, JSON.stringify(bookmarks));
-    return bookmarks;
+    const updated = getBookmarks().filter(b => b.slug !== slug);
+    localStorage.setItem(TS_BOOKMARKS_KEY, JSON.stringify(updated));
+    return updated;
   }
-
   function formatDate(dateStr) {
     if (!dateStr) return '';
     return new Date(dateStr).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
-  function renderBookmarkCard(article) {
+  function renderCard(article) {
     return `
       <article class="bookmark-card">
         <a href="/blog/${article.slug}" class="card-img-link">
-          <img
-            src="${article.heroImage || '/townscribe-img.jpg'}"
-            alt="${article.title}"
-            class="card-img"
-            onerror="this.src='/townscribe-img.jpg'"
-          />
+          <img src="${article.heroImage || '/townscribe-img.jpg'}" alt="${article.title}" class="card-img" onerror="this.src='/townscribe-img.jpg'" />
         </a>
         <div class="card-body">
           ${article.category ? `<span class="card-category">${article.category}</span>` : ''}
@@ -97,11 +74,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </a>
           ${article.description ? `<p class="card-desc">${article.description}</p>` : ''}
           <div class="card-meta">
-            ${article.author ? `<span class="card-author">${article.author}</span>` : ''}
-            ${article.pubDate ? `<span class="card-date">${formatDate(article.pubDate)}</span>` : ''}
+            ${article.author   ? `<span class="card-author">${article.author}</span>` : ''}
+            ${article.pubDate  ? `<span class="card-date">${formatDate(article.pubDate)}</span>` : ''}
           </div>
           <button class="remove-btn" data-slug="${article.slug}" aria-label="Remove bookmark">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4h6v2"></path></svg>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6M14 11v6M9 6V4h6v2"></path></svg>
             Remove
           </button>
         </div>
@@ -112,122 +89,92 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function renderGrid(bookmarks) {
     const grid = document.getElementById('bookmarks-grid');
     if (!grid) return;
-    grid.innerHTML = bookmarks.map(renderBookmarkCard).join('');
-
-    // Attach remove handlers
+    grid.innerHTML = bookmarks.map(renderCard).join('');
     grid.querySelectorAll('.remove-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const slug      = btn.dataset.slug;
-        const remaining = removeBookmark(slug);
-        if (remaining.length === 0) {
-          showState('empty');
-        } else {
-          renderGrid(remaining);
-        }
+        const remaining = removeBookmark(btn.dataset.slug);
+        remaining.length === 0 ? showState('empty') : renderGrid(remaining);
       });
     });
   }
 
   function showState(state) {
-    ['auth-gate', 'bookmarks-loading', 'bookmarks-empty', 'bookmarks-grid'].forEach(id => {
+    const map = { gate: 'auth-gate', loading: 'bookmarks-loading', empty: 'bookmarks-empty', grid: 'bookmarks-grid' };
+    Object.values(map).forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
-    const target = {
-      'gate':    'auth-gate',
-      'loading': 'bookmarks-loading',
-      'empty':   'bookmarks-empty',
-      'grid':    'bookmarks-grid',
-    }[state];
-    const el = document.getElementById(target);
+    const el = document.getElementById(map[state]);
     if (el) el.style.display = state === 'grid' ? 'grid' : 'flex';
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const token = getToken();
-    const user  = getUser();
-
-    if (!token || !user) {
+    if (!getToken() || !getUser()) {
       showState('gate');
       document.getElementById('gate-signin-btn')?.addEventListener('click', () => {
-        // Trigger the header auth modal
         document.getElementById('auth-signin-btn')?.click();
       });
       return;
     }
 
     showState('loading');
-
     const bookmarks = getBookmarks();
-
     if (bookmarks.length === 0) {
       showState('empty');
-      return;
+    } else {
+      renderGrid(bookmarks);
+      showState('grid');
     }
-
-    renderGrid(bookmarks);
-    showState('grid');
   });
 </script>
 
 <style>
-  .bookmarks-page    { min-height: 60vh; padding: 2.5rem 1rem 4rem; background: #f9fafb; }
-  .page-container    { max-width: 1100px; margin: 0 auto; }
-
-  .page-header       { margin-bottom: 2rem; }
-  .page-title        { display: flex; align-items: center; gap: 0.6rem; font-size: 1.75rem; font-weight: 800; color: #111; margin: 0 0 0.35rem; }
-  .page-subtitle     { color: #6b7280; font-size: 0.95rem; margin: 0; }
-
   /* Auth gate */
-  .auth-gate         { display: flex; justify-content: center; padding: 4rem 1rem; }
-  .gate-card         { background: #fff; border-radius: 16px; padding: 3rem 2rem; text-align: center; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-  .gate-card h2      { font-size: 1.3rem; font-weight: 700; color: #111; margin: 0; }
-  .gate-card p       { color: #6b7280; font-size: 0.9rem; margin: 0; line-height: 1.6; }
+  .auth-gate      { display: flex; justify-content: center; padding: 3rem 1rem; }
+  .gate-card      { background: #fff; border-radius: 16px; padding: 3rem 2rem; text-align: center; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .gate-card h2   { font-size: 1.3rem; font-weight: 700; color: #111; margin: 0; }
+  .gate-card p    { color: #6b7280; font-size: 0.9rem; margin: 0; line-height: 1.6; }
 
   /* Buttons */
-  .btn-primary       { display: inline-block; background: #dc2626; color: #fff; font-weight: 700; font-size: 0.95rem; padding: 0.65rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; }
-  .btn-primary:hover { background: #b91c1c; }
+  .btn-primary        { display: inline-block; background: #dc2626; color: #fff; font-weight: 700; font-size: 0.95rem; padding: 0.65rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+  .btn-primary:hover  { background: #b91c1c; }
 
   /* Empty state */
-  .empty-state       { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 5rem 1rem; text-align: center; }
-  .empty-state h2    { font-size: 1.3rem; font-weight: 700; color: #374151; margin: 0; }
-  .empty-state p     { color: #9ca3af; margin: 0; }
+  .empty-state    { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 4rem 1rem; text-align: center; }
+  .empty-state h2 { font-size: 1.3rem; font-weight: 700; color: #374151; margin: 0; }
+  .empty-state p  { color: #9ca3af; margin: 0; }
 
   /* Skeleton */
-  .skeleton-grid     { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-  .skeleton-card     { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-  .skeleton-img      { height: 180px; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
-  .skeleton-body     { padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
-  .skeleton-line     { height: 14px; border-radius: 4px; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+  .skeleton-grid        { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skeleton-card        { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .skeleton-img         { height: 180px; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+  .skeleton-body        { padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .skeleton-line        { height: 14px; border-radius: 4px; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
   .skeleton-line.wide   { width: 90%; }
   .skeleton-line.medium { width: 65%; }
   .skeleton-line.narrow { width: 40%; }
-  @keyframes shimmer { to { background-position: -200% 0; } }
+  @keyframes shimmer    { to { background-position: -200% 0; } }
 
-  /* Bookmarks grid */
-  .bookmarks-grid    { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-  .bookmark-card     { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: box-shadow 0.2s, transform 0.2s; display: flex; flex-direction: column; }
-  .bookmark-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
-
-  .card-img-link     { display: block; overflow: hidden; }
-  .card-img          { width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s; }
+  /* Grid */
+  .bookmarks-grid        { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .bookmark-card         { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s; }
+  .bookmark-card:hover   { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+  .card-img-link         { display: block; overflow: hidden; }
+  .card-img              { width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s; }
   .card-img-link:hover .card-img { transform: scale(1.03); }
-
-  .card-body         { padding: 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
-  .card-category     { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #dc2626; background: #fef2f2; padding: 0.2rem 0.55rem; border-radius: 4px; width: fit-content; }
-  .card-title-link   { text-decoration: none; }
-  .card-title        { font-size: 1rem; font-weight: 700; color: #111; margin: 0; line-height: 1.4; }
+  .card-body             { padding: 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .card-category         { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #dc2626; background: #fef2f2; padding: 0.2rem 0.55rem; border-radius: 4px; width: fit-content; }
+  .card-title-link       { text-decoration: none; }
+  .card-title            { font-size: 1rem; font-weight: 700; color: #111; margin: 0; line-height: 1.4; }
   .card-title-link:hover .card-title { color: #dc2626; }
-  .card-desc         { font-size: 0.85rem; color: #6b7280; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .card-meta         { display: flex; gap: 0.75rem; font-size: 0.8rem; color: #9ca3af; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid #f3f4f6; }
-  .card-author       { font-weight: 600; color: #6b7280; }
-
-  .remove-btn        { display: flex; align-items: center; gap: 0.4rem; background: none; border: 1px solid #fecaca; color: #dc2626; font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; width: fit-content; margin-top: 0.5rem; transition: background 0.15s; }
-  .remove-btn:hover  { background: #fef2f2; }
+  .card-desc             { font-size: 0.85rem; color: #6b7280; margin: 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-meta             { display: flex; gap: 0.75rem; font-size: 0.8rem; color: #9ca3af; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid #f3f4f6; }
+  .card-author           { font-weight: 600; color: #6b7280; }
+  .remove-btn            { display: flex; align-items: center; gap: 0.4rem; background: none; border: 1px solid #fecaca; color: #dc2626; font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.75rem; border-radius: 6px; cursor: pointer; width: fit-content; margin-top: 0.5rem; transition: background 0.15s; }
+  .remove-btn:hover      { background: #fef2f2; }
 
   @media (max-width: 600px) {
     .bookmarks-grid  { grid-template-columns: 1fr; }
     .skeleton-grid   { grid-template-columns: 1fr; }
-    .page-title      { font-size: 1.4rem; }
   }
 </style>
