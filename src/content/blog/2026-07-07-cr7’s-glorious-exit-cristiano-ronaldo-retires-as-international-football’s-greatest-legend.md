@@ -1,6 +1,5 @@
 ---
-title: "CR7’s Glorious Exit: Cristiano Ronaldo Retires as International
-  Football’s Greatest Legend"
+title: "CR7’s Glorious Exit: Cristiano Ronaldo Retires as International Football’s Greatest Legend"
 description: Portugal icon bows out after record-breaking career with 146
   international goals, 233 caps, and unmatched World Cup heroics, leaving an
   indelible mark on the beautiful game
