@@ -1,6 +1,6 @@
 ---
-title: "Umahi’s Viral Plea to Igbos: ‘Join Tinubu’s Vision — The New Biafra Is
-  Infrastructure’"
+title: "VIDEO: Umahi’s Viral Plea to Igbos: ‘Join Tinubu’s Vision — The New
+  Biafra Is Infrastructure’"
 description: Minister of Works David Umahi urges Igbo communities in Lagos and
   across Nigeria to embrace national integration, highlighting massive road
   projects and political inclusion in 2026
@@ -9,6 +9,7 @@ author: TownScribe Staff
 authorRole: Writer
 category: world
 heroImage: /david-umahi.webp
+youtubeUrl: https://youtu.be/qMIX0Q6cCF4?si=3GQsV2JntUraUWyA
 seo_divider: ""
 seoKeyword: David Umahi message to Igbo, Umahi Igbo Lagos 2026, Minister of
   Works infrastructure achievements, Tinubu Igbo inclusion, South East
