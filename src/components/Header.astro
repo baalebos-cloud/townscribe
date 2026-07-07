@@ -2,424 +2,664 @@
 import { SITE_TITLE } from '../consts.ts';
 import HeaderLink from './HeaderLink.astro';
 
-const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
+const AUTH_API       = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
+const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIbOj4IzrLHDjq5fxbRdDxQKgAWXvINYiPyo'; // 👈 Replace with your actual VAPID public key
 ---
 
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER / NAV
+════════════════════════════════════════════════════════════ -->
 <header>
-	<nav class="main-navigation">
-		<div class="brand-row">
-			<div class="left-brand-group">
-				<button id="menu-toggle" class="menu-btn" aria-label="Toggle Categories Menu">
-					<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5">
-						<line x1="3" y1="12" x2="21" y2="12"></line>
-						<line x1="3" y1="6" x2="21" y2="6"></line>
-						<line x1="3" y1="18" x2="21" y2="18"></line>
-					</svg>
-				</button>
+  <nav class="main-navigation">
+    <div class="brand-row">
 
-				<div class="left-text-brand">
-					<a href="/" aria-label="Townscribe Media Home">
-						<span class="site-title-text-left">Townscribe Media</span>
-					</a>
-				</div>
-			</div>
+      <!-- LEFT: Hamburger + Site Name -->
+      <div class="left-brand-group">
+        <button id="menu-toggle" class="menu-btn" aria-label="Toggle Categories Menu">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6"  x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="left-text-brand">
+          <a href="/" aria-label="Townscribe Media Home">
+            <span class="site-title-text-left">Townscribe Media</span>
+          </a>
+        </div>
+      </div>
 
-			<div class="center-logo-container">
-				<a href="/" aria-label="Townscribe Media Home">
-					<img
-						src="/townscribe-img.jpg"
-						alt="Townscribe Media Logo"
-						class="site-logo-graphic-center"
-					/>
-				</a>
-			</div>
+      <!-- CENTER: Logo -->
+      <div class="center-logo-container">
+        <a href="/" aria-label="Townscribe Media Home">
+          <img src="/townscribe-img.jpg" alt="Townscribe Media Logo" class="site-logo-graphic-center" />
+        </a>
+      </div>
 
-			<div class="right-actions">
-				<div class="social-links">
-					<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram">
-						<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-					</a>
-					<a href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter)">
-						<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-					</a>
-					<a href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube">
-						<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-					</a>
-				</div>
+      <!-- RIGHT: Socials + Auth + Bell -->
+      <div class="right-actions">
+        <div class="social-links">
+          <a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="https://www.youtube.com/@townscribeTV" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+            </svg>
+          </a>
+        </div>
 
-				<div class="auth-controls">
-					<button id="auth-signin-btn" class="auth-btn signin-btn" style="display:none;">Sign In</button>
+        <!-- Auth: Sign In button OR User Avatar -->
+        <div class="auth-controls">
+          <button id="auth-signin-btn" class="auth-btn signin-btn" style="display:none;">Sign In</button>
 
-					<div id="user-menu" class="user-menu" style="display:none;">
-						<button id="user-avatar-btn" class="user-avatar-btn" aria-label="User menu">
-							<div id="user-avatar-display" class="avatar-circle">?</div>
-						</button>
-						<div id="user-dropdown" class="user-dropdown" style="display:none;">
-							<div class="dropdown-header">
-								<span id="dropdown-name" class="dropdown-name"></span>
-								<span id="dropdown-email" class="dropdown-email"></span>
-							</div>
-							<hr class="dropdown-divider" />
-							<a href="/bookmarks" class="dropdown-item">
-								<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-								My Bookmarks
-							</a>
-							<a href="/profile" class="dropdown-item">
-								<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-								Profile
-							</a>
-							<hr class="dropdown-divider" />
-							<button id="signout-btn" class="dropdown-item signout-item">
-								<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-								Sign Out
-							</button>
-						</div>
-					</div>
-				</div>
+          <div id="user-menu" class="user-menu" style="display:none;">
+            <button id="user-avatar-btn" class="user-avatar-btn" aria-label="User menu">
+              <div id="user-avatar-display" class="avatar-circle">?</div>
+            </button>
+            <div id="user-dropdown" class="user-dropdown" style="display:none;">
+              <div class="dropdown-header">
+                <span id="dropdown-name"  class="dropdown-name"></span>
+                <span id="dropdown-email" class="dropdown-email"></span>
+              </div>
+              <hr class="dropdown-divider" />
+              <a href="/bookmarks" class="dropdown-item">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                My Bookmarks
+              </a>
+              <a href="/profile" class="dropdown-item">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Profile
+              </a>
+              <hr class="dropdown-divider" />
+              <button id="signout-btn" class="dropdown-item signout-item">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
 
-				<button id="push-subscribe-btn" class="push-notify-btn" title="Get news alerts">🔔</button>
-			</div>
-		</div>
+        <!-- Push Notification Bell -->
+        <button id="push-subscribe-btn" class="push-notify-btn" title="Get news alerts" aria-label="Subscribe to news alerts">
+          🔔
+        </button>
+      </div>
+    </div>
 
-		<div id="nav-drawer" class="nav-drawer">
-			<div class="drawer-header">
-				<span class="drawer-title">Menu</span>
-				<button id="menu-close" class="close-btn" aria-label="Close Menu">
-					<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-				</button>
-			</div>
-			<div class="drawer-links">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/about">About</HeaderLink>
-				<hr class="drawer-divider" />
-				<HeaderLink href="/category/articles">Articles</HeaderLink>
-				<HeaderLink href="/category/news">News</HeaderLink>
-				<HeaderLink href="/category/pidgin news">Pidgin News</HeaderLink>
-				<HeaderLink href="/category/politics">Politics</HeaderLink>
-				<HeaderLink href="/category/business">Business</HeaderLink>
-				<HeaderLink href="/category/exclusive">Exclusive</HeaderLink>
-				<HeaderLink href="/category/entertainment">Entertainment</HeaderLink>
-				<HeaderLink href="/category/technology">Technology</HeaderLink>
-				<HeaderLink href="/category/health">Health</HeaderLink>
-				<HeaderLink href="/category/sport">Sport</HeaderLink>
-				<HeaderLink href="/category/world">World</HeaderLink>
-				<HeaderLink href="/category/job">Job</HeaderLink>
-			</div>
-		</div>
-		<div id="drawer-overlay" class="drawer-overlay"></div>
-	</nav>
+    <!-- Side Drawer -->
+    <div id="nav-drawer" class="nav-drawer">
+      <div class="drawer-header">
+        <span class="drawer-title">Menu</span>
+        <button id="menu-close" class="close-btn" aria-label="Close Menu">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6"  x2="6"  y2="18"></line>
+            <line x1="6"  y1="6"  x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="drawer-links">
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+        <hr class="drawer-divider" />
+        <HeaderLink href="/category/articles">Articles</HeaderLink>
+        <HeaderLink href="/category/news">News</HeaderLink>
+        <HeaderLink href="/category/pidgin-news">Pidgin News</HeaderLink>
+        <HeaderLink href="/category/politics">Politics</HeaderLink>
+        <HeaderLink href="/category/business">Business</HeaderLink>
+        <HeaderLink href="/category/exclusive">Exclusive</HeaderLink>
+        <HeaderLink href="/category/entertainment">Entertainment</HeaderLink>
+        <HeaderLink href="/category/technology">Technology</HeaderLink>
+        <HeaderLink href="/category/health">Health</HeaderLink>
+        <HeaderLink href="/category/sport">Sport</HeaderLink>
+        <HeaderLink href="/category/world">World</HeaderLink>
+        <HeaderLink href="/category/job">Job</HeaderLink>
+      </div>
+    </div>
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+  </nav>
 </header>
 
-<script is:inline define:vars={{ AUTH_API }}>
-	// --- DRAWER ---
-	const openBtn = document.getElementById('menu-toggle');
-	const closeBtn = document.getElementById('menu-close');
-	const drawer = document.getElementById('nav-drawer');
-	const overlay = document.getElementById('drawer-overlay');
+<!-- ═══════════════════════════════════════════════════════════
+     AUTH MODAL  (must live outside <header> in the DOM)
+════════════════════════════════════════════════════════════ -->
+<div id="auth-modal" class="auth-modal" style="display:none;" role="dialog" aria-modal="true" aria-label="Sign in or create account">
+  <div id="auth-modal-overlay" class="auth-modal-overlay"></div>
+  <div class="auth-modal-box">
 
-	function toggleMenu() {
-		drawer?.classList.toggle('open');
-		overlay?.classList.toggle('active');
-		document.body.classList.toggle('menu-lock');
-	}
-	openBtn?.addEventListener('click', toggleMenu);
-	closeBtn?.addEventListener('click', toggleMenu);
-	overlay?.addEventListener('click', toggleMenu);
+    <!-- Close -->
+    <button id="auth-modal-close" class="auth-modal-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6"  y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
 
-	// --- AUTH STATE ---
-	const TS_TOKEN_KEY = 'ts_auth_token';
-	const TS_USER_KEY  = 'ts_auth_user';
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Sign In</button>
+      <button class="auth-tab"        data-tab="register">Register</button>
+    </div>
 
-	function getToken() { return localStorage.getItem(TS_TOKEN_KEY); }
-	function getUser() {
-		try { return JSON.parse(localStorage.getItem(TS_USER_KEY) || 'null'); }
-		catch { return null; }
-	}
-	function saveAuth(token, user) {
-		localStorage.setItem(TS_TOKEN_KEY, token);
-		localStorage.setItem(TS_USER_KEY, JSON.stringify(user));
-	}
-	function clearAuth() {
-		localStorage.removeItem(TS_TOKEN_KEY);
-		localStorage.removeItem(TS_USER_KEY);
-	}
-	function getInitials(name) {
-		return name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?';
-	}
+    <!-- LOGIN -->
+    <div id="tab-login">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-subtitle">Sign in to your TownScribe account</p>
+      <div id="login-error"   class="auth-error"   style="display:none;"></div>
+      <div id="login-success" class="auth-success" style="display:none;"></div>
+      <div class="auth-field">
+        <label for="login-email">Email</label>
+        <input type="email"    id="login-email"    placeholder="you@example.com"  autocomplete="email" />
+      </div>
+      <div class="auth-field">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" />
+      </div>
+      <button id="login-submit" class="auth-submit-btn">
+        <span id="login-btn-text">Sign In</span>
+        <span id="login-spinner" class="spinner" style="display:none;"></span>
+      </button>
+      <p class="auth-switch">
+        Don't have an account?
+        <button class="auth-switch-btn" data-switch="register">Create one</button>
+      </p>
+    </div>
 
-	function renderLoggedIn(user) {
-		const signinBtn  = document.getElementById('auth-signin-btn');
-		const userMenu   = document.getElementById('user-menu');
-		const avatarDisp = document.getElementById('user-avatar-display');
-		const dropName   = document.getElementById('dropdown-name');
-		const dropEmail  = document.getElementById('dropdown-email');
-		if (signinBtn) signinBtn.style.display = 'none';
-		if (userMenu)  userMenu.style.display  = 'flex';
-		if (avatarDisp) {
-			avatarDisp.textContent = '';
-			if (user.avatarUrl) {
-				avatarDisp.innerHTML = `<img src="${user.avatarUrl}" alt="${user.displayName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />`;
-			} else {
-				avatarDisp.textContent = getInitials(user.displayName);
-			}
-		}
-		if (dropName)  dropName.textContent  = user.displayName;
-		if (dropEmail) dropEmail.textContent = user.email;
-	}
+    <!-- REGISTER -->
+    <div id="tab-register" style="display:none;">
+      <h2 class="auth-title">Create account</h2>
+      <p class="auth-subtitle">Join TownScribe to save articles and more</p>
+      <div id="register-error"   class="auth-error"   style="display:none;"></div>
+      <div id="register-success" class="auth-success" style="display:none;"></div>
+      <div class="auth-field">
+        <label for="register-name">Full Name</label>
+        <input type="text"     id="register-name"     placeholder="Your name"          autocomplete="name" />
+      </div>
+      <div class="auth-field">
+        <label for="register-email">Email</label>
+        <input type="email"    id="register-email"    placeholder="you@example.com"    autocomplete="email" />
+      </div>
+      <div class="auth-field">
+        <label for="register-password">
+          Password <span class="field-hint">(min. 8 characters)</span>
+        </label>
+        <input type="password" id="register-password" placeholder="Create a password"  autocomplete="new-password" />
+      </div>
+      <button id="register-submit" class="auth-submit-btn">
+        <span id="register-btn-text">Create Account</span>
+        <span id="register-spinner" class="spinner" style="display:none;"></span>
+      </button>
+      <p class="auth-switch">
+        Already have an account?
+        <button class="auth-switch-btn" data-switch="login">Sign in</button>
+      </p>
+    </div>
 
-	function renderLoggedOut() {
-		const signinBtn = document.getElementById('auth-signin-btn');
-		const userMenu  = document.getElementById('user-menu');
-		if (signinBtn) signinBtn.style.display = 'flex';
-		if (userMenu)  userMenu.style.display  = 'none';
-	}
+  </div>
+</div>
 
-	function initAuthState() {
-		const user  = getUser();
-		const token = getToken();
-		if (user && token) {
-			renderLoggedIn(user);
-			fetch(`${AUTH_API}/me`, { headers: { 'Authorization': `Bearer ${token}` } })
-				.then(r => { if (!r.ok) { clearAuth(); renderLoggedOut(); } })
-				.catch(() => {});
-		} else {
-			renderLoggedOut();
-		}
-	}
 
-	// --- MODAL ---
-	function openModal(tab = 'login') {
-		const modal = document.getElementById('auth-modal');
-		if (modal) { modal.style.display = 'flex'; document.body.classList.add('menu-lock'); }
-		switchTab(tab);
-	}
-	function closeModal() {
-		const modal = document.getElementById('auth-modal');
-		if (modal) { modal.style.display = 'none'; document.body.classList.remove('menu-lock'); }
-	}
-	function switchTab(tab) {
-		document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-		document.getElementById('tab-login').style.display     = tab === 'login'    ? 'block' : 'none';
-		document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
-	}
-	function showError(id, msg)   { const el = document.getElementById(id); if (el) { el.textContent = msg; el.style.display = 'block'; } }
-	function hideError(id)        { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
-	function showSuccess(id, msg) { const el = document.getElementById(id); if (el) { el.textContent = msg; el.style.display = 'block'; } }
-	function setLoading(btnId, spinnerId, loading) {
-		const btn = document.getElementById(btnId); const sp = document.getElementById(spinnerId);
-		if (btn) btn.style.display = loading ? 'none' : 'inline';
-		if (sp)  sp.style.display  = loading ? 'inline-block' : 'none';
-	}
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════ -->
+<script is:inline define:vars={{ AUTH_API, VAPID_PUBLIC_KEY }}>
 
-	// --- LOGIN ---
-	async function handleLogin() {
-		const email    = document.getElementById('login-email').value.trim();
-		const password = document.getElementById('login-password').value;
-		hideError('login-error');
-		if (!email || !password) return showError('login-error', 'Please fill in all fields.');
-		setLoading('login-btn-text', 'login-spinner', true);
-		try {
-			const res  = await fetch(`${AUTH_API}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
-			const data = await res.json();
-			if (!res.ok) {
-				showError('login-error', data.error || 'Login failed. Please try again.');
-			} else {
-				saveAuth(data.token, data.user);
-				renderLoggedIn(data.user);
-				closeModal();
-			}
-		} catch { showError('login-error', 'Network error. Please try again.'); }
-		finally  { setLoading('login-btn-text', 'login-spinner', false); }
-	}
+  // ── DRAWER ────────────────────────────────────────────────
+  const menuToggle  = document.getElementById('menu-toggle');
+  const menuClose   = document.getElementById('menu-close');
+  const navDrawer   = document.getElementById('nav-drawer');
+  const drawerOverlay = document.getElementById('drawer-overlay');
 
-	// --- REGISTER ---
-	async function handleRegister() {
-		const displayName = document.getElementById('register-name').value.trim();
-		const email       = document.getElementById('register-email').value.trim();
-		const password    = document.getElementById('register-password').value;
-		hideError('register-error');
-		if (!displayName || !email || !password) return showError('register-error', 'Please fill in all fields.');
-		if (password.length < 8) return showError('register-error', 'Password must be at least 8 characters.');
-		setLoading('register-btn-text', 'register-spinner', true);
-		try {
-			const res  = await fetch(`${AUTH_API}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, displayName }) });
-			const data = await res.json();
-			if (!res.ok) {
-				showError('register-error', data.error || 'Registration failed. Please try again.');
-			} else {
-				showSuccess('register-success', '✅ Account created! Please check your email to verify your account before signing in.');
-				document.getElementById('register-name').value     = '';
-				document.getElementById('register-email').value    = '';
-				document.getElementById('register-password').value = '';
-			}
-		} catch { showError('register-error', 'Network error. Please try again.'); }
-		finally  { setLoading('register-btn-text', 'register-spinner', false); }
-	}
+  function toggleMenu() {
+    navDrawer?.classList.toggle('open');
+    drawerOverlay?.classList.toggle('active');
+    document.body.classList.toggle('menu-lock');
+  }
+  menuToggle?.addEventListener('click', toggleMenu);
+  menuClose?.addEventListener('click', toggleMenu);
+  drawerOverlay?.addEventListener('click', toggleMenu);
 
-	// --- SIGN OUT ---
-	async function handleSignOut() {
-		const token = getToken();
-		if (token) fetch(`${AUTH_API}/logout`, { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } }).catch(() => {});
-		clearAuth();
-		renderLoggedOut();
-		document.getElementById('user-dropdown').style.display = 'none';
-		window.location.href = '/';
-	}
 
-	// --- BOOT ---
-	document.addEventListener('DOMContentLoaded', () => {
-		initAuthState();
+  // ── AUTH HELPERS ──────────────────────────────────────────
+  const TS_TOKEN_KEY = 'ts_auth_token';
+  const TS_USER_KEY  = 'ts_auth_user';
 
-		document.getElementById('auth-signin-btn')?.addEventListener('click', () => openModal('login'));
-		document.getElementById('auth-modal-close')?.addEventListener('click', closeModal);
-		document.getElementById('auth-modal-overlay')?.addEventListener('click', closeModal);
+  function getToken() { return localStorage.getItem(TS_TOKEN_KEY); }
+  function getUser()  {
+    try { return JSON.parse(localStorage.getItem(TS_USER_KEY) || 'null'); }
+    catch { return null; }
+  }
+  function saveAuth(token, user) {
+    localStorage.setItem(TS_TOKEN_KEY, token);
+    localStorage.setItem(TS_USER_KEY, JSON.stringify(user));
+  }
+  function clearAuth() {
+    localStorage.removeItem(TS_TOKEN_KEY);
+    localStorage.removeItem(TS_USER_KEY);
+  }
+  function getInitials(name) {
+    return name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?';
+  }
 
-		document.querySelectorAll('.auth-tab').forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
-		document.querySelectorAll('.auth-switch-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.switch)));
 
-		document.getElementById('login-submit')?.addEventListener('click', handleLogin);
-		document.getElementById('register-submit')?.addEventListener('click', handleRegister);
-		document.getElementById('login-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-		document.getElementById('register-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
+  // ── AUTH UI ───────────────────────────────────────────────
+  function renderLoggedIn(user) {
+    const signinBtn  = document.getElementById('auth-signin-btn');
+    const userMenu   = document.getElementById('user-menu');
+    const avatarDisp = document.getElementById('user-avatar-display');
+    const dropName   = document.getElementById('dropdown-name');
+    const dropEmail  = document.getElementById('dropdown-email');
 
-		document.getElementById('user-avatar-btn')?.addEventListener('click', e => {
-			e.stopPropagation();
-			const dd = document.getElementById('user-dropdown');
-			if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
-		});
-		document.addEventListener('click', () => {
-			const dd = document.getElementById('user-dropdown');
-			if (dd) dd.style.display = 'none';
-		});
+    if (signinBtn)  signinBtn.style.display  = 'none';
+    if (userMenu)   userMenu.style.display   = 'flex';
+    if (avatarDisp) {
+      if (user.avatarUrl) {
+        avatarDisp.innerHTML = `<img src="${user.avatarUrl}" alt="${user.displayName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        avatarDisp.textContent = getInitials(user.displayName);
+      }
+    }
+    if (dropName)  dropName.textContent  = user.displayName || '';
+    if (dropEmail) dropEmail.textContent = user.email || '';
+  }
 
-		document.getElementById('signout-btn')?.addEventListener('click', handleSignOut);
+  function renderLoggedOut() {
+    const signinBtn = document.getElementById('auth-signin-btn');
+    const userMenu  = document.getElementById('user-menu');
+    if (signinBtn) signinBtn.style.display = 'flex';
+    if (userMenu)  userMenu.style.display  = 'none';
+  }
 
-		if (window.location.search.includes('verified=1')) {
-			openModal('login');
-			showSuccess('login-success', '✅ Email verified! You can now sign in.');
-			window.history.replaceState({}, '', window.location.pathname);
-		}
-	});
+  function initAuthState() {
+    const user  = getUser();
+    const token = getToken();
+    if (user && token) {
+      renderLoggedIn(user);
+      // Silently validate token in background
+      fetch(`${AUTH_API}/me`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => { if (!r.ok) { clearAuth(); renderLoggedOut(); } })
+        .catch(() => {});
+    } else {
+      renderLoggedOut();
+    }
+  }
 
-	window.TSAuth = {
-		getToken,
-		getUser,
-		isLoggedIn: () => !!(getToken() && getUser()),
-		AUTH_API,
-	};
+
+  // ── MODAL ─────────────────────────────────────────────────
+  function openModal(tab = 'login') {
+    const modal = document.getElementById('auth-modal');
+    if (modal) { modal.style.display = 'flex'; document.body.classList.add('menu-lock'); }
+    switchTab(tab);
+  }
+  function closeModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) { modal.style.display = 'none'; document.body.classList.remove('menu-lock'); }
+  }
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.tab === tab)
+    );
+    document.getElementById('tab-login').style.display     = tab === 'login'    ? 'block' : 'none';
+    document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
+  }
+
+  function showMsg(id, msg, type) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.style.display = 'block'; }
+  }
+  function hideMsg(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+  function setLoading(btnId, spinnerId, loading) {
+    const btn = document.getElementById(btnId);
+    const sp  = document.getElementById(spinnerId);
+    if (btn) btn.style.display = loading ? 'none'         : 'inline';
+    if (sp)  sp.style.display  = loading ? 'inline-block' : 'none';
+  }
+
+
+  // ── LOGIN ─────────────────────────────────────────────────
+  async function handleLogin() {
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    hideMsg('login-error');
+    if (!email || !password) return showMsg('login-error', 'Please fill in all fields.');
+    setLoading('login-btn-text', 'login-spinner', true);
+    try {
+      const res  = await fetch(`${AUTH_API}/login`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showMsg('login-error', data.error || 'Login failed. Please try again.');
+      } else {
+        saveAuth(data.token, data.user);
+        renderLoggedIn(data.user);
+        closeModal();
+      }
+    } catch {
+      showMsg('login-error', 'Network error. Please try again.');
+    } finally {
+      setLoading('login-btn-text', 'login-spinner', false);
+    }
+  }
+
+
+  // ── REGISTER ──────────────────────────────────────────────
+  async function handleRegister() {
+    const displayName = document.getElementById('register-name').value.trim();
+    const email       = document.getElementById('register-email').value.trim();
+    const password    = document.getElementById('register-password').value;
+    hideMsg('register-error');
+    if (!displayName || !email || !password)
+      return showMsg('register-error', 'Please fill in all fields.');
+    if (password.length < 8)
+      return showMsg('register-error', 'Password must be at least 8 characters.');
+    setLoading('register-btn-text', 'register-spinner', true);
+    try {
+      const res  = await fetch(`${AUTH_API}/register`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, password, displayName }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showMsg('register-error', data.error || 'Registration failed. Please try again.');
+      } else {
+        showMsg('register-success', '✅ Account created! Check your email to verify before signing in.');
+        document.getElementById('register-name').value     = '';
+        document.getElementById('register-email').value    = '';
+        document.getElementById('register-password').value = '';
+      }
+    } catch {
+      showMsg('register-error', 'Network error. Please try again.');
+    } finally {
+      setLoading('register-btn-text', 'register-spinner', false);
+    }
+  }
+
+
+  // ── SIGN OUT ──────────────────────────────────────────────
+  async function handleSignOut() {
+    const token = getToken();
+    if (token) {
+      fetch(`${AUTH_API}/logout`, {
+        method:  'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      }).catch(() => {});
+    }
+    clearAuth();
+    renderLoggedOut();
+    const dd = document.getElementById('user-dropdown');
+    if (dd) dd.style.display = 'none';
+    window.location.href = '/';
+  }
+
+
+  // ── PUSH NOTIFICATIONS ────────────────────────────────────
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = atob(base64);
+    return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+  }
+
+  async function initPushButton() {
+    const btn = document.getElementById('push-subscribe-btn');
+    if (!btn) return;
+
+    // Hide bell on unsupported browsers
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      btn.style.display = 'none';
+      return;
+    }
+
+    // Register service worker
+    let reg;
+    try {
+      reg = await navigator.serviceWorker.register('/sw.js');
+    } catch (err) {
+      console.error('[Push] Service worker registration failed:', err);
+      btn.style.display = 'none';
+      return;
+    }
+
+    // Sync bell colour with actual subscription state
+    async function syncBellState() {
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) {
+        btn.classList.add('subscribed');
+        btn.title = 'Notifications ON — click to unsubscribe';
+        btn.setAttribute('aria-label', 'Unsubscribe from news alerts');
+      } else {
+        btn.classList.remove('subscribed');
+        btn.title = 'Get news alerts';
+        btn.setAttribute('aria-label', 'Subscribe to news alerts');
+      }
+    }
+
+    await syncBellState();
+
+    btn.addEventListener('click', async () => {
+      await navigator.serviceWorker.ready;
+      const existing = await reg.pushManager.getSubscription();
+
+      if (existing) {
+        // ── UNSUBSCRIBE ──
+        try {
+          await existing.unsubscribe();
+          await fetch(`${AUTH_API}/push/unsubscribe`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ endpoint: existing.endpoint }),
+          });
+        } catch (err) {
+          console.error('[Push] Unsubscribe failed:', err);
+        }
+      } else {
+        // ── SUBSCRIBE ──
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          alert('Please allow notifications in your browser settings to receive breaking news alerts.');
+          return;
+        }
+        try {
+          const subscription = await reg.pushManager.subscribe({
+            userVisibleOnly:      true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+          });
+          await fetch(`${AUTH_API}/push/subscribe`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(subscription),
+          });
+        } catch (err) {
+          console.error('[Push] Subscribe failed:', err);
+          alert('Could not enable notifications. Please try again.');
+          return;
+        }
+      }
+
+      await syncBellState();
+    });
+  }
+
+
+  // ── BOOT ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+
+    initAuthState();
+    initPushButton();
+
+    // Modal open/close
+    document.getElementById('auth-signin-btn')?.addEventListener('click', () => openModal('login'));
+    document.getElementById('auth-modal-close')?.addEventListener('click', closeModal);
+    document.getElementById('auth-modal-overlay')?.addEventListener('click', closeModal);
+
+    // Tab switching
+    document.querySelectorAll('.auth-tab').forEach(tab =>
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab))
+    );
+    document.querySelectorAll('.auth-switch-btn').forEach(btn =>
+      btn.addEventListener('click', () => switchTab(btn.dataset.switch))
+    );
+
+    // Form submit
+    document.getElementById('login-submit')?.addEventListener('click', handleLogin);
+    document.getElementById('register-submit')?.addEventListener('click', handleRegister);
+    document.getElementById('login-password')?.addEventListener('keydown',    e => { if (e.key === 'Enter') handleLogin(); });
+    document.getElementById('register-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
+
+    // User dropdown toggle
+    document.getElementById('user-avatar-btn')?.addEventListener('click', e => {
+      e.stopPropagation();
+      const dd = document.getElementById('user-dropdown');
+      if (dd) dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    });
+    // Close dropdown on outside click
+    document.addEventListener('click', () => {
+      const dd = document.getElementById('user-dropdown');
+      if (dd) dd.style.display = 'none';
+    });
+
+    document.getElementById('signout-btn')?.addEventListener('click', handleSignOut);
+
+    // Auto-open login after email verification
+    if (window.location.search.includes('verified=1')) {
+      openModal('login');
+      showMsg('login-success', '✅ Email verified! You can now sign in.');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  });
+
+
+  // ── GLOBAL AUTH API (accessible site-wide) ────────────────
+  window.TSAuth = {
+    getToken,
+    getUser,
+    isLoggedIn: () => !!(getToken() && getUser()),
+    AUTH_API,
+  };
+
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════
+     STYLES
+════════════════════════════════════════════════════════════ -->
 <style>
-	header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-	.main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-	.brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
-	.left-brand-group { display: flex; align-items: center; gap: 1rem; height: 100%; }
-	.right-actions { display: flex; align-items: center; gap: 0.75rem; }
+  /* ── Base ── */
+  header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+  .main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+  .brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
 
-	/* CORRECTION: TEXT STYLING FOR THE LEFT SIDE CONTAINER */
-	.left-text-brand a { text-decoration: none; display: flex; align-items: center; }
-	.site-title-text-left { 
-		display: inline-block;
-		font-size: 1.25rem; 
-		font-weight: 700; 
-		color: #111111; 
-		white-space: nowrap; 
-		letter-spacing: -0.5px; 
-	}
+  /* ── Left brand ── */
+  .left-brand-group { display: flex; align-items: center; gap: 1rem; height: 100%; }
+  .left-text-brand a { text-decoration: none; display: flex; align-items: center; }
+  .site-title-text-left { display: inline-block; font-size: 1.25rem; font-weight: 700; color: #111111; white-space: nowrap; letter-spacing: -0.5px; }
 
-	/* CORRECTION: LOGO GRAPHIC POSITIONED IN THE CENTER */
-	.center-logo-container { 
-		display: flex; 
-		justify-content: center; 
-		align-items: center; 
-		flex-grow: 1;
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		pointer-events: auto;
-	}
-	
-	/* CORRECTION: BOLDED / ENLARGED THE GRAPHIC SLIGHTLY */
-	.site-logo-graphic-center { 
-		height: 62px; /* Increased slightly from 48px to pop */
-		width: auto; 
-		object-fit: contain; 
-		display: block; 
-		border: 1px solid rgba(0, 0, 0, 0.05); /* Soft border styling to give it visual definition or 'boldness' */
-		box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-		border-radius: 6px;
-	}
+  /* ── Center logo ── */
+  .center-logo-container { display: flex; justify-content: center; align-items: center; position: absolute; left: 50%; transform: translateX(-50%); pointer-events: auto; }
+  .site-logo-graphic-center { height: 62px; width: auto; object-fit: contain; display: block; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 4px rgba(0,0,0,0.08); border-radius: 6px; }
 
-	.menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
-	.auth-controls { display: flex; align-items: center; }
-	.auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; transition: background 0.2s; }
-	.signin-btn { background: #dc2626; color: #fff; padding: 0.45rem 1rem; }
-	.signin-btn:hover { background: #b91c1c; }
+  /* ── Right actions ── */
+  .right-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .social-links { display: flex; gap: 1.2rem; align-items: center; }
+  .social-links a { color: #000; transition: color 0.2s; display: inline-flex; align-items: center; }
+  .social-links a:hover { color: #14b8a6; }
 
-	.user-menu { position: relative; align-items: center; }
-	.user-avatar-btn { background: none; border: none; cursor: pointer; padding: 0; }
-	.avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
-	.user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 220px; z-index: 500; padding: 0.5rem 0; }
-	.dropdown-header { padding: 0.75rem 1rem 0.5rem; }
-	.dropdown-name { display: block; font-weight: 700; font-size: 0.95rem; color: #111; }
-	.dropdown-email { display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.dropdown-divider { border: 0; border-top: 1px solid #f3f4f6; margin: 0.25rem 0; }
-	.dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; color: #374151; font-size: 0.9rem; text-decoration: none; transition: background 0.15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
-	.dropdown-item:hover { background: #f9fafb; color: #dc2626; }
-	.signout-item { color: #dc2626; }
+  /* ── Buttons ── */
+  .menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
+  .auth-controls { display: flex; align-items: center; }
+  .auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; transition: background 0.2s; }
+  .signin-btn { background: #dc2626; color: #fff; padding: 0.45rem 1rem; }
+  .signin-btn:hover { background: #b91c1c; }
 
-	.push-notify-btn { background: #dc2626; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
-	.push-notify-btn:hover { transform: scale(1.1); background: #b91c1c; }
-	.push-notify-btn.subscribed { background: #16a34a; }
+  /* ── User menu ── */
+  .user-menu { position: relative; align-items: center; }
+  .user-avatar-btn { background: none; border: none; cursor: pointer; padding: 0; }
+  .avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+  .user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 220px; z-index: 500; padding: 0.5rem 0; }
+  .dropdown-header { padding: 0.75rem 1rem 0.5rem; }
+  .dropdown-name  { display: block; font-weight: 700; font-size: 0.95rem; color: #111; }
+  .dropdown-email { display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dropdown-divider { border: 0; border-top: 1px solid #f3f4f6; margin: 0.25rem 0; }
+  .dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; color: #374151; font-size: 0.9rem; text-decoration: none; transition: background 0.15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
+  .dropdown-item:hover { background: #f9fafb; color: #dc2626; }
+  .signout-item { color: #dc2626; }
 
-	.nav-drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #142129; z-index: 200; display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); padding: 1.5rem; box-shadow: 4px 0 24px rgba(0,0,0,0.3); }
-	.nav-drawer.open { transform: translateX(320px); }
-	.drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
-	.drawer-title { color: #ffffff; font-weight: 600; font-size: 1.15rem; }
-	.close-btn { background: none; border: none; color: #ffffff; cursor: pointer; padding: 0.25rem; }
-	.drawer-links { display: flex; flex-direction: column; gap: 1.25rem; }
-	.drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s; padding: 0.15rem 0; display: block; }
-	.drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #14b8a6; font-weight: 600; }
-	.drawer-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.5rem 0; }
-	.drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
-	.drawer-overlay.active { opacity: 1; pointer-events: auto; }
-	.social-links { display: flex; gap: 1.2rem; align-items: center; }
-	.social-links a { color: #000; transition: color 0.2s; display: inline-flex; align-items: center; }
-	.social-links a:hover { color: #14b8a6; }
-	:global(body.menu-lock) { overflow: hidden; }
+  /* ── Push bell ── */
+  .push-notify-btn { background: #dc2626; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
+  .push-notify-btn:hover { transform: scale(1.1); background: #b91c1c; }
+  .push-notify-btn.subscribed       { background: #16a34a; }
+  .push-notify-btn.subscribed:hover { background: #15803d; }
 
-	/* AUTH MODAL */
-	.auth-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
-	.auth-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
-	.auth-modal-box { position: relative; background: #fff; border-radius: 16px; padding: 2rem; width: 100%; max-width: 420px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-	.auth-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0.25rem; border-radius: 4px; }
-	.auth-modal-close:hover { color: #111; background: #f3f4f6; }
-	.auth-tabs { display: flex; border-bottom: 2px solid #f3f4f6; margin-bottom: 1.5rem; }
-	.auth-tab { flex: 1; background: none; border: none; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-	.auth-tab.active { color: #dc2626; border-bottom-color: #dc2626; }
-	.auth-title { font-size: 1.4rem; font-weight: 700; color: #111; margin: 0 0 0.25rem; }
-	.auth-subtitle { font-size: 0.875rem; color: #6b7280; margin: 0 0 1.5rem; }
-	.auth-field { margin-bottom: 1rem; }
-	.auth-field label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; }
-	.auth-field input { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
-	.auth-field input:focus { border-color: #dc2626; }
-	.field-hint { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
-	.auth-submit-btn { width: 100%; background: #dc2626; color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-	.auth-submit-btn:hover { background: #b91c1c; }
-	.auth-error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-	.auth-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
-	.auth-switch { text-align: center; font-size: 0.875rem; color: #6b7280; margin-top: 1rem; margin-bottom: 0; }
-	.auth-switch-btn { background: none; border: none; color: #dc2626; font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
-	.auth-switch-btn:hover { text-decoration: underline; }
-	.spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
-	@keyframes spin { to { transform: rotate(360deg); } }
+  /* ── Nav drawer ── */
+  .nav-drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #142129; z-index: 200; display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); padding: 1.5rem; box-shadow: 4px 0 24px rgba(0,0,0,0.3); }
+  .nav-drawer.open { transform: translateX(320px); }
+  .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
+  .drawer-title  { color: #ffffff; font-weight: 600; font-size: 1.15rem; }
+  .close-btn     { background: none; border: none; color: #ffffff; cursor: pointer; padding: 0.25rem; }
+  .drawer-links  { display: flex; flex-direction: column; gap: 1.25rem; }
+  .drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s; padding: 0.15rem 0; display: block; }
+  .drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #14b8a6; font-weight: 600; }
+  .drawer-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.5rem 0; }
+  .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+  :global(body.menu-lock) { overflow: hidden; }
 
-	@media (max-width: 720px) { .social-links { display: none; } }
-	
-	/* Responsiveness tuning for smaller screens */
-	@media (max-width: 600px) {
-		.brand-row { height: 65px; }
-		.site-logo-graphic-center { height: 42px; }
-		.site-title-text-left { font-size: 1.05rem; }
-	}
+  /* ── Auth Modal ── */
+  .auth-modal         { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+  .auth-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
+  .auth-modal-box     { position: relative; background: #fff; border-radius: 16px; padding: 2rem; width: 100%; max-width: 420px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .auth-modal-close   { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0.25rem; border-radius: 4px; }
+  .auth-modal-close:hover { color: #111; background: #f3f4f6; }
+
+  .auth-tabs { display: flex; border-bottom: 2px solid #f3f4f6; margin-bottom: 1.5rem; }
+  .auth-tab  { flex: 1; background: none; border: none; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .auth-tab.active { color: #dc2626; border-bottom-color: #dc2626; }
+
+  .auth-title    { font-size: 1.4rem; font-weight: 700; color: #111; margin: 0 0 0.25rem; }
+  .auth-subtitle { font-size: 0.875rem; color: #6b7280; margin: 0 0 1.5rem; }
+
+  .auth-field       { margin-bottom: 1rem; }
+  .auth-field label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; }
+  .auth-field input { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+  .auth-field input:focus { border-color: #dc2626; }
+  .field-hint { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
+
+  .auth-submit-btn { width: 100%; background: #dc2626; color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  .auth-submit-btn:hover { background: #b91c1c; }
+
+  .auth-error   { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
+  .auth-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a;  padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
+
+  .auth-switch     { text-align: center; font-size: 0.875rem; color: #6b7280; margin-top: 1rem; margin-bottom: 0; }
+  .auth-switch-btn { background: none; border: none; color: #dc2626; font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
+  .auth-switch-btn:hover { text-decoration: underline; }
+
+  /* ── Spinner ── */
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 720px) { .social-links { display: none; } }
+  @media (max-width: 600px) {
+    .brand-row { height: 65px; }
+    .site-logo-graphic-center { height: 42px; }
+    .site-title-text-left { font-size: 1.05rem; }
+  }
 </style>
