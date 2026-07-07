@@ -1,5 +1,5 @@
 ---
-title: 10 Jailed for Naira Abuse in Delta, Edo States
+title: '"10" Jailed for Naira Abuse in Delta, Edo States'
 description: Benin Zonal Office cracks down on currency mutilation as court
   sentences offenders to prison terms or fines, reinforcing CBN Act enforcement
   across Nigeria.
