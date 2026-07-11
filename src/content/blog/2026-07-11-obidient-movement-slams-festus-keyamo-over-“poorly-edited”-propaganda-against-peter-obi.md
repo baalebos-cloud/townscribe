@@ -8,7 +8,7 @@ pubDate: 2026-07-11T19:26:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /obi-keyamo.jpeg
 seo_divider: ""
 seoKeyword: Obidient Movement Festus Keyamo, Peter Obi airport controversy 2026,
   Keyamo propaganda Peter Obi, 2027 presidential election Nigeria, NDC Peter
