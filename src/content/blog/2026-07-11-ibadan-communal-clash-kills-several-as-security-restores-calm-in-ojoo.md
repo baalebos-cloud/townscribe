@@ -16,14 +16,6 @@ seoDescription: Oyo State Government launches investigation after violent Tudun
   Wuli unrest claims lives and torches structures in Ojoo area of Ibadan.
 seo_gatekeeper: PASS
 ---
-\*\*Security Forces Quell Deadly Ibadan Communal Clash Disrupting Oyo Highway\*\* 
-
-
-
-
-
-
-
 **IBADAN, Oyo State** — Calm has returned to the Tudun Wuli area of Ojoo in Ibadan following a volatile communal clash between indigenes and settlers that claimed lives, destroyed property, and temporarily shut down a major federal highway. 
 
 Security operatives acted swiftly to restore order in this bustling part of Oyo State.
@@ -34,7 +26,9 @@ The unrest forced the temporary closure of the busy Ibadan-Oyo Federal Highway, 
 
 Multiple accounts indicate the violence was triggered by the alleged killing of a commercial tricycle (Keke) rider during a dispute over a Point-of-Sale (POS) transaction the previous night. 
 
-This incident quickly snowballed, drawing in rival groups and leading to further casualties, with reports confirming between two and four deaths and several injuries. Some descriptions frame it as a clash involving Yoruba traders and Hausa scavengers or settlers.
+This incident quickly snowballed, drawing in rival groups and leading to further casualties, with reports confirming between two and four deaths and several injuries. 
+
+Some descriptions frame it as a clash involving Yoruba traders and Hausa scavengers or settlers.
 
 Security forces, including troops from the Nigerian Army, Nigeria Police Force (NPF), Department of State Services (DSS), Nigeria Security and Civil Defence Corps (NSCDC), and the Oyo State Amotekun network, were rapidly deployed. 
 
