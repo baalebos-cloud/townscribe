@@ -7,7 +7,7 @@ pubDate: 2026-07-11T20:47:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: world
-heroImage: /townscribe-img.jpg
+heroImage: /strait-of-hormuz.jpeg
 seo_divider: ""
 seoKeyword: Iran, Strait of Hormuz, Tehran
 seoTitle: Iran Defiantly Rejects US Ultimatum, Tightens Grip on Strait of Hormuz
