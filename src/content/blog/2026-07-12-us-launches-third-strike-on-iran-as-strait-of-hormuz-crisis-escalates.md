@@ -6,7 +6,7 @@ pubDate: 2026-07-12T14:09:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: world
-heroImage: /townscribe-img.jpg
+heroImage: /1000300695.jpg
 seo_divider: ""
 seoKeyword: US strikes Iran 2026, Strait of Hormuz crisis, third US airstrike
   Iran, Iran attacks merchant ship, CENTCOM strikes Iran, Trump Iran ceasefire
