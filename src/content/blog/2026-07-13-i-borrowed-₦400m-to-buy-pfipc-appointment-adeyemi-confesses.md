@@ -1,5 +1,5 @@
 ---
-title: I Borrowed ₦400m to Buy PFIPC Appointment, Adeyemi Confesses
+title: I Borrowed ₦400 Million for This Appointment’ — Embattled PFIPC Boss
 description: Self-proclaimed DG of disowned PFIPC claims he paid hefty bribe via
   proxies to secure role, with creditors now hounding him at EFCC; Presidency
   insists entire operation was elaborate forgery.
@@ -10,7 +10,7 @@ category: news
 heroImage: /dg-adeniyi-et-gajabiamila.webp
 seo_divider: ""
 seoKeyword: "PFIPC , "
-seoTitle: I Borrowed ₦400m to Buy PFIPC Appointment, Boss Confesses
+seoTitle: I Borrowed ₦400 Million for This Appointment’ — Embattled PFIPC Boss
 seoDescription: Self-proclaimed DG of disowned PFIPC claims he paid hefty bribe
   via proxies to secure role, with creditors now hounding him at EFCC;
   Presidency insists entire
