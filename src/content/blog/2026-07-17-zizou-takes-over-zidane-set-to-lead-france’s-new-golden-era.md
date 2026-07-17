@@ -6,7 +6,7 @@ pubDate: 2026-07-17T23:06:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: sport
-heroImage: /townscribe-img.jpg
+heroImage: /zidane.webp
 seo_divider: ""
 seoKeyword: Zinedine Zidane France coach, Zidane next Bleus manager, Zidane
   succeeds Deschamps 2026, France national team new coach, Zidane Euro 2028
