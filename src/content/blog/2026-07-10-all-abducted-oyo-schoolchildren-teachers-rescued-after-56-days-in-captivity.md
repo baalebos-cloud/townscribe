@@ -2,7 +2,7 @@
 title: All Abducted Oyo Schoolchildren, Teachers Rescued After 56 Days in Captivity
 description: Nigerian Army, Police, and DSS neutralize nine bandits in daring intelligence-led operation, bringing hope amid rising school abductions in Southwest Nigeria.
 pubDate: 2026-07-10T19:16:00.000+01:00
-author: Afolabi Olaiya Idowu
+author: Afolabi Olaiya Idowu 
 authorRole: Admin
 category: news
 heroImage: /all-abducted-oyo-schoolchildren-and-teachers-rescued-after-56-days-in-captivity.jpeg
