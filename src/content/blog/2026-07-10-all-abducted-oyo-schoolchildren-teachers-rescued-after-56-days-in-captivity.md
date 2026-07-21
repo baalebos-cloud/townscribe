@@ -4,7 +4,7 @@ description: Nigerian Army, Police, and DSS neutralize nine bandits in daring in
 pubDate: 2026-07-10T19:16:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
-category: news
+category: news 
 heroImage: /all-abducted-oyo-schoolchildren-and-teachers-rescued-after-56-days-in-captivity.jpeg
 seo_divider: ""
 seoKeyword: Oyo schoolchildren rescue 2026, abducted pupils Oriire LGA freed,
