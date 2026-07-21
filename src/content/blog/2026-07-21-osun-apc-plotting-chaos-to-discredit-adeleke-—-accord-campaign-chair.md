@@ -6,7 +6,7 @@ pubDate: 2026-07-21T23:28:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /bamidele-salam.jpeg
 seo_divider: ""
 seoKeyword: "Osun APC chaos plot, Bamidele Salam Adeleke campaign, Osun
   governorship election tensions 2026, Imole Campaign Council accuses APC,
