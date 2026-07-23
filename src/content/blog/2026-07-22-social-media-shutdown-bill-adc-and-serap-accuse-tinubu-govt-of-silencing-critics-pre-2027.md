@@ -1,6 +1,6 @@
 ---
-title: "Social Media Shutdown Bill: ADC and SERAP Accuse Tinubu Govt of
-  Silencing Critics Pre-2027"
+title: "Social Media Shutdown Bill: ADC, SERAP Accuse Tinubu Govt of Silencing
+  Critics Pre-2027"
 description: Critics Slam Move to Force Platforms and Bloggers into Local
   Offices as Threat to Free Speech*
 pubDate: 2026-07-23T00:08:00.000+01:00
@@ -13,7 +13,7 @@ seoKeyword: Nigeria Social Media Shutdown Bill, Senate bill social media
   physical offices, bloggers regulation bill Nigeria 2026, SERAP opposes social
   media bill NASS, Tinubu government censorship fears 2027, Nigeria Data
   Protection Act amendment social media, ban Facebook X TikTok Nigeria offices.
-seoTitle: "Social Media Shutdown Bill: ADC and SERAP Accuse Tinubu Govt of
+seoTitle: "Social Media Shutdown Bill: ADC, SERAP Accuse Tinubu Govt of
   Silencing Critics Pre-2027"
 seoDescription: A controversial bill mandating social media giants and local
   bloggers to establish physical offices in Nigeria has ignited fierce debate,
