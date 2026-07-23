@@ -1,6 +1,6 @@
 ---
-title: "Chaos at Benin Airport: Jet Skids Off Runway — Survivors Describe
-  Terrifying Moments"
+title: "Chaos at Benin Airport: Enugu Air Jet Skids Off Runway — Survivors
+  Describe Terrifying Moments"
 description: Enugu Air flight from Lagos overruns runway at Benin Airport; all
   souls safe as quick evacuation averts tragedy amid tense scenes.
 pubDate: 2026-07-23T18:56:00.000+01:00
