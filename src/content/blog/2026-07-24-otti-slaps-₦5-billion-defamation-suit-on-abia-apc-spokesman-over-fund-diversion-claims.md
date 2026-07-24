@@ -59,4 +59,6 @@ Governor Otti’s administration has prioritized capital projects and institutio
 
 How this legal showdown unfolds could influence public perception and the tone of political discourse in the state ahead of upcoming electoral activities.
 
-The High Court is expected to provide further directions as the case progresses. Both parties and the general public await developments that could shape the narrative around governance and accountability in Abia State.
+The High Court is expected to provide further directions as the case progresses. 
+
+Both parties and the general public await developments that could shape the narrative around governance and accountability in Abia State.
