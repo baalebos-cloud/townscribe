@@ -8,7 +8,7 @@ pubDate: 2026-08-02T23:04:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /1000291884.png
 seo_divider: ""
 seoKeyword: SERAP Nigeria police funds scandal, ₦6.79 billion missing police
   funds, Auditor-General report Nigeria Police Force, SERAP Tinubu investigate
