@@ -8,7 +8,7 @@ pubDate: 2026-08-04T10:42:00.000+01:00
 author: Afolai Olaiya Idowu
 authorRole: Admin
 category: articles
-heroImage: /townscribe-img.jpg
+heroImage: /cardinal-onaiyekan-et-tinubu.webp
 seo_divider: ""
 seoKeyword: Seyi Makinde presidential ambition kidnapping, Cardinal Onaiyekan
   church abduction Enugu, Oyo Oriire schoolchildren kidnapping 2026, APC
