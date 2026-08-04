@@ -7,7 +7,7 @@ pubDate: 2026-08-04T13:45:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /data-protection.png
 seo_divider: ""
 seoKeyword: FG data protection circular MDAs, Nigeria Data Protection Act 2023
   compliance, George Akume SGF circular, NDPC Data Protection Officers, data is
