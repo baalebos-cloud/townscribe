@@ -26,11 +26,11 @@ seo_gatekeeper: PASS
 
 The X user, @ibiyemiibro, wrote: ***“Seyi declared to run… They kidnapped children from his State. The Cardinal said the truth to power… They kidnapped members of his faith. The people that are sponsoring and enabling the terrorists in Nigeria are in plain sight.”***
 
-The post, amplified by Parallel Facts and others, has sparked widespread discussion, with many Nigerians expressing frustration over persistent insecurity and questioning official narratives.
+The post, amplified by many Media Outlets, has sparked widespread discussion, with many Nigerians expressing frustration over persistent insecurity and questioning official narratives.
 
 **The Oyo School Abductions**
 
-On May 15, 2026, armed gunmen attacked three schools in Oriire Local Government Area of Oyo State — Community Grammar School, Baptist Nursery and Primary School, and L.A. Primary School in the Esiele and Yawota communities. 
+On May 15, 2026, armed gunmen attacked three schools in the Oriire Local Government Area of Oyo State—Community Grammar School, Baptist Nursery and Primary School, and L.A. Primary School in the Esiele and Yawota communities. 
 
 Dozens of pupils and teachers were abducted.
 
@@ -39,8 +39,6 @@ The incident occurred around the period Oyo State Governor Seyi Makinde publicly
 After 56 days in captivity, the victims—reported as at least 39 pupils and several teachers—were rescued by security forces on July 10, 2026. 
 
 President Tinubu welcomed the development, stating his administration does not negotiate with or pay ransom to criminals while praising the security agencies involved.
-
-
 
 **The Enugu Church Attack**
 
@@ -51,8 +49,6 @@ They abducted a seminarian (who had returned home for his father’s burial), a 
 The attack came after Cardinal John Onaiyekan, former Archbishop of Abuja, publicly challenged the Tinubu administration over its handling of insecurity. 
 
 In mid-July interviews, the Cardinal stated the government had “no excuse” for failing to end kidnappings and questioned why criminal camps continued to operate.
-
-
 
 **Claims, Context and Public Reaction**
 
@@ -69,8 +65,6 @@ The Federal Government continues to attribute the violence to criminal and terro
 On social media, reactions range from outrage and calls for mass action to demands for deeper investigations into the sponsors of terrorism. 
 
 Some users argue that repeated high-profile attacks after political or moral challenges erode public trust and fuel conspiracy theories in the absence of transparent accountability.
-
-
 
 **A Nation Under Pressure**
 
