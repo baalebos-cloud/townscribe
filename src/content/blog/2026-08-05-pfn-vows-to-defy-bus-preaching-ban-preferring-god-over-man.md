@@ -6,7 +6,7 @@ pubDate: 2026-08-05T13:15:00.000+01:00
 author: "Afolabi Olaiya Idowu "
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /1000305281.jpg
 seo_divider: ""
 seoKeyword: PFN bus preaching ban, Bishop Wale Oke FRSC bill, Pentecostal
   Fellowship of Nigeria commercial buses, FRSC Amendment Bill 2026 preaching, We
