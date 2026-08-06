@@ -7,7 +7,7 @@ pubDate: 2026-08-06T15:09:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /frsc.webp
 seo_divider: ""
 seoKeyword: FRSC Second Quarter 2026 Strategy Session, Corps Marshal Shehu
   Mohammed, Strengthening Institutional Capacity FRSC, FRSC High Command Abuja,
