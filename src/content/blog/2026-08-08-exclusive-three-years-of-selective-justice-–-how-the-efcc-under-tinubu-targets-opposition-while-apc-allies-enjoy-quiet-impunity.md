@@ -9,7 +9,7 @@ pubDate: 2026-08-08T14:49:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /efcc-jacket.webp
 seo_divider: ""
 seoKeyword: EFCC selective prosecution Tinubu administration, EFCC witch-hunt
   opposition Nigeria 2023-2026, Tinubu EFCC political weapon, Tambuwal EFCC
