@@ -7,7 +7,7 @@ pubDate: 2026-08-26T20:59:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /lagos-npf-peacewalk.jpeg
 seo_divider: ""
 seoKeyword: Lagos Police Peace Walk 2026, International Youth Day Lagos,
   Campaign Against Political and Digital Thuggery, CP Tijani Fatai, Lagos State
