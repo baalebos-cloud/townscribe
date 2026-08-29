@@ -7,7 +7,7 @@ pubDate: 2026-08-29T11:53:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /nigeria-police-rescue-two-colombian-women-from-lagos-trafficking-hideout.jpeg
 seo_divider: ""
 seoKeyword: Nigeria Police rescue Colombian women Lagos, human trafficking
   syndicate Nigeria 2026, Maria Camila Rodas Ortiz Yuliet Fernanda Rios Mesa,
