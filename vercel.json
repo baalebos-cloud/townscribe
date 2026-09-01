@@ -1,3 +1,9 @@
 {
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/admin/:path*",
+      "destination": "/404"
+    }
+  ]
 }
