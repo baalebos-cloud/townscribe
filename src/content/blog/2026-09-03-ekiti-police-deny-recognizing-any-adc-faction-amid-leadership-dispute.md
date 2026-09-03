@@ -7,7 +7,7 @@ pubDate: 2026-09-03T07:28:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /adc-npf.jpg
 seo_divider: ""
 seoKeyword: Ekiti ADC factions, police deny ADC recognition Ekiti, Ilesanmi
   Omolayo ADC, Bamidele Ekunola ADC, CP Falade Adegoroye Michael, African
