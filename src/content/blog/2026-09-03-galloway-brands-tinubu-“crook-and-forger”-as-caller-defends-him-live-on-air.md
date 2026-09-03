@@ -1,5 +1,6 @@
 ---
-title: Galloway Brands Tinubu “Crook and Forger” as Caller Defends Him Live on Air
+title: "VIDEO: Galloway Brands Tinubu “Crook and Forger” as Caller Defends Him
+  Live on Air"
 description: British host’s blunt dismissal of Nigerian president during MOATS
   call sparks fresh online uproar and renewed debate over long-running
   allegations.
@@ -8,6 +9,7 @@ author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
 heroImage: /tinubu-new.jpeg
+youtubeUrl: https://youtu.be/RWgCvBhtutQ?si=9KxrM2J3ikoUT7S_
 seo_divider: ""
 seoKeyword: George Galloway Tinubu crook forger, MOATS Tinubu caller Simi,
   Galloway brands Tinubu forger, British host attacks Tinubu live, viral
