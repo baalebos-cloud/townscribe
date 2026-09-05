@@ -9,7 +9,7 @@ pubDate: 2026-09-05T20:49:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /matawalle.webp
+heroImage: /matawalle-with-sao-tome.jpeg
 seo_divider: ""
 seoKeyword: Nigeria São Tomé and Príncipe ties, Bello Matawalle Tinubu
   representation, Carlos Manuel Vila Nova inauguration 2026, Nigeria-São Tomé
