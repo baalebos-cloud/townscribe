@@ -1,6 +1,5 @@
 ---
-title: Lagos Pensioners Cry Betrayal After Chief of Staff Meeting Yields No
-  Governor Talks or Progress
+title: Chief of Staff Apologises, Signs MoU… Then Ghosts Lagos Pensioners Completely
 description: " Union leader Michael Omisande reveals that the August 31 apology,
   MoU and promised follow-up with Governor Sanwo-Olu never materialized, as
   retirees still wait for long-overdue pension increases and arrears."
