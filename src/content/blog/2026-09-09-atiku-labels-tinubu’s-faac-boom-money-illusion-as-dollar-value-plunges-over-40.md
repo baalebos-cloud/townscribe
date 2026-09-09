@@ -1,5 +1,5 @@
 ---
-title: Atiku Labels Tinubu’s FAAC Boom Money Illusion as Dollar Value Plunges Over 40%
+title: "Atiku Exposes Tinubu’s FAAC Scam: Bigger Naira, Poorer Nigerians"
 description: Former Vice President Atiku Abubakar says bigger naira allocations
   have not improved living standards, citing sharp drop in real value amid
   currency depreciation and inflation.
