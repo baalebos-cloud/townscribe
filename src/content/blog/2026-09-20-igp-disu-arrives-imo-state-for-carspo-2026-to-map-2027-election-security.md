@@ -7,7 +7,7 @@ pubDate: 2026-09-20T20:54:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /igp-disu.webp
 seo_divider: ""
 seoKeyword: IGP Olutunji Rilwan Disu, CARSPO 2026, Imo State, Owerri, Nigeria
   Police Force, 2027 general elections security, election security roadmap,
