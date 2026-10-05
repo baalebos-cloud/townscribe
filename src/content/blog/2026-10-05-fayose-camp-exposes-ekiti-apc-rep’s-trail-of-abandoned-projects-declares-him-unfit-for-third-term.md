@@ -8,7 +8,7 @@ pubDate: 2026-10-05T20:59:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: politics
-heroImage: /olaolohun.jpeg
+heroImage: /whatsapp-image-2026-10-05-at-21.01.26.jpeg
 seo_divider: ""
 seoKeyword: Olaolurun Fatoba abandoned projects, Ekiti Central Federal
   Constituency, Sola Fatoba third term, Otunba Ajisafe Fayose ADC, Ekiti State
