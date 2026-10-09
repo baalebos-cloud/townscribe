@@ -8,7 +8,7 @@ pubDate: 2026-10-09T21:18:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: world
-heroImage: /townscribe-img.jpg
+heroImage: /tinubu-new.jpeg
 seo_divider: ""
 seoKeyword: Tinubu DCI Group lobbying, $750,000 monthly Nigeria US lobbyist,
   Aaron Greenspan FOIA Tinubu, DCI Group AZ court filing, Nigerian government
