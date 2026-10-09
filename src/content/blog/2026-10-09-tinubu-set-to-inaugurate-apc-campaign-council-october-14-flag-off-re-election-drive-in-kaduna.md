@@ -8,7 +8,7 @@ pubDate: 2026-10-09T19:30:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: politics
-heroImage: /townscribe-img.jpg
+heroImage: /tinubu-and-shettima.webp
 seo_divider: ""
 seoKeyword: Tinubu APC Presidential Campaign Council, Tinubu campaign flag off
   Kaduna October 24, APC PCC inauguration October 14, Abdulaziz Yari Tinubu
