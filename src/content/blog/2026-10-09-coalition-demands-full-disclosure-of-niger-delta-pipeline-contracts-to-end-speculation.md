@@ -22,13 +22,11 @@ seoDescription: Civil society group urges FG and NNPC Limited to publish
   claims over Pipeline
 seo_gatekeeper: PASS
 ---
-**Lagos, Nigeria—October 9, 2026**—A coalition of civil society organisations has called on the Federal Government and the Nigerian National Petroleum Company Limited to publicly release detailed information on pipeline surveillance contracts in the Niger Delta, insisting that transparency is the only way to end damaging speculation and protect national security operations.
+**Lagos, Nigeria—October 9, 2026**—A coalition of civil society organizations has called on the Federal Government and the Nigerian National Petroleum Company Limited to publicly release detailed information on pipeline surveillance contracts in the Niger Delta, insisting that transparency is the only way to end damaging speculation and protect national security operations.
 
 The Coalition of Civil Society Organizations for Good Governance (CCSOGG), speaking through its spokesperson Declan Ihekaire at a press conference in Lagos, specifically addressed allegations surrounding Pipeline Infrastructure Nigeria Limited (PINL) and its Project Director, Osahon Okunbo. 
 
 The group said unverified claims linking the company and its leadership to a purported ₦2.7 trillion annual pipeline surveillance arrangement lack publicly available documentary evidence and risk undermining critical oil-protection efforts.
-
-
 
 **Call for Facts Over Speculation**
 
@@ -37,8 +35,6 @@ The group said unverified claims linking the company and its leadership to a pur
 According to the group, available information suggests the widely circulated ₦2.7 trillion figure should not be confused with the actual value of PINL’s contract, which it put at about ₦150 billion. 
 
 The coalition stressed that contract sums typically cover personnel, equipment, logistics, security operations, technology, community engagement, and other operational costs—and should not be equated with personal income.
-
-
 
 **PINL’s Role and Performance Claims**
 
@@ -49,8 +45,6 @@ The coalition cited figures attributed to the company showing a reduction in pip
 However, the group insisted these claims must be independently verified by relevant government authorities rather than accepted at face value. 
 
 Any decision on the contracts, it argued, should rest on measurable results: reductions in vandalism, protection of crude oil production, community relations, technology deployment and value for money.
-
-
 
 **Broader Context of Controversy**
 
