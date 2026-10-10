@@ -7,7 +7,7 @@ pubDate: 2026-10-10T23:40:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: news
-heroImage: /tunde-ali.webp
+heroImage: /babatunde-ali-ndc-deputy-natl-chairman-south.png
 seo_divider: ""
 seoKeyword: Peter Obi hope of Nigerians 2027, Babatunde Ali NDC, NDC Peter Obi
   endorsement, INEC voter demographics 2027, 29 million young voters Nigeria, 43
