@@ -6,7 +6,7 @@ pubDate: 2026-10-24T20:13:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /townscribe-img.jpg
+heroImage: /shoprite.jpg
 youtubeUrl: ""
 seo_divider: ""
 seoKeyword: Shoprite Nigeria neighbourhood stores, Shoprite reopen standalone
