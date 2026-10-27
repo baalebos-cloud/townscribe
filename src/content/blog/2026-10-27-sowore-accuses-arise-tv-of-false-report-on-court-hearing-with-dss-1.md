@@ -7,7 +7,7 @@ pubDate: 2026-10-27T13:17:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
 category: news
-heroImage: /hvotzaxwmaaphh5.jpeg
+heroImage: /sowore.webp
 seo_divider: ""
 seoKeyword: Sowore ARISE TV false report, Omoyele Sowore DSS court case, Sowore
   denies Evidence Act claim, A.T. Kehinde SAN subpoena, Tosin Ajayi DSS, Sowore
