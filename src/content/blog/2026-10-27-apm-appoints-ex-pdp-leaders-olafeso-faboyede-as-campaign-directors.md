@@ -28,8 +28,6 @@ Olafeso, a former commissioner for Information, will serve as the Director Gener
 
 The appointments are designed to strengthen the party’s grassroots mobilization, political communication, and electoral coordination ahead of the presidential, National Assembly, and State House of Assembly elections.
 
-
-
 **Profiles and Expectations**
 
 Olafeso brings years of experience in party administration, political organization, and governance. His background is expected to enhance the APM’s campaign activities across the Southwest geopolitical zone.
@@ -41,7 +39,3 @@ Akinmoladun, with his combination of political experience, media expertise, and 
 His leadership of Platinum Television is viewed as an added advantage for media management and public engagement.
 
 The appointments form part of the APM’s broader preparations as it positions itself as an alternative platform for the 2027 elections under its ***“Reset Nigeria”*** agenda, with Oyo State Governor Seyi Makinde as its presidential candidate.
-
-
-
-**This report is based on the announcement published by New Telegraph on October 27, 2026.**
