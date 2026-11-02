@@ -1,5 +1,5 @@
 ---
-title: Tinubu’s Diversity Prayer Rings Hollow as Insecurity and Hunger Rage
+title: Tinubu’s Diversity Prayer Rings Hollow as Insecurity, Hunger Rage
 description: President hosts delegation dinner in Makkah, urging unity and
   mutual understanding as source of national strength and development.
 pubDate: 2026-11-02T10:51:00.000+01:00
@@ -12,7 +12,7 @@ seoKeyword: Tinubu diversity prosperity Makkah, President Tinubu Umrah prayer,
   Nigeria diversity unity Tinubu, Tinubu hosts delegation Makkah, convert
   diversity into prosperity, Tinubu prayer for Nigeria, national unity peace
   development.
-seoTitle: Tinubu’s Diversity Prayer Rings Hollow as Insecurity and Hunger Rage
+seoTitle: Tinubu’s Diversity Prayer Rings Hollow as Insecurity, Hunger Rage
 seoDescription: President hosts delegation dinner in Makkah, urging unity and
   mutual understanding as source of national strength and development.
 seo_gatekeeper: PASS
