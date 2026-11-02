@@ -1,5 +1,5 @@
 ---
-title: "JUST IN: Sowore Releases Video Revealing Faces of Ado-Ekiti Attackers"
+title: "VIDEO: Sowore Releases Video Revealing Faces of Ado-Ekiti Attackers"
 description: AAC presidential candidate accuses police and DSS of wiping CCTV
   footage after October 30 assault as 11 suspects remain in custody.
 pubDate: 2026-11-02T11:40:00.000+01:00
