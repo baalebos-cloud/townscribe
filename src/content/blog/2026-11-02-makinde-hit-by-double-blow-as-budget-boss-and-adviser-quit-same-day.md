@@ -1,5 +1,5 @@
 ---
-title: Makinde Hit by Double Blow as Budget Boss and Adviser Quit Same Day
+title: Makinde Hit by Double Blow as Budget Boss, Adviser Quit Same Day
 description: Oyo State Governor Seyi Makinde faces fresh exits as two key budget
   officials step down with immediate effect amid political realignments.
 pubDate: 2026-11-02T15:01:00.000+01:00
@@ -12,7 +12,7 @@ seoKeyword: Seyi Makinde resignations, Ayobami Oluwaseun Ojo resigns, Simeon
   Adegbola Oyeleke resignation, Oyo Budget Commissioner quits, Makinde cabinet
   exits 2026, Oyo State political realignment, APM presidential candidate
   Makinde.
-seoTitle: Makinde Hit by Double Blow as Budget Boss and Adviser Quit Same Day
+seoTitle: Makinde Hit by Double Blow as Budget Boss, Adviser Quit Same Day
 seoDescription: Oyo State Governor Seyi Makinde faces fresh exits as two key
   budget officials step down with immediate effect amid political realignments.
 seo_gatekeeper: PASS
