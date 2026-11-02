@@ -1,5 +1,6 @@
 ---
-title: Stolen Phone from Sowore Attack Traced Straight to Ekiti Governor’s Lodge
+title: Stolen Phone from Sowore Attack Allegedly Traced Straight to Ekiti
+  Governor’s Lodge
 description: Activist demands police and DSS release CCTV footage after devices
   taken during Friday assault on his team are electronically located near state
   government facilities.
@@ -13,7 +14,8 @@ seoKeyword: Sowore phone traced Governor’s Lodge, Sowore Ekiti attack CCTV,
   Omoyele Sowore Ado-Ekiti assault, Tawakalitu Restaurant attack, Ekiti police
   Sowore investigation, AAC presidential candidate attack, stolen phone
   Governor’s Lodge Ekiti.
-seoTitle: Stolen Phone from Sowore Attack Traced Straight to Ekiti Governor’s Lodge
+seoTitle: Stolen Phone from Sowore Attack Allegedly Traced Straight to Ekiti
+  Governor’s Lodge
 seoDescription: Activist demands police and DSS release CCTV footage after
   devices taken during Friday assault on his team are electronically located
   near state government
