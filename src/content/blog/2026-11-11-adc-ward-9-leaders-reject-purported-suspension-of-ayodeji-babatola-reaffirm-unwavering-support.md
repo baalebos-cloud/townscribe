@@ -72,9 +72,3 @@ For Ward 9 stakeholders, however, the issue goes beyond party procedures. They i
 With the ward leadership and the state caretaker committee both rejecting the purported suspension, attention is now on maintaining internal cohesion, strengthening grassroots mobilisation and preventing the disagreement from escalating into a wider division within the party.
 
 For now, the position expressed by the Ward 9 stakeholders is unequivocal: they stand with Chief Ayodeji Babatola Olora, and they do not recognise the purported suspension as a legitimate decision of their ward.
-
-
-
-
-
-Suggested Image Alt Text:
