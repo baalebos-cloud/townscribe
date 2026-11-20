@@ -1,0 +1,26 @@
+---
+// Brand-neutral line icons for the social accounts in SOCIAL_LINKS.
+import type { SocialId } from '../consts';
+
+interface Props {
+	id: SocialId;
+	size?: number;
+}
+const { id, size = 18 } = Astro.props;
+---
+
+{id === 'facebook' && (
+	<svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4 1.7-4 4.2V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.2-.6.6-.6z" /></svg>
+)}
+{id === 'whatsapp' && (
+	<svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-4.95A8.5 8.5 0 1 1 8 19.5z" /><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-1.8-.9-.8.8c-1-.4-2-1.4-2.4-2.4l.8-.8-.9-1.8L9 9.5z" fill="currentColor" stroke="none" /></svg>
+)}
+{id === 'instagram' && (
+	<svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+)}
+{id === 'x' && (
+	<svg viewBox="0 0 24 24" width={Math.round(size * 0.85)} height={Math.round(size * 0.85)} fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+)}
+{id === 'youtube' && (
+	<svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" /><polygon points="10 9 15 12 10 15" fill="currentColor" stroke="none" /></svg>
+)}

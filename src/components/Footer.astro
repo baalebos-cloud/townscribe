@@ -1,5 +1,7 @@
 ---
 import { CATEGORIES } from '../categories';
+import { SOCIAL_LINKS, WHATSAPP_CHANNEL_URL } from '../consts';
+import SocialIcon from './SocialIcon.astro';
 import TvIcon from './TvIcon.astro';
 
 const today = new Date();
@@ -17,16 +19,18 @@ const columns = [CATEGORIES.slice(0, half), CATEGORIES.slice(half)];
 				</a>
 				<p>Independent Nigerian news on politics, governance, crime, business, sport and lifestyle. Where every story breathes.</p>
 				<div class="social-links">
-					<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-						<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-					</a>
-					<a href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-						<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-					</a>
+					{SOCIAL_LINKS.filter((l) => l.id !== 'youtube').map((l) => (
+						<a href={l.url} target="_blank" rel="noopener noreferrer" aria-label={`TownScribe on ${l.label}`} title={l.label}>
+							<SocialIcon id={l.id} size={20} />
+						</a>
+					))}
 					<a href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
 						<TvIcon size={22} />
 					</a>
 				</div>
+				<a class="wa-cta" href={WHATSAPP_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+					<SocialIcon id="whatsapp" size={18} /> Follow our WhatsApp Channel
+				</a>
 			</div>
 
 			{columns.map((col, i) => (
@@ -121,6 +125,24 @@ const columns = [CATEGORIES.slice(0, half), CATEGORIES.slice(half)];
 	}
 	.social-links a {
 		display: inline-flex;
+	}
+	.wa-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 1rem;
+		padding: 0.55rem 1rem;
+		border-radius: 999px;
+		background: #1f8f4e;
+		color: #fff;
+		opacity: 1;
+		font-weight: 700;
+		font-size: 0.85rem;
+	}
+	.wa-cta:hover {
+		background: #18763f;
+		text-decoration: none;
+		color: #fff;
 	}
 	.legal {
 		display: flex;

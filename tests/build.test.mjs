@@ -119,3 +119,16 @@ test('light/dark switch is in the header and the saved choice is applied before 
 	const css = readdirSync(join(OUT, '_astro')).filter((f) => f.endsWith('.css')).map((f) => read(join('_astro', f))).join('\n') + home;
 	assert.match(css, /\[data-theme=["']?dark["']?\]/);
 });
+
+test('Facebook page and WhatsApp channel are linked in header, footer and articles', { skip: !OUT }, () => {
+	const FB = 'https://www.facebook.com/share/1CieW6ZMmJ/';
+	const WA = 'https://www.whatsapp.com/channel/0029Vb865S8EquiIRgAM9A1q';
+	const home = read('index.html');
+	for (const url of [FB, WA]) {
+		assert.ok(count(home, new RegExp(url.replace(/[.?/]/g, '\\$&'), 'g')) >= 3, `${url} should be in header, menu and footer`);
+	}
+	const article = read(join('blog', articleDirs[0], 'index.html'));
+	assert.match(article, /class="follow-strip/);
+	assert.ok(article.includes(WA) && article.includes(FB));
+	assert.match(article, /"sameAs":\[[^\]]*facebook\.com[^\]]*whatsapp\.com/);
+});

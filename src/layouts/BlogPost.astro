@@ -2,7 +2,8 @@
 import Analytics from '@vercel/analytics/astro';
 import type { CollectionEntry } from 'astro:content';
 import { categoryLabel } from '../categories';
-import { AUTH_API, COMMENTS_HOST, DEFAULT_IMAGE, VIEW_COUNTER_API } from '../consts';
+import { AUTH_API, COMMENTS_HOST, DEFAULT_IMAGE, SOCIAL_LINKS, VIEW_COUNTER_API, WHATSAPP_CHANNEL_URL } from '../consts';
+import SocialIcon from '../components/SocialIcon.astro';
 import { getSortedPosts, postUrl, relatedPosts as pickRelated } from '../posts';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -47,6 +48,7 @@ const prevPost = currentPostIndex >= 0 && currentPostIndex < allPosts.length - 1
 const relatedPosts = pickRelated(allPosts, { id: currentSlug ?? '', category });
 
 const extractedVideoId = getYouTubeId(youtubeUrl);
+const FACEBOOK_URL = SOCIAL_LINKS.find((l) => l.id === 'facebook')!.url;
 
 // Share links (no tracking scripts; plain URLs)
 const shareUrl = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), Astro.site ?? 'https://news.townscribe.org').href;
@@ -111,6 +113,15 @@ const shareLinks = {
             .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin: 2rem 0; }
             .gallery img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 4px; }
 
+            .follow-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin: 2rem 0; padding: 1rem 1.15rem; border: 1px solid var(--line); border-left: 4px solid #1f8f4e; border-radius: 6px; background: var(--surface); }
+            .follow-strip p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
+            .follow-strip strong { color: var(--ink); }
+            .follow-links { display: flex; flex-wrap: wrap; gap: 8px; }
+            .follow-links a { display: inline-flex; align-items: center; gap: 7px; padding: 0.5rem 0.95rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; color: #fff; }
+            .follow-wa { background: #1f8f4e; }
+            .follow-wa:hover { background: #18763f; color: #fff; }
+            .follow-fb { background: #1b5fc1; }
+            .follow-fb:hover { background: #154c9c; color: #fff; }
             .bookmark-toast { position: fixed; bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%) translateY(120px); background: var(--ink); color: var(--paper); padding: 0.65rem 1.25rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; }
             .bookmark-toast.show { transform: translateX(-50%) translateY(0); }
 
@@ -204,6 +215,14 @@ const shareLinks = {
                         ))}
                     </section>
                 )}
+
+                <aside class="follow-strip" aria-label="Follow TownScribe">
+                    <p><strong>Get TownScribe news first.</strong> Follow our WhatsApp Channel or Facebook page.</p>
+                    <div class="follow-links">
+                        <a class="follow-wa" href={WHATSAPP_CHANNEL_URL} target="_blank" rel="noopener noreferrer"><SocialIcon id="whatsapp" size={17} /> WhatsApp Channel</a>
+                        <a class="follow-fb" href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"><SocialIcon id="facebook" size={16} /> Facebook</a>
+                    </div>
+                </aside>
 
                 <InArticleAd />
 
