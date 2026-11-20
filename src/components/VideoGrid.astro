@@ -7,12 +7,14 @@ import FormattedDate from './FormattedDate.astro';
 interface Props {
 	videos: Video[];
 	inlinePlay?: boolean;
+	/** Light text for the dark TownScribe TV band */
+	dark?: boolean;
 }
 
-const { videos, inlinePlay = false } = Astro.props;
+const { videos, inlinePlay = false, dark = false } = Astro.props;
 ---
 
-<ul class="video-grid">
+<ul class:list={["video-grid", { dark }]}>
 	{videos.map((v) => (
 		<li>
 			<a
@@ -29,7 +31,7 @@ const { videos, inlinePlay = false } = Astro.props;
 					{v.live ? <span class="live">● LIVE</span> : <span class="play" aria-hidden="true">▶</span>}
 				</div>
 				<h3>{v.title}</h3>
-				<p class="date"><FormattedDate date={v.published} /></p>
+				<p class="date">{v.live ? 'Live now' : <FormattedDate date={v.published} />}{!v.live && ' · 15s preview'}</p>
 			</a>
 		</li>
 	))}
@@ -52,73 +54,96 @@ const { videos, inlinePlay = false } = Astro.props;
 <style>
 	.video-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-		gap: 1.5rem;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 24px 20px;
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
 	.video-card {
-		display: block;
-		text-decoration: none;
-		color: inherit;
+		display: grid;
+		gap: 8px;
+		color: var(--ink);
 	}
 	.thumb {
 		position: relative;
-		border-radius: 10px;
+		border-radius: 6px;
 		overflow: hidden;
-		background: #111;
+		background: #000;
 	}
 	.thumb img {
 		display: block;
 		width: 100%;
 		aspect-ratio: 16 / 9;
 		object-fit: cover;
-		transition: transform 0.25s ease;
+		border-radius: 0;
+		transition: transform 0.25s ease, opacity 0.2s ease;
 	}
 	.video-card:hover img {
-		transform: scale(1.04);
+		transform: scale(1.03);
+		opacity: 0.9;
 	}
 	.play {
 		position: absolute;
-		right: 10px;
+		left: 10px;
 		bottom: 10px;
-		width: 34px;
-		height: 34px;
+		width: 30px;
+		height: 30px;
 		border-radius: 50%;
-		background: rgba(220, 38, 38, 0.95);
+		background: var(--red);
 		color: #fff;
 		display: grid;
 		place-items: center;
-		font-size: 0.8rem;
+		font-size: 0.7rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 	}
 	.live {
 		position: absolute;
 		left: 10px;
 		top: 10px;
-		background: #dc2626;
+		background: var(--red);
 		color: #fff;
-		font: 700 0.7rem/1 system-ui, sans-serif;
-		letter-spacing: 0.06em;
-		padding: 0.35rem 0.5rem;
-		border-radius: 4px;
+		font: 800 0.68rem/1 var(--font-ui);
+		letter-spacing: 0.08em;
+		padding: 6px 8px;
+		border-radius: 3px;
 	}
 	h3 {
-		font-size: 1rem;
-		line-height: 1.35;
-		margin: 0.6rem 0 0.2rem;
-		color: #111;
+		font-size: 0.98rem;
+		line-height: 1.3;
+		font-weight: 700;
+		margin: 0;
+		color: inherit;
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
 	.video-card:hover h3 {
-		color: #dc2626;
+		color: var(--red);
 	}
 	.date {
 		margin: 0;
-		color: #6b7280;
-		font-size: 0.85rem;
+		color: var(--muted);
+		font-size: 0.8rem;
+	}
+	.dark .video-card {
+		color: var(--tv-ink);
+	}
+	.dark .video-card:hover h3 {
+		color: #ff9aa8;
+	}
+	.dark .date {
+		color: var(--tv-muted);
+	}
+	@media (max-width: 980px) {
+		.video-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 480px) {
+		.video-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

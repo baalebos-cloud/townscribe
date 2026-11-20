@@ -1,17 +1,47 @@
 ---
+// Front page: breaking strip, live banner, lead story with a timed "Latest"
+// list, category sections and the TownScribe TV band.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Pagination from '../components/Pagination.astro';
 import PostGrid from '../components/PostGrid.astro';
+import StoryCard from '../components/StoryCard.astro';
 import TvIcon from '../components/TvIcon.astro';
 import VideoGrid from '../components/VideoGrid.astro';
-import { getAllVideos } from '../youtube';
+import { CATEGORIES } from '../categories';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { getSortedPosts, pageCount, pageSlice } from '../posts';
+import { getSortedPosts, postUrl } from '../posts';
+import { getAllVideos } from '../youtube';
 
 const all = await getSortedPosts();
-const latest = pageSlice(all, 1);
+const now = new Date();
+
+// Breaking strip: newest story marked "Breaking news" in the last 48 hours
+const breaking = all.find((p) => p.data.breaking && now.valueOf() - p.data.pubDate.valueOf() < 48 * 3600 * 1000);
+
+const [lead, ...rest] = all;
+const stack = rest.slice(0, 2);
+const latest = rest.slice(2, 9);
+const shown = new Set([lead, ...stack, ...latest].map((p) => p?.id));
+
+// Category sections: up to 6 categories that have at least 4 more stories
+const SECTION_ORDER = ['politics', 'governance', 'crime', 'news', 'business', 'world', 'sport', 'entertainment', 'lifestyle', 'health', 'technology', 'pidgin-news'];
+const sections = SECTION_ORDER.map((slug) => {
+	const posts = all.filter((p) => p.data.category === slug && !shown.has(p.id)).slice(0, 4);
+	const label = CATEGORIES.find((c) => c.slug === slug)?.label ?? slug;
+	return { slug, label, posts };
+})
+	.filter((s) => s.posts.length === 4)
+	.slice(0, 6);
+const sectionsBeforeTv = sections.slice(0, 2);
+const sectionsAfterTv = sections.slice(2);
+
 const videos = await getAllVideos();
 const liveNow = videos.find((v) => v.live);
+
+// "Latest" list: time for today's stories (Lagos time), short date for older ones
+const dayKey = (d: Date) => d.toLocaleDateString('en-GB', { timeZone: 'Africa/Lagos' });
+const timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Africa/Lagos' });
+const dateFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'Africa/Lagos' });
+const stamp = (d: Date) => (dayKey(d) === dayKey(now) ? timeFmt.format(d) : dateFmt.format(d));
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -22,170 +52,262 @@ const liveNow = videos.find((v) => v.live);
 		}
 	</script>
 
-	<div class="home">
-		<h1 class="sr-only">TownScribe Media — latest news</h1>
+	<h1 class="sr-only">TownScribe Media — latest news</h1>
 
+	{breaking && (
+		<div class="breaking">
+			<div class="wrap breaking-row">
+				<span class="tag">Breaking</span>
+				<a href={postUrl(breaking)}>{breaking.data.title}</a>
+			</div>
+		</div>
+	)}
+
+	<div class="wrap">
 		{liveNow && (
 			<a class="live-banner" href={liveNow.href}>
-				<span class="live-pill">● LIVE</span>
-				<span class="live-title">{liveNow.title}</span>
+				<span class="dot" aria-hidden="true"></span>
+				<span class="tag">Live</span>
+				<span class="live-title">TownScribe TV: {liveNow.title}</span>
 				<span class="live-cta">Watch now →</span>
 			</a>
 		)}
-		<div class="welcome-section">
-			{/* --- CORRECTED BOTTOM SOCIAL INTERFACE LINK BAR --- */}
-			<p class="social-inline-links">
-				Looking for a way to carry out your publicity or your blog? Connect with us:
-				<span class="inline-social-group">
-				<a class="inline-icon insta" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram Profile">
-					<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-				</a>
-				<a class="inline-icon x-corp" href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter) Profile">
-					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-				</a>
-				<a class="inline-icon tv" href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
-					<TvIcon size={24} />
-				</a>
-				</span>
-			</p>
-		</div>
 
-		<section>
-			<h2 class="articles-heading">Latest News Updates</h2>
-			<PostGrid posts={latest} />
-			{/* Page 1 of /blog is the same list, so "Older" jumps straight to page 2 */}
-			<Pagination base="/blog" current={1} total={pageCount(all.length)} />
-		</section>
-
-		{videos.length > 0 && (
-			<section class="tv-strip">
-				<div class="tv-strip-head">
-					<h2 class="articles-heading"><TvIcon size={26} /> TownScribe TV</h2>
-					<a href="/tv">All videos →</a>
+		{lead && (
+			<section class="front" aria-label="Top stories">
+				<div class="front-lead">
+					<StoryCard post={lead} variant="lead" eager />
 				</div>
-				<VideoGrid videos={videos.slice(0, 4)} />
+				<div class="front-stack">
+					{stack.map((p) => <StoryCard post={p} variant="stack" eager />)}
+				</div>
+				<aside class="front-latest" aria-labelledby="latest-title">
+					<h2 id="latest-title">Latest</h2>
+					<ol>
+						{latest.map((p) => (
+							<li>
+								<time datetime={p.data.pubDate.toISOString()}>{stamp(p.data.pubDate)}</time>
+								<a href={postUrl(p)}>{p.data.title}</a>
+							</li>
+						))}
+					</ol>
+					<a class="all-news" href="/blog">All news →</a>
+				</aside>
 			</section>
 		)}
+
+		{sectionsBeforeTv.map((s) => (
+			<section class="home-section" aria-labelledby={`sec-${s.slug}`}>
+				<div class="section-head">
+					<h2 id={`sec-${s.slug}`}>{s.label}</h2>
+					<a href={`/category/${s.slug}`}>More {s.label.toLowerCase()} →</a>
+				</div>
+				<PostGrid posts={s.posts} showCategory={false} />
+			</section>
+		))}
+	</div>
+
+	{videos.length > 0 && (
+		<section class="tv-band" aria-labelledby="sec-tv">
+			<div class="wrap">
+				<div class="section-head">
+					<h2 id="sec-tv"><TvIcon size={24} /> TownScribe TV</h2>
+					<a href="/tv">All videos →</a>
+				</div>
+				<VideoGrid videos={videos.slice(0, 4)} dark />
+			</div>
+		</section>
+	)}
+
+	<div class="wrap">
+		{sectionsAfterTv.map((s) => (
+			<section class="home-section" aria-labelledby={`sec-${s.slug}`}>
+				<div class="section-head">
+					<h2 id={`sec-${s.slug}`}>{s.label}</h2>
+					<a href={`/category/${s.slug}`}>More {s.label.toLowerCase()} →</a>
+				</div>
+				<PostGrid posts={s.posts} showCategory={false} />
+			</section>
+		))}
+
+		<p class="more-news"><a href="/blog">See all news →</a></p>
 	</div>
 </BaseLayout>
 
 <style>
-	.home {
-		width: 1100px;
-		max-width: 100%;
-		margin: 0 auto;
-		padding: 1rem 0 2rem;
-	}
-	.welcome-section {
-		margin-bottom: 4rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-		padding-bottom: 2rem;
-	}
-	h1 {
-		font-size: 2.5rem;
-		margin-bottom: 1.5rem;
-	}
-	p {
-		line-height: 1.6;
-		color: #333;
-	}
-	
-	/* --- BOTTOM CONTENT LINE SOCIAL BLOCKS --- */
-	.social-inline-links {
-		margin-top: 1.5rem;
-		line-height: 2;
-	}
-	.inline-social-group {
-		display: inline-flex;
-		align-items: center;
-		gap: 1.25rem;
-		margin-left: 0.5rem;
-		vertical-align: middle;
-	}
-	.inline-icon {
-		color: #111;
-		transition: color 0.2s ease, transform 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-	}
-	.inline-icon:hover {
-		transform: translateY(-2px);
-	}
-	.inline-icon.insta:hover { color: #E1306C; }
-	.inline-icon.x-corp:hover { color: #000000; }
-	.inline-icon.tv:hover { color: #dc2626; }
-	.articles-heading {
-		font-size: 1.8rem;
-		margin-bottom: 2rem;
+	.tag {
+		flex-shrink: 0;
+		font: 800 0.68rem/1 var(--font-ui);
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		letter-spacing: 1px;
+		color: var(--red-ink);
+		background: var(--red);
+		padding: 6px 8px;
+		border-radius: 3px;
 	}
+
+	/* Breaking strip */
+	.breaking {
+		background: var(--surface);
+		border-bottom: 1px solid var(--line);
+	}
+	.breaking-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 44px;
+	}
+	.breaking a {
+		color: var(--ink);
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
+	}
+	.breaking a:hover {
+		color: var(--red);
+	}
+
+	/* Live banner */
 	.live-banner {
 		display: flex;
 		align-items: center;
-		gap: 0.9rem;
-		background: #111827;
-		color: #fff;
-		text-decoration: none;
-		padding: 0.85rem 1.1rem;
-		border-radius: 10px;
-		margin-bottom: 2rem;
+		gap: 12px;
+		background: var(--tv-bg);
+		color: var(--tv-ink);
+		border-radius: 8px;
+		padding: 12px 14px;
+		margin-top: 20px;
 	}
-	.live-pill {
-		background: #dc2626;
-		font-weight: 800;
-		font-size: 0.75rem;
-		letter-spacing: 0.06em;
-		padding: 0.3rem 0.55rem;
-		border-radius: 4px;
-		animation: pulse 1.6s ease-in-out infinite;
+	.live-banner:hover {
+		color: var(--tv-ink);
+	}
+	.dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--red);
+		flex-shrink: 0;
+		animation: ping 1.8s infinite;
+	}
+	@keyframes ping {
+		0% { box-shadow: 0 0 0 0 var(--red); }
+		70%, 100% { box-shadow: 0 0 0 8px transparent; }
 	}
 	.live-title {
 		flex: 1;
-		font-weight: 600;
-		line-height: 1.3;
+		min-width: 0;
+		font: 700 0.98rem/1.3 var(--font-head);
 	}
 	.live-cta {
 		white-space: nowrap;
-		color: #fca5a5;
 		font-weight: 700;
+		font-size: 0.85rem;
+		color: #ff9aa8;
 	}
-	@keyframes pulse {
-		50% { opacity: 0.6; }
+
+	/* Front: lead | stack | latest */
+	.front {
+		display: grid;
+		grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr) minmax(0, 0.9fr);
+		gap: 28px;
+		padding-block: 24px 8px;
 	}
-	@media (prefers-reduced-motion: reduce) {
-		.live-pill { animation: none; }
+	.front-stack {
+		display: grid;
+		gap: 18px;
+		align-content: start;
 	}
-	.tv-strip {
-		margin-top: 3.5rem;
+	.front-stack > :global(.story:last-child) {
+		border-bottom: 0;
 	}
-	.tv-strip-head {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
+	.front-latest h2 {
+		font: 800 0.8rem var(--font-ui);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		padding-bottom: 8px;
+		border-bottom: 2px solid var(--ink);
+		margin: 0 0 4px;
 	}
-	.tv-strip-head a {
-		color: #dc2626;
+	.front-latest ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.front-latest li {
+		display: grid;
+		grid-template-columns: 52px minmax(0, 1fr);
+		gap: 10px;
+		padding: 11px 0;
+		border-bottom: 1px solid var(--line);
+	}
+	.front-latest time {
+		font: 700 0.75rem var(--font-ui);
+		color: var(--red);
+		font-variant-numeric: tabular-nums;
+		padding-top: 2px;
+	}
+	.front-latest li a {
+		font: 600 0.88rem/1.35 var(--font-ui);
+		color: var(--ink);
+	}
+	.front-latest li a:hover {
+		color: var(--red);
+	}
+	.all-news,
+	.more-news a {
+		display: inline-block;
+		margin-top: 12px;
 		font-weight: 700;
-		text-decoration: none;
-		white-space: nowrap;
+		font-size: 0.88rem;
+		color: var(--red);
 	}
-	.tv-strip .articles-heading {
+	.more-news {
+		margin: 2rem 0 0;
+		text-align: center;
+	}
+
+	.home-section {
+		padding-top: 2rem;
+	}
+
+	/* TownScribe TV band */
+	.tv-band {
+		background: var(--tv-bg);
+		color: var(--tv-ink);
+		margin-top: 2.5rem;
+		padding-block: 1.75rem 2rem;
+	}
+	.tv-band .section-head {
+		border-top-color: var(--tv-ink);
+	}
+	.tv-band .section-head h2 {
 		display: flex;
-		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 10px;
+		color: var(--tv-ink);
 	}
-	.tv-strip .articles-heading::after {
-		flex-basis: 100%;
+	.tv-band .section-head a {
+		color: #ff9aa8;
 	}
-	.articles-heading::after {
-		content: '';
-		display: block;
-		width: 60px;
-		height: 4px;
-		background: #14b8a6;
-		margin-top: 0.5rem;
+
+	@media (max-width: 980px) {
+		.front {
+			grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+		}
+		.front-latest {
+			grid-column: 1 / -1;
+		}
+	}
+	@media (max-width: 640px) {
+		.front {
+			grid-template-columns: 1fr;
+			gap: 18px;
+			padding-top: 16px;
+		}
+		.live-cta {
+			display: none;
+		}
 	}
 </style>

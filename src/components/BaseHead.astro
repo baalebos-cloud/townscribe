@@ -60,6 +60,13 @@ const finalImageUrl = typeof image === 'string'
 />
 <meta name="generator" content={Astro.generator} />
 
+<!-- Fonts: Archivo (headlines), Inter (interface), Source Serif 4 (article text) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" />
+<meta name="theme-color" content="#0b2545" />
+<meta name="color-scheme" content="light dark" />
+
 <!-- Search engine directives -->
 <link rel="canonical" href={canonicalURL} />
 <title>{finalTitle}</title>

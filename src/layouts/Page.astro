@@ -22,25 +22,31 @@ const {
 ---
 
 <BaseLayout title={title} description={description} image={heroImage} noindex={noindex}>
-	<div class="page">
+	<div class="wrap"><div class="page">
 		{heroImage && <img class="page-hero" src={heroImage} alt="" width="1020" height="510" />}
 		{heading && <h1 class="page-heading">{heading}</h1>}
 		<slot />
-	</div>
+	</div></div>
 </BaseLayout>
 
 <style>
 	.page {
-		width: 760px;
-		max-width: 100%;
+		max-width: 760px;
 		margin: 0 auto;
-		padding: 1rem 0 2rem;
+		padding-block: 2rem 1rem;
+		font: 400 1.08rem/1.7 var(--font-read);
+		color: var(--ink);
+	}
+	.page :global(h1),
+	.page :global(h2),
+	.page :global(h3) {
+		font-family: var(--font-head);
 	}
 	.page-hero {
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: 12px;
+		border-radius: 6px;
 		margin-bottom: 1.5rem;
 	}
 	.page-heading {

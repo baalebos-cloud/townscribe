@@ -14,7 +14,7 @@ const featured = videos[0];
 	title="TownScribe TV — Videos & Live Programmes"
 	description="Watch the latest TownScribe TV videos and live programmes, then catch the full stories on our YouTube channel."
 >
-	<div class="tv">
+	<div class="wrap tv">
 		<header class="tv-header">
 			<div>
 				<p class="eyebrow"><TvIcon size={20} /> TownScribe TV</p>
@@ -81,10 +81,7 @@ const featured = videos[0];
 
 <style>
 	.tv {
-		width: 1100px;
-		max-width: 100%;
-		margin: 0 auto;
-		padding: 1rem 0 2rem;
+		padding-block: 1.5rem 1rem;
 	}
 	.tv-header {
 		display: flex;
@@ -92,7 +89,7 @@ const featured = videos[0];
 		align-items: flex-end;
 		gap: 1.5rem;
 		flex-wrap: wrap;
-		border-bottom: 2px solid #eaeaea;
+		border-bottom: 3px solid var(--brand);
 		padding-bottom: 1.25rem;
 		margin-bottom: 2rem;
 	}
@@ -100,7 +97,7 @@ const featured = videos[0];
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
-		color: #dc2626;
+		color: var(--red);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
@@ -113,10 +110,10 @@ const featured = videos[0];
 	}
 	.sub {
 		margin: 0;
-		color: #555;
+		color: var(--ink-2);
 	}
 	.subscribe {
-		background: #dc2626;
+		background: var(--red);
 		color: #fff;
 		text-decoration: none;
 		font-weight: 700;
@@ -136,13 +133,13 @@ const featured = videos[0];
 		line-height: 1.25;
 	}
 	.featured-info p {
-		color: #444;
+		color: var(--ink-2);
 	}
 	.featured-info [hidden] {
 		display: none;
 	}
 	.live-tag {
-		color: #dc2626;
+		color: var(--red);
 		font-weight: 800;
 		letter-spacing: 0.05em;
 		font-size: 0.85rem;
@@ -160,7 +157,7 @@ const featured = videos[0];
 		width: 10px;
 		height: 10px;
 		border-radius: 50%;
-		background: #dc2626;
+		background: var(--red);
 	}
 	@media (max-width: 800px) {
 		.featured {

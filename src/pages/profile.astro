@@ -12,7 +12,7 @@ import Layout from '../layouts/Page.astro';
   <!-- Auth gate -->
   <div id="auth-gate" class="auth-gate" style="display:none;">
     <div class="gate-card">
-      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#dc2626" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--red)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <h2>Sign in to view your profile</h2>
       <p>Create an account or sign in to manage your TownScribe profile.</p>
       <button id="gate-signin-btn" class="btn-primary">Sign In</button>
@@ -150,45 +150,45 @@ import Layout from '../layouts/Page.astro';
 <style>
   /* Auth gate */
   .auth-gate      { display: flex; justify-content: center; padding: 3rem 1rem; }
-  .gate-card      { background: #fff; border-radius: 16px; padding: 3rem 2rem; text-align: center; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-  .gate-card h2   { font-size: 1.3rem; font-weight: 700; color: #111; margin: 0; }
-  .gate-card p    { color: #6b7280; font-size: 0.9rem; margin: 0; line-height: 1.6; }
+  .gate-card      { background: var(--paper); border-radius: 16px; padding: 3rem 2rem; text-align: center; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.07); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .gate-card h2   { font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 0; }
+  .gate-card p    { color: var(--muted); font-size: 0.9rem; margin: 0; line-height: 1.6; }
 
   /* Profile header */
-  .profile-header  { display: flex; align-items: center; gap: 1.5rem; background: #fff; border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
-  .avatar-large    { width: 80px; height: 80px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800; flex-shrink: 0; }
+  .profile-header  { display: flex; align-items: center; gap: 1.5rem; background: var(--paper); border-radius: 16px; padding: 1.75rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
+  .avatar-large    { width: 80px; height: 80px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800; flex-shrink: 0; }
   .profile-info    { display: flex; flex-direction: column; gap: 0.3rem; }
-  .profile-name    { font-size: 1.4rem; font-weight: 800; color: #111; margin: 0; }
-  .profile-email   { font-size: 0.9rem; color: #6b7280; margin: 0; }
-  .profile-badge   { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #dc2626; background: #fef2f2; padding: 0.2rem 0.6rem; border-radius: 4px; width: fit-content; }
+  .profile-name    { font-size: 1.4rem; font-weight: 800; color: var(--ink); margin: 0; }
+  .profile-email   { font-size: 0.9rem; color: var(--muted); margin: 0; }
+  .profile-badge   { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--red); background: color-mix(in srgb, var(--red) 10%, var(--paper)); padding: 0.2rem 0.6rem; border-radius: 4px; width: fit-content; }
 
   /* Grid */
   .profile-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  .profile-card    { background: #fff; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.75rem; }
-  .card-heading    { font-size: 1rem; font-weight: 700; color: #111; margin: 0 0 0.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f3f4f6; }
+  .profile-card    { background: var(--paper); border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.75rem; }
+  .card-heading    { font-size: 1rem; font-weight: 700; color: var(--ink); margin: 0 0 0.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
 
   /* Detail rows */
-  .detail-row      { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #f9fafb; }
+  .detail-row      { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--line); }
   .detail-row:last-of-type { border-bottom: none; }
-  .detail-label    { font-size: 0.85rem; color: #9ca3af; font-weight: 600; }
-  .detail-value    { font-size: 0.875rem; color: #374151; font-weight: 500; text-align: right; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .detail-label    { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+  .detail-value    { font-size: 0.875rem; color: var(--ink-2); font-weight: 500; text-align: right; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* Stat */
-  .stat-box        { display: flex; flex-direction: column; align-items: center; background: #f9fafb; border-radius: 10px; padding: 1.25rem; gap: 0.25rem; }
-  .stat-num        { font-size: 2rem; font-weight: 800; color: #dc2626; line-height: 1; }
-  .stat-label      { font-size: 0.78rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-box        { display: flex; flex-direction: column; align-items: center; background: var(--surface); border-radius: 10px; padding: 1.25rem; gap: 0.25rem; }
+  .stat-num        { font-size: 2rem; font-weight: 800; color: var(--red); line-height: 1; }
+  .stat-label      { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
   /* Buttons */
-  .btn-primary        { display: inline-block; background: #dc2626; color: #fff; font-weight: 700; font-size: 0.95rem; padding: 0.65rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
+  .btn-primary        { display: inline-block; background: var(--red); color: #fff; font-weight: 700; font-size: 0.95rem; padding: 0.65rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
   .btn-primary:hover  { background: #b91c1c; }
-  .btn-outline        { display: inline-block; border: 1.5px solid #dc2626; color: #dc2626; font-weight: 700; font-size: 0.875rem; padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none; transition: background 0.2s; text-align: center; }
-  .btn-outline:hover  { background: #fef2f2; }
+  .btn-outline        { display: inline-block; border: 1.5px solid var(--red); color: var(--red); font-weight: 700; font-size: 0.875rem; padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none; transition: background 0.2s; text-align: center; }
+  .btn-outline:hover  { background: color-mix(in srgb, var(--red) 10%, var(--paper)); }
 
   /* Danger */
-  .danger-card         { border: 1px solid #fecaca; grid-column: 1 / -1; }
-  .danger-heading      { color: #dc2626; }
-  .btn-danger          { display: flex; align-items: center; gap: 0.5rem; background: #fef2f2; border: 1.5px solid #fecaca; color: #dc2626; font-weight: 700; font-size: 0.9rem; padding: 0.6rem 1.25rem; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: fit-content; }
-  .btn-danger:hover    { background: #fee2e2; }
+  .danger-card         { border: 1px solid color-mix(in srgb, var(--red) 35%, var(--paper)); grid-column: 1 / -1; }
+  .danger-heading      { color: var(--red); }
+  .btn-danger          { display: flex; align-items: center; gap: 0.5rem; background: color-mix(in srgb, var(--red) 10%, var(--paper)); border: 1.5px solid color-mix(in srgb, var(--red) 35%, var(--paper)); color: var(--red); font-weight: 700; font-size: 0.9rem; padding: 0.6rem 1.25rem; border-radius: 8px; cursor: pointer; transition: background 0.2s; width: fit-content; }
+  .btn-danger:hover    { background: color-mix(in srgb, var(--red) 10%, var(--paper)); }
 
   @media (max-width: 640px) {
     .profile-grid    { grid-template-columns: 1fr; }
