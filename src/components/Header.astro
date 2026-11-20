@@ -1,5 +1,6 @@
 ---
-import { AUTH_API } from '../consts';
+import { AUTH_API, SOCIAL_LINKS } from '../consts';
+import SocialIcon from './SocialIcon.astro';
 import { CATEGORIES } from '../categories';
 import HeaderLink from './HeaderLink.astro';
 import TvIcon from './TvIcon.astro';
@@ -21,12 +22,11 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
     <span class="util-date" id="util-date">{todayLabel}</span>
     <nav class="util-links" aria-label="TownScribe elsewhere">
       <a class="util-tv" href="/tv"><TvIcon size={15} /> TownScribe TV</a>
-      <a class="util-social" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-      </a>
-      <a class="util-social" href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
+      {SOCIAL_LINKS.filter((l) => l.id !== 'youtube').map((l) => (
+        <a class="util-social" href={l.url} target="_blank" rel="noopener noreferrer" aria-label={`TownScribe on ${l.label}`} title={l.label}>
+          <SocialIcon id={l.id} size={16} />
+        </a>
+      ))}
     </nav>
   </div>
 </div>
@@ -130,6 +130,16 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
         {CATEGORIES.map((c) => (
           <HeaderLink href={`/category/${c.slug}`}>{c.label}</HeaderLink>
         ))}
+      </div>
+      <div class="drawer-follow">
+        <span class="drawer-follow-title">Follow TownScribe</span>
+        <div class="drawer-follow-links">
+          {SOCIAL_LINKS.map((l) => (
+            <a href={l.url} target="_blank" rel="noopener noreferrer" aria-label={`TownScribe on ${l.label}`} title={l.label}>
+              <SocialIcon id={l.id} size={20} />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
     <div id="drawer-overlay" class="drawer-overlay"></div>
@@ -674,6 +684,11 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   .drawer-links  { display: flex; flex-direction: column; gap: 1.25rem; flex-shrink: 0; }
   .drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s; padding: 0.15rem 0; display: block; }
   .drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #ffb4bf; font-weight: 600; }
+  .drawer-follow { flex-shrink: 0; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.12); }
+  .drawer-follow-title { display: block; color: rgba(255,255,255,0.7); font: 700 0.72rem var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 0.8rem; }
+  .drawer-follow-links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .drawer-follow-links a { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); color: #fff; display: grid; place-items: center; }
+  .drawer-follow-links a:hover { border-color: #fff; background: rgba(255,255,255,0.1); color: #fff; }
   .drawer-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.5rem 0; }
   .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .drawer-overlay.active { opacity: 1; pointer-events: auto; }

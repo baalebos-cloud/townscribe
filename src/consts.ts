@@ -14,3 +14,15 @@ export const DEFAULT_IMAGE = '/townscribe-img.jpg';
 
 // Number of articles per listing page (home, /blog, categories)
 export const PAGE_SIZE = 24;
+
+// Official TownScribe social accounts (header, footer, menu, article pages, search-engine data)
+export const SOCIAL_LINKS = [
+	{ id: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/share/1CieW6ZMmJ/' },
+	{ id: 'whatsapp', label: 'WhatsApp Channel', url: 'https://www.whatsapp.com/channel/0029Vb865S8EquiIRgAM9A1q' },
+	{ id: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/townscribenews' },
+	{ id: 'x', label: 'X (Twitter)', url: 'https://x.com/townscribenews' },
+	{ id: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@townscribeTV' },
+] as const;
+
+export type SocialId = (typeof SOCIAL_LINKS)[number]['id'];
+export const WHATSAPP_CHANNEL_URL = SOCIAL_LINKS.find((s) => s.id === 'whatsapp')!.url;
