@@ -35,3 +35,6 @@ export const DEVELOPER = {
 	url: 'https://github.com/baalebos-cloud',
 	sameAs: ['https://github.com/baalebos-cloud', 'https://www.linkedin.com/in/oluwadare-jayeola-6874591b4'],
 } as const;
+
+// Google AdSense publisher ID (also in public/ads.txt as pub-2369234321458849)
+export const ADSENSE_CLIENT = 'ca-pub-2369234321458849';

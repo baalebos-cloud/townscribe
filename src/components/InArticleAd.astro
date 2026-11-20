@@ -1,17 +1,26 @@
 ---
-// src/components/InArticleAd.astro
+// In-article AdSense unit. The AdSense script itself is loaded once in BaseHead.astro.
+import { ADSENSE_CLIENT } from '../consts';
 ---
 
-<div class="ad-container" style="margin: 2rem 0; min-height: 100px; width: 100%;">
+<div class="ad-container">
   <ins class="adsbygoogle"
        style="display:block"
-       data-ad-client="ca-pub-2369234321458849"
+       data-ad-client={ADSENSE_CLIENT}
        data-ad-slot="3564332335"
        data-ad-format="auto"
        data-full-width-responsive="true"></ins>
 </div>
 
 <script is:inline>
-  // This safely executes the AdSense push function every time the client loads the page
+  // Ask AdSense to fill this slot (queued until the AdSense script has loaded)
   (window.adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+<style>
+  .ad-container {
+    margin: 2rem 0;
+    min-height: 100px;
+    width: 100%;
+  }
+</style>
