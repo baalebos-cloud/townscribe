@@ -150,3 +150,15 @@ test('news alerts use one subscribe path with the push worker key (no hard-coded
 	assert.doesNotMatch(home, /initPushButton|WEB PUSH NOTIFICATION ENGINE/);
 	assert.equal(count(home, /pushManager\.subscribe\(/g), 1, 'exactly one place subscribes');
 });
+
+test('AdSense ownership tag and script are on every page type, exactly once', { skip: !OUT }, () => {
+	const pages = ['index.html', join('about', 'index.html'), join('tv', 'index.html'), join('category', 'news', 'index.html'), join('blog', articleDirs[0], 'index.html')];
+	for (const page of pages) {
+		const html = read(page);
+		const head = html.slice(0, html.indexOf('</head>'));
+		assert.match(head, /<meta name="google-adsense-account" content="ca-pub-2369234321458849"/, `${page}: meta tag`);
+		assert.equal(count(head, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-2369234321458849/g), 1, `${page}: script once`);
+	}
+	assert.match(read('ads.txt'), /google\.com, pub-2369234321458849, DIRECT, f08c47fec0942fa0/);
+	assert.match(read(join('blog', articleDirs[0], 'index.html')), /data-ad-slot="3564332335"/);
+});
