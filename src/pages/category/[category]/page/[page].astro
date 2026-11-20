@@ -1,0 +1,32 @@
+---
+import Listing from '../../../../layouts/Listing.astro';
+import { CATEGORIES } from '../../../../categories';
+import { getSortedPosts, pageCount, pageSlice } from '../../../../posts';
+
+// Page 1 lives at /category/<slug>; this file builds /category/<slug>/page/2 onwards.
+export async function getStaticPaths() {
+	const posts = await getSortedPosts();
+	return CATEGORIES.flatMap((category) => {
+		const inCategory = posts.filter((p) => p.data.category === category.slug);
+		const total = pageCount(inCategory.length);
+		return Array.from({ length: total - 1 }, (_, i) => i + 2).map((page) => ({
+			params: { category: category.slug, page: String(page) },
+			props: { label: category.label, posts: pageSlice(inCategory, page), total },
+		}));
+	});
+}
+
+const { category, page } = Astro.params;
+const { label, posts, total } = Astro.props;
+---
+
+<Listing
+	title={`${label.includes('News') ? label : `${label} News`} | TownScribe`}
+	description={`Latest ${label.toLowerCase()} stories and analysis from TownScribe Media.`}
+	heading={label}
+	posts={posts}
+	base={`/category/${category}`}
+	current={Number(page)}
+	total={total}
+	showCategory={false}
+/>

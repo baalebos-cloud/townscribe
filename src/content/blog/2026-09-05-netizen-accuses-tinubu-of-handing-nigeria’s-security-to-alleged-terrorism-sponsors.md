@@ -8,7 +8,7 @@ pubDate: 2026-09-05T20:04:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /netizen-accuses-tinubu-of-handing-nigeria’s-security-to-alleged-terrorism-sponsors.jpeg.crdownload
+heroImage: /netizen-accuses-tinubu-of-handing-nigeria’s-security-to-alleged-terrorism-sponsors.jpeg
 seo_divider: ""
 seoKeyword: Tinubu security appointments controversy, Shettima Ribadu Matawalle
   terrorism allegations, Nuhu Ribadu National Security Adviser, Bello Matawalle

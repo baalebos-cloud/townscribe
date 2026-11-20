@@ -1,77 +1,37 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { CATEGORIES } from '../categories';
+import { PAGE_SIZE } from '../consts';
+import { getSortedPosts, pageCount, postUrl } from '../posts';
 
+// Pre-built at deploy time and served at /sitemap.xml (referenced from robots.txt).
 export const GET: APIRoute = async ({ site }) => {
-  // 1. Fetch your actual blog posts collection dynamically
-  const posts = await getCollection('blog');
-  
-  // Clean trailing slash from base site URL to prevent double slashes
-  const baseUrl = site ? site.toString().replace(/\/$/, '') : 'https://news.townscribe.org';
-  
-  // 2. Base platform utility pages
-  const basePages = [
-    '',
-    '/about',
-    '/advertise',
-    '/donate',
-  ];
+	const base = (site?.toString() ?? 'https://news.townscribe.org').replace(/\/$/, '');
+	const posts = await getSortedPosts();
 
-  // 3. Complete list of Category Pages mapping perfectly to your routes
-  const categories = [
-    '/category/news',
-    '/category/politics',
-    '/category/sports',
-    '/category/entertainment',
-    '/category/business',
-    '/category/articles',
-    '/category/pidgin-news',
-    '/category/exclusive',
-    '/category/technology',
-    '/category/health',
-    '/category/sport',
-    '/category/world',
-    '/category/job'
-  ];
+	const xmlEscape = (value: string) =>
+		value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
-  // Combine both static sets for uniform processing
-  const allStaticRoutes = [...basePages, ...categories];
+	const url = (path: string, opts: { lastmod?: Date; changefreq: string; priority: string }) =>
+		`<url><loc>${xmlEscape(base + path)}</loc>${opts.lastmod ? `<lastmod>${opts.lastmod.toISOString()}</lastmod>` : ''}<changefreq>${opts.changefreq}</changefreq><priority>${opts.priority}</priority></url>`;
 
-  // 4. Generate XML tags for base configurations and clean categories
-  const pageEntries = allStaticRoutes
-    .map(route => `<url><loc>${baseUrl}${route}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`)
-    .join('');
+	const staticPages = ['', '/blog', '/about', '/contact', '/privacy-policy', '/terms-of-service'].map((path) =>
+		url(path, { changefreq: path === '' || path === '/blog' ? 'hourly' : 'monthly', priority: path === '' ? '1.0' : '0.5' }),
+	);
 
-  // 5. Generate XML tags for individual blog records
-  const blogEntries = posts
-    .map(post => {
-      // Fallback fallback selector if post.slug is not explicitly assigned by your schema
-      const slug = post.slug || post.id || post.data?.slug;
-      const postDate = post.data?.pubDate ? new Date(post.data.pubDate).toISOString() : new Date().toISOString();
-      
-      return `
-        <url>
-          <loc>${baseUrl}/blog/${slug}</loc>
-          <lastmod>${postDate}</lastmod>
-          <changefreq>weekly</changefreq>
-          <priority>1.0</priority>
-        </url>
-      `;
-    })
-    .join('');
+	const categoryPages = CATEGORIES.flatMap((category) => {
+		const count = posts.filter((p) => p.data.category === category.slug).length;
+		const pages = [url(`/category/${category.slug}`, { changefreq: 'daily', priority: '0.7' })];
+		for (let n = 2; n <= pageCount(count, PAGE_SIZE); n++) {
+			pages.push(url(`/category/${category.slug}/page/${n}`, { changefreq: 'daily', priority: '0.3' }));
+		}
+		return pages;
+	});
 
-  // 6. Assemble complete Document Tree
-  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${pageEntries}
-      ${blogEntries}
-    </urlset>
-  `.trim();
+	const articlePages = posts.map((post) =>
+		url(postUrl(post), { lastmod: post.data.updatedDate ?? post.data.pubDate, changefreq: 'weekly', priority: '0.8' }),
+	);
 
-  // 7. Render stream payload straight out to the requesting crawler
-  return new Response(sitemapXml, {
-    headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=3600, s-maxage=86400',
-    },
-  });
+	const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...staticPages, ...categoryPages, ...articlePages].join('\n')}\n</urlset>\n`;
+
+	return new Response(body, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 };

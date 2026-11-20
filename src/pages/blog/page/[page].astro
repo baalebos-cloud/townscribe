@@ -1,0 +1,27 @@
+---
+import Listing from '../../../layouts/Listing.astro';
+import { getSortedPosts, pageCount, pageSlice } from '../../../posts';
+
+// Page 1 is /blog; this file builds /blog/page/2 onwards.
+export async function getStaticPaths() {
+	const all = await getSortedPosts();
+	const total = pageCount(all.length);
+	return Array.from({ length: total - 1 }, (_, i) => i + 2).map((page) => ({
+		params: { page: String(page) },
+		props: { posts: pageSlice(all, page), total },
+	}));
+}
+
+const { page } = Astro.params;
+const { posts, total } = Astro.props;
+---
+
+<Listing
+	title="All News | TownScribe"
+	description="Every story published on TownScribe Media, newest first."
+	heading="All News"
+	posts={posts}
+	base="/blog"
+	current={Number(page)}
+	total={total}
+/>

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/townscribe-img.jpg';
 import { SITE_TITLE } from '../consts';
+import { categoryLabel } from '../categories';
 
 interface Props {
 	title: string;
@@ -13,32 +14,35 @@ interface Props {
 	seoKeyword?: string;
 	author?: string;
 	pubDate?: Date;
+	updatedDate?: Date;
 	category?: string;
+	/** Keep personal pages (profile, bookmarks) out of search results */
+	noindex?: boolean;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), Astro.site);
 
-const { 
-	title, 
-	description, 
-	image = FallbackImage, 
-	seoTitle, 
+const {
+	title,
+	description,
+	image = FallbackImage,
+	seoTitle,
 	seoDescription,
 	seoKeyword,
 	author = 'TownScribe Staff',
 	pubDate,
-	category = 'News'
+	updatedDate,
+	category = 'news',
+	noindex = false,
 } = Astro.props;
 
-// --- AUTOMATED ENGINE: FINALIZE INDEXING DIRECTIVE ---
-// If the writer filled out all SEO panel requirements, allow indexing. Otherwise, protect the site.
-const automatedRobotsIndex = 'index, follow';
+const robots = noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
 
 const finalTitle = seoTitle || title;
 const finalDescription = seoDescription || description;
 
-const finalImageUrl = typeof image === 'string' 
-	? new URL(image, Astro.site) 
+const finalImageUrl = typeof image === 'string'
+	? new URL(image, Astro.site)
 	: new URL(image.src, Astro.site);
 ---
 
@@ -47,7 +51,7 @@ const finalImageUrl = typeof image === 'string'
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/jpeg" href="/townscribe-img.jpg" />
 <link rel="apple-touch-icon" href="/townscribe-img.jpg" />
-<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 <link
 	rel="alternate"
 	type="application/rss+xml"
@@ -56,15 +60,12 @@ const finalImageUrl = typeof image === 'string'
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Advanced Search Engine Directives -->
+<!-- Search engine directives -->
 <link rel="canonical" href={canonicalURL} />
 <title>{finalTitle}</title>
-<meta name="title" content={finalTitle} />
 <meta name="description" content={finalDescription} />
 {seoKeyword && <meta name="keywords" content={seoKeyword} />}
-
-<!-- AUTOMATED ROBOTS STATE DIRECTIVE -->
-<meta name="robots" content={automatedRobotsIndex} />
+<meta name="robots" content={robots} />
 
 <!-- Open Graph / Facebook Meta Cards -->
 <meta property="og:type" content={pubDate ? "article" : "website"} />
@@ -73,13 +74,14 @@ const finalImageUrl = typeof image === 'string'
 <meta property="og:description" content={finalDescription} />
 <meta property="og:image" content={finalImageUrl} />
 <meta property="og:site_name" content="TownScribe News" />
+{pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+{updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
 
 <!-- Twitter / X Meta Cards -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={finalTitle} />
-<meta property="twitter:description" content={finalDescription} />
-<meta property="twitter:image" content={finalImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={finalTitle} />
+<meta name="twitter:description" content={finalDescription} />
+<meta name="twitter:image" content={finalImageUrl} />
 
 {/* --- AUTOMATED STRUCTURED DATA SNIPPET (JSON-LD) --- */}
 {pubDate && (
@@ -88,8 +90,9 @@ const finalImageUrl = typeof image === 'string'
 		"@type": "NewsArticle",
 		"headline": finalTitle,
 		"image": [finalImageUrl.href],
-		"datePublished": pubDate instanceof Date ? pubDate.toISOString() : pubDate,
-		"dateModified": pubDate instanceof Date ? pubDate.toISOString() : pubDate,
+		"datePublished": pubDate.toISOString(),
+		"mainEntityOfPage": canonicalURL.href,
+		"dateModified": (updatedDate ?? pubDate).toISOString(),
 		"author": [{
 			"@type": "Person",
 			"name": author,
@@ -104,7 +107,7 @@ const finalImageUrl = typeof image === 'string'
 			}
 		},
 		"description": finalDescription,
-		"articleSection": category
+		"articleSection": categoryLabel(category)
 	})} />
 )}
 

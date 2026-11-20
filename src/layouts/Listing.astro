@@ -1,0 +1,70 @@
+---
+// Paginated article listing (/blog and /category/*).
+import BaseLayout from './BaseLayout.astro';
+import Pagination from '../components/Pagination.astro';
+import PostGrid from '../components/PostGrid.astro';
+import type { Post } from '../posts';
+
+interface Props {
+	title: string;
+	description: string;
+	heading: string;
+	subtitle?: string;
+	posts: Post[];
+	base: string;
+	current: number;
+	total: number;
+	showCategory?: boolean;
+}
+
+const { title, description, heading, subtitle, posts, base, current, total, showCategory = true } = Astro.props;
+---
+
+<BaseLayout title={current > 1 ? `${title} — Page ${current}` : title} description={description}>
+	<div class="listing">
+		<header class="listing-header">
+			<p class="breadcrumbs"><a href="/">Home</a> / {heading}</p>
+			<h1>{heading}</h1>
+			{subtitle && <p class="subtitle">{subtitle}</p>}
+		</header>
+
+		{posts.length === 0 ? (
+			<p class="empty">No articles published here yet. Where Every Story Breathes...</p>
+		) : (
+			<PostGrid posts={posts} showCategory={showCategory} />
+		)}
+
+		<Pagination base={base} current={current} total={total} />
+	</div>
+</BaseLayout>
+
+<style>
+	.listing {
+		width: 1100px;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 1rem 0 2rem;
+	}
+	.listing-header {
+		border-bottom: 2px solid #eaeaea;
+		padding-bottom: 1.25rem;
+		margin-bottom: 2rem;
+	}
+	.listing-header h1 {
+		font-size: 2.4rem;
+		margin: 0.4rem 0;
+		letter-spacing: -0.5px;
+	}
+	.breadcrumbs a {
+		color: #666;
+		text-decoration: none;
+	}
+	.breadcrumbs,
+	.subtitle {
+		color: #666;
+		margin: 0;
+	}
+	.empty {
+		color: #555;
+	}
+</style>

@@ -1,0 +1,49 @@
+---
+// Previous / next links for listing pages.
+// `base` is the first page's URL, e.g. "/blog" or "/category/news";
+// later pages live at `${base}/page/N`.
+interface Props {
+	base: string;
+	current: number;
+	total: number;
+}
+
+const { base, current, total } = Astro.props;
+const href = (n: number) => (n <= 1 ? base : `${base}/page/${n}`);
+---
+
+{total > 1 && (
+	<nav class="pagination" aria-label="Pagination">
+		{current > 1 ? <a href={href(current - 1)} rel="prev">← Newer</a> : <span />}
+		<span class="status">Page {current} of {total}</span>
+		{current < total ? <a href={href(current + 1)} rel="next">Older →</a> : <span />}
+	</nav>
+)}
+
+<style>
+	.pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin: 3rem 0 1rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid #e5e7eb;
+	}
+	.pagination a {
+		font-weight: 600;
+		text-decoration: none;
+		color: #111;
+		border: 1.5px solid #e5e7eb;
+		border-radius: 999px;
+		padding: 0.45rem 1.1rem;
+	}
+	.pagination a:hover {
+		border-color: #14b8a6;
+		color: #14b8a6;
+	}
+	.status {
+		color: #6b7280;
+		font-size: 0.9rem;
+	}
+</style>

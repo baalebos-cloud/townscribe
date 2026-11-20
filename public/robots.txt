@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Link to your automated XML sitemap
-Sitemap: https://news.townscribe.org/sitemap-index.xml
+Sitemap: https://news.townscribe.org/sitemap.xml

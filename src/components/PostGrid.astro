@@ -1,0 +1,101 @@
+---
+// Card grid used by the homepage, /blog and category listings.
+import FormattedDate from './FormattedDate.astro';
+import { categoryLabel } from '../categories';
+import { DEFAULT_IMAGE } from '../consts';
+import { type Post, postUrl } from '../posts';
+
+interface Props {
+	posts: Post[];
+	/** Show the category badge on each card (off on category pages) */
+	showCategory?: boolean;
+	/** How many leading images load eagerly (above the fold) */
+	eager?: number;
+}
+
+const { posts, showCategory = true, eager = 2 } = Astro.props;
+---
+
+<ul class="post-grid">
+	{posts.map((post, i) => (
+		<li>
+			<a href={postUrl(post)}>
+				<div class="thumb">
+					<img
+						src={post.data.heroImage || DEFAULT_IMAGE}
+						alt=""
+						width="720"
+						height="480"
+						loading={i < eager ? 'eager' : 'lazy'}
+						decoding="async"
+						fetchpriority={i === 0 ? 'high' : undefined}
+					/>
+					{showCategory && <span class="badge">{categoryLabel(post.data.category)}</span>}
+				</div>
+				<h3 class="title">{post.data.title}</h3>
+				<p class="date"><FormattedDate date={post.data.pubDate} /></p>
+			</a>
+		</li>
+	))}
+</ul>
+
+<style>
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 2rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.post-grid a {
+		display: block;
+		text-decoration: none;
+	}
+	.thumb {
+		position: relative;
+	}
+	.thumb img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		border-radius: 12px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		background: #e2e8f0;
+	}
+	.badge {
+		position: absolute;
+		left: 0.6rem;
+		bottom: 0.6rem;
+		background: rgba(17, 24, 39, 0.9);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 600;
+		padding: 0.2rem 0.5rem;
+		border-radius: 4px;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+	.title {
+		margin: 0.75rem 0 0;
+		color: #111;
+		line-height: 1.25;
+		font-size: 1.2rem;
+		transition: color 0.2s ease;
+	}
+	.date {
+		margin: 0.25rem 0 0;
+		color: #777;
+		font-size: 0.9rem;
+	}
+	.post-grid a:hover img {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+	}
+	.post-grid a:hover .title {
+		color: #14b8a6;
+	}
+</style>

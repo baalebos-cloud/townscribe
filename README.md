@@ -1,245 +1,121 @@
 # TownScribe
 
-**Serverless publishing platform** — fully edge-native media site running on Cloudflare Workers, KV, D1, and Tunnel. No traditional backend server. Zero cold starts. Built with TypeScript, Astro, and Cloudflare's developer platform.
+News site for **[news.townscribe.org](https://news.townscribe.org)** — Nigerian and world news on politics, governance, crime, business, sport and lifestyle.
 
-Live at: **[townscribe.org](https://townscribe.org)**
-
----
-
-## What it does
-
-TownScribe is a community media platform where readers can browse articles, comment, subscribe to push notifications, and authenticate — all without a traditional backend server. Every dynamic feature runs at the Cloudflare edge using Workers.
+The site is a fully **pre-built Astro site** deployed on **Vercel**. Writers publish through **Decap CMS**; reader features (accounts, bookmarks, push alerts, view counts, comments) are served by small Cloudflare Workers and a self-hosted Remark42 instance that live outside this repository.
 
 ---
 
-## Tech Stack
+## How it fits together
+
+```
+Writer ──► Decap CMS (admin.townscribe.org/admin, sign-in via DecapBridge)
+              │  editorial workflow: each article = branch cms/blog/<slug> + pull request
+              ▼
+GitHub  baalebos-cloud/townscribe
+              │  CI (lint, type-check, content tests, build)  ← .github/workflows/ci.yml
+              │  image compression on CMS pull requests       ← .github/workflows/optimize-images.yml
+              │  merge to main
+              ▼
+Vercel  astro build ──► static HTML for every page ──► news.townscribe.org
+              │
+              └─► push alert to subscribers for *new* articles ← .github/workflows/notify.yml
+
+Browser ──► Cloudflare Workers
+              ├─ townscribe-auth        accounts, bookmarks, push subscriptions
+              ├─ townscribe-push-worker web push delivery (VAPID)
+              └─ townscribe-view-counter article view counts
+         └─► comments.townscribe.org (Remark42 behind Cloudflare Tunnel)
+```
+
+### Tech stack
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend / SSG | Astro (static site generation) |
-| Edge runtime | Cloudflare Workers (TypeScript) |
-| Key-value storage | Cloudflare KV |
-| Edge database | Cloudflare D1 (SQLite at the edge) |
-| Origin tunnel | Cloudflare Tunnel (zero-trust) |
-| Push notifications | Web Push API + VAPID |
-| Transactional email | Brevo SMTP |
-| Comments | Remark42 (self-hosted on Oracle Cloud Free Tier) |
-| DNS + Security | Cloudflare DNS, WAF, rate limiting, SSL/TLS Full Strict |
-| Deployment | Cloudflare Pages (frontend) + Workers (edge logic) |
+| Site generator | Astro 6, `output: 'static'` (every page pre-built at deploy) |
+| Hosting | Vercel (`@astrojs/vercel` adapter, Vercel Web Analytics) |
+| Content | Markdown in `src/content/blog`, edited through Decap CMS 3 + DecapBridge |
+| Reader accounts & bookmarks | Cloudflare Worker + D1 |
+| Push notifications | Web Push + VAPID, Cloudflare Worker + KV |
+| View counts | Cloudflare Worker |
+| Comments | Remark42 (Oracle Cloud VM, exposed via Cloudflare Tunnel) |
+| Ads | Google AdSense + Funding Choices |
 
 ---
 
-## Architecture
+## Project layout
 
 ```
-townscribe.org
-│
-├── Cloudflare Edge
-│   ├── push-worker/          # Web Push notification delivery
-│   │   ├── index.ts          # VAPID signing, KV subscription management
-│   │   └── vapid.ts          # VAPID key generation + payload signing
-│   │
-│   ├── auth-worker/          # User authentication system
-│   │   ├── index.ts          # Route handler — register, verify, login, logout
-│   │   ├── db.ts             # Cloudflare D1 queries (townscribe-users)
-│   │   ├── email.ts          # Brevo SMTP — verification email dispatch
-│   │   └── crypto.ts         # PBKDF2 password hashing + token generation
-│   │
-│   └── Cloudflare Tunnel ───► Remark42 (Oracle Cloud VM)
-│                               └── Comments system (self-hosted)
-│
-├── frontend/                 # Astro static site
-│   ├── src/
-│   │   ├── pages/            # Article pages, home, about
-│   │   ├── components/       # Push subscription UI, comment embed
-│   │   └── layouts/          # Base layout with push notification prompt
-│   └── public/
-│       └── sw.js             # Service Worker — push notification receiver
-│
-└── DNS (Cloudflare)
-    ├── townscribe.org        # Main site (Cloudflare Pages)
-    ├── comments.townscribe.org → Cloudflare Tunnel → Remark42
-    └── api.townscribe.org    → Auth Worker + Push Worker
+src/
+  categories.ts         single list of news categories (slugs + labels)
+  consts.ts             site title/description, Worker URLs, page size
+  posts.ts              helpers: sorted posts, URLs, pagination, related posts
+  content.config.ts     article schema (validated at build time)
+  content/blog/         articles (one Markdown file each)
+  layouts/
+    BaseLayout.astro    page shell: <head>, header, footer
+    Page.astro          About, Contact, legal and account pages
+    Listing.astro       paginated article grids (/blog, /category/*)
+    BlogPost.astro      article page: hero, body, gallery, ads, comments
+  components/           BaseHead (all SEO tags), Header, Footer, PostGrid, Pagination, …
+  pages/
+    index.astro                         homepage (latest 24 stories)
+    blog/index.astro, blog/page/[page]  all news, 24 per page
+    blog/[...slug].astro                one page per article
+    category/[category]/…               category pages, 24 per page
+    sitemap.xml.ts, rss.xml.js          sitemap and RSS feed
+public/
+  admin/                Decap CMS (index.html + config.yml)
+  images/uploads/       new CMS uploads
+  *.jpg|png|webp        images uploaded before Nov 2026
+scripts/
+  optimize-images.mjs   shrinks oversized images in place
+tests/                  node:test suites run in CI
 ```
+
+### Categories
+
+Categories are defined once in `src/categories.ts`. The CMS dropdown in `public/admin/config.yml` must list the same slugs; `npm test` fails if they drift apart. To add a category, add it in both places — the header menu, category pages and sitemap pick it up automatically.
+
+### Images
+
+- The **Hero Image** field sets the article's main picture.
+- The **Gallery Images** field takes any number of extra photos, shown as a grid under the article.
+- New uploads land in `public/images/uploads/`.
+- On every CMS pull request, `optimize-images.yml` shrinks new images wider than 1600px or larger than 400 KB and commits the smaller files back to the branch.
+- To compress everything by hand: `npm run images:optimize`.
 
 ---
 
-## Key Workers
+## Local development
 
-### Push Notification Worker (`push-worker/index.ts`)
+Requires Node.js 22.12 or newer.
 
-Handles the full Web Push delivery pipeline at the edge:
-
-```typescript
-// Subscription storage
-await env.PUSH_SUBSCRIPTIONS.put(subscriptionKey, JSON.stringify(subscription));
-
-// VAPID-signed push delivery
-const payload = JSON.stringify({ title, body, url });
-const signedRequest = await signVapidRequest(subscription.endpoint, payload, env);
-const response = await fetch(subscription.endpoint, signedRequest);
-```
-
-**How it works:**
-1. Browser requests push permission → frontend sends subscription object to Worker
-2. Worker stores subscription in Cloudflare KV (`PUSH_SUBSCRIPTIONS`)
-3. On new article publish → Worker fetches all subscriptions from KV
-4. Signs each push payload with VAPID private key
-5. Dispatches to Web Push API endpoint for each subscriber
-6. Handles expired subscriptions (410 Gone) by deleting from KV
-
-**Why edge-native:** No server round-trip. Push dispatches happen at Cloudflare's nearest PoP to each subscriber's push service endpoint.
-
----
-
-### Authentication Worker (`auth-worker/index.ts`)
-
-Complete user authentication without a backend server:
-
-```typescript
-// Registration flow
-router.post('/register', async (req, env) => {
-  const { email, password } = await req.json();
-  const hash = await pbkdf2Hash(password);           // PBKDF2 + salt
-  const token = crypto.randomUUID();                 // Verification token
-  await insertUser(env.DB, email, hash, token);      // D1 insert
-  await sendVerificationEmail(email, token, env);    // Brevo SMTP
-  return json({ message: 'Verification email sent' });
-});
-
-// Session management
-router.post('/login', async (req, env) => {
-  const { email, password } = await req.json();
-  const user = await getUserByEmail(env.DB, email);
-  const valid = await verifyPbkdf2(password, user.password_hash);
-  if (!valid) return json({ error: 'Invalid credentials' }, 401);
-  const sessionId = crypto.randomUUID();
-  await createSession(env.DB, user.id, sessionId);   // 30-day session
-  return json({ sessionId });
-});
-```
-
-**Database schema (Cloudflare D1):**
-```sql
-CREATE TABLE users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  email TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  verified INTEGER DEFAULT 0,
-  verification_token TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
-);
-
-CREATE TABLE sessions (
-  id TEXT PRIMARY KEY,
-  user_id INTEGER REFERENCES users(id),
-  expires_at TEXT NOT NULL
-);
-```
-
----
-
-## Cloudflare Tunnel Setup
-
-Remark42 (comment system) runs on an Oracle Cloud Free Tier VM with no public IP exposed:
-
-```
-Browser → cloudflare.com → Tunnel → Oracle Cloud VM:8080 (Remark42)
-```
-
-**Why Tunnel:** Zero-trust origin exposure. The origin never receives direct internet traffic — all requests pass through Cloudflare's network, enforcing DDoS protection, WAF rules, and SSL/TLS termination before reaching origin.
-
-Tunnel ID: `5b09382c-8642-44a1-ab87-49b304437a0e`
-
----
-
-## DNS Configuration
-
-```
-townscribe.org          A       → Cloudflare Pages
-www.townscribe.org      CNAME   → townscribe.org
-comments.townscribe.org CNAME   → Cloudflare Tunnel
-api.townscribe.org      CNAME   → Workers route
-```
-
-SSL/TLS mode: **Full Strict** — origin certificate installed on Oracle VM, edge certificate managed by Cloudflare.
-
-Email authentication: SPF, DKIM, and DMARC configured for jayeolaoluwadamilare@gmail.com sending via Brevo.
-
----
-
-## Known Issues & Fixes
-
-### DNS Misconfiguration — Production Traffic Loss
-**Issue:** Typo in DNS record (`townsrcibe.org` instead of `townscribe.org`) caused traffic loss to the main domain.
-**Diagnosis:** Traced through Cloudflare DNS audit log → identified incorrect CNAME target → corrected record.
-**Fix:** Corrected CNAME, TTL propagation confirmed within 5 minutes.
-
-### Push Subscription Cleanup
-**Issue:** Stale KV subscriptions for expired push endpoints accumulate over time — Web Push API returns 410 Gone but Worker did not handle it.
-**Fix:** Added 410/404 response handling in push delivery loop — deletes subscription from KV on receipt of Gone response.
-
----
-
-## Getting Started (Local Dev)
-
-### Prerequisites
-- Node.js 18+
-- Wrangler CLI (`npm install -g wrangler`)
-- Cloudflare account (free tier sufficient)
-
-### Clone and install
 ```bash
-git clone https://github.com/baalebos-cloud/townscribe
-cd townscribe
 npm install
+npm run dev          # http://localhost:4321
 ```
 
-### Configure Wrangler
-```bash
-# Authenticate
-wrangler login
+| Command | What it does |
+|---------|--------------|
+| `npm run dev` | Local dev server |
+| `npm run check` | Type-check Astro and TypeScript files |
+| `npm run build` | Production build (output in `.vercel/output/static`) |
+| `npm test` | Content tests, plus build-output tests if a build exists |
+| `npm run images:optimize` | Compress oversized images in `public/` |
 
-# Create KV namespace
-wrangler kv:namespace create PUSH_SUBSCRIPTIONS
+CI runs `check`, `build` and `test` on every pull request and on every push to `main`.
 
-# Create D1 database
-wrangler d1 create townscribe-users
-```
+---
 
-### Environment variables (`wrangler.toml`)
-```toml
-[vars]
-BREVO_API_KEY = "your_brevo_api_key"
-VAPID_PUBLIC_KEY = "your_vapid_public_key"
-VAPID_PRIVATE_KEY = "your_vapid_private_key"
-VAPID_SUBJECT = "mailto:jayeolaoluwadamilare@gmail.com"
+## Related services (not in this repo)
 
-[[kv_namespaces]]
-binding = "PUSH_SUBSCRIPTIONS"
-id = "your_kv_namespace_id"
+- **Auth Worker** — register / verify / login / logout, bookmarks, push subscriptions (Cloudflare D1, Brevo SMTP for email).
+- **Push Worker** — stores subscriptions in KV and sends VAPID-signed web pushes; removes expired (410) subscriptions.
+- **View-counter Worker** — counts article views.
+- **Remark42** — comments, on an Oracle Cloud Free Tier VM reachable only through Cloudflare Tunnel (`comments.townscribe.org`).
 
-[[d1_databases]]
-binding = "DB"
-database_name = "townscribe-users"
-database_id = "your_d1_database_id"
-```
-
-### Run locally
-```bash
-# Frontend
-cd frontend && npm run dev
-
-# Workers (local dev)
-wrangler dev push-worker/index.ts
-wrangler dev auth-worker/index.ts
-```
-
-### Deploy
-```bash
-wrangler deploy push-worker/index.ts
-wrangler deploy auth-worker/index.ts
-```
+Secrets used by GitHub Actions: `NOTIFY_SECRET` (bearer token for the push worker's `/notify` endpoint).
 
 ---
 
@@ -248,10 +124,8 @@ wrangler deploy auth-worker/index.ts
 **Oluwadare Tobi Jayeola** — DevOps Engineer & Software Engineer
 - GitHub: [github.com/baalebos-cloud](https://github.com/baalebos-cloud)
 - LinkedIn: [linkedin.com/in/oluwadare-jayeola-6874591b4](https://linkedin.com/in/oluwadare-jayeola-6874591b4)
-- Live site: [townscribe.org](https://townscribe.org)
+- Live site: [news.townscribe.org](https://news.townscribe.org)
 - Email: jayeolaoluwadamilare@gmail.com
-
----
 
 ## License
 

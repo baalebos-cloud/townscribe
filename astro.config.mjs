@@ -7,7 +7,8 @@ import { defineConfig, fontProviders } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://news.townscribe.org',
-	output: 'server',
+	// Every page is pre-built at deploy time; nothing needs a server function.
+	output: 'static',
 	
 	// Force Astro to strictly match and generate routes without trailing slashes
 	trailingSlash: 'never',

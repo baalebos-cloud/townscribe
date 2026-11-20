@@ -1,13 +1,12 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Layout from '../layouts/Page.astro';
 ---
 
 <Layout
 	title="Terms of Service - Townscribe Media"
 	description="Terms of service and legal agreement for using the Townscribe platform."
-	pubDate={new Date('June 04, 2026')}
 >
-  <main class="legal-container">
+  <div class="legal-container">
     <article class="legal-content">
       <h1>Terms of Service</h1>
       <p class="effective-date"><strong>Last Updated:</strong> June 2026</p>
@@ -38,7 +37,7 @@ import Layout from '../layouts/BlogPost.astro';
         These Terms will be governed by and interpreted in accordance with the laws of your country/state, and you submit to the non-exclusive jurisdiction of the state and federal courts located there for the resolution of any disputes.
       </p>
     </article>
-  </main>
+  </div>
 </Layout>
 
 <style>

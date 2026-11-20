@@ -5,7 +5,7 @@ description: Electoral body approves candidacy of former Kano deputy governor
 pubDate: 2026-10-29T22:11:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Writer
-category: pigin-news
+category: pidgin-news
 heroImage: /aminu-abdussalam-gwarzo.jpg
 seo_divider: ""
 seoKeyword: INEC clears Abdulsalam Gwarzo, NDC Kano governorship candidate 2027,

@@ -21,8 +21,16 @@ logo_url: /townscribe-img.jpg
 site_url: https://townscribe.org
 publish_mode: editorial_workflow
 
-media_folder: "public"
-public_folder: "/"
+# New uploads go to their own folder instead of the root of public/.
+# Images uploaded before this change stay where they are and keep working.
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Keep article URLs plain ASCII (drops curly quotes, dashes and accents from slugs)
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
 
 collections:
   - name: "blog"
@@ -46,21 +54,35 @@ collections:
       - label: "Category"
         name: "category"
         widget: "select"
-        default: "world"
+        default: "news"
+        hint: "Keep this list in sync with src/categories.ts (the build checks it)."
         options:
-          - { label: "Articles", value: "articles" }
           - { label: "News", value: "news" }
-          - { label: "Pigin News", value: "pigin-news" }
           - { label: "Politics", value: "politics" }
+          - { label: "Governance", value: "governance" }
+          - { label: "Crime", value: "crime" }
           - { label: "Business", value: "business" }
-          - { label: "Entertainment", value: "entertainment" }
-          - { label: "Technology", value: "technology" }
-          - { label: "Health", value: "health" }
-          - { label: "Sport", value: "sport" }
           - { label: "World", value: "world" }
+          - { label: "Sport", value: "sport" }
+          - { label: "Entertainment", value: "entertainment" }
+          - { label: "Lifestyle", value: "lifestyle" }
+          - { label: "Health", value: "health" }
+          - { label: "Technology", value: "technology" }
+          - { label: "Articles", value: "articles" }
+          - { label: "Pidgin News", value: "pidgin-news" }
           - { label: "Job", value: "job" }
 
-      - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg" }
+      - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg", choose_url: true }
+
+      - label: "Gallery Images"
+        name: "gallery"
+        widget: "list"
+        required: false
+        collapsed: false
+        add_to_top: false
+        summary: "{{fields.image}}"
+        hint: "Optional. Click 'Add Gallery Images' once per photo to attach as many extra pictures as you need; they appear as a gallery under the article."
+        field: { label: "Image", name: "image", widget: "image", choose_url: true }
 
       - label: "Body"
         name: "body"
