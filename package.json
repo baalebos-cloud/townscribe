@@ -14,7 +14,8 @@
     "test": "node --test tests/",
     "test:content": "node --test tests/content.test.mjs",
     "test:build": "node --test tests/build.test.mjs",
-    "images:optimize": "node scripts/optimize-images.mjs"
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "test:worker": "node --test tests/push-worker.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",

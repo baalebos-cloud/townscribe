@@ -551,7 +551,9 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
         if (!confirm('Turn off TownScribe news alerts on this device?')) return;
         try {
           await current.unsubscribe();
-          fetch(`${AUTH_API}/push/unsubscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: current.endpoint }) }).catch(() => {});
+          const body = JSON.stringify({ endpoint: current.endpoint });
+          fetch(`${PUSH_API}/unsubscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }).catch(() => {});
+          fetch(`${AUTH_API}/push/unsubscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }).catch(() => {});
         } catch (err) {
           console.error('[Alerts] Unsubscribe failed:', err);
         }
