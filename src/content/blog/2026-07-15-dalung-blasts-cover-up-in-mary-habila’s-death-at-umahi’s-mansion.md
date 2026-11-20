@@ -6,7 +6,7 @@ pubDate: 2026-07-15T21:33:00.000+01:00
 author: Afolabi Olaiya Idowu
 authorRole: Admin
 category: news
-heroImage: /dave-umahi-et-dead-lady
+heroImage: /dave-umahi-et-dead-lady.jpg
 seo_divider: ""
 seoKeyword: Mary Habila death Umahi, Solomon Dalung double standards, Dave Umahi
   physiotherapist scandal, Mary Habila found naked, Umahi residence death probe,
