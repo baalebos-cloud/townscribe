@@ -11,9 +11,9 @@ breaking: false
 heroImage: /images/uploads/nass1.jpeg
 gallery:
   - /images/uploads/nass-2.jpeg
-  - /images/uploads/nass-2.jpeg
   - /images/uploads/nass-3.jpeg
   - /images/uploads/nass-4.jpeg
+  - /images/uploads/nass-5.jpeg
 seo_divider: ""
 seoKeyword: National Passport Manufacturing Centre Nigeria, Olubunmi Tunji-Ojo
   passport project, local e-passport production 2027, NIS passport manufacturing
