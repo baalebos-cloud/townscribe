@@ -1,0 +1,53 @@
+name: Optimize uploaded images
+
+# Runs on pull requests opened by Decap CMS (branches named cms/...).
+# Shrinks any new or changed image that is too large and commits the result
+# back to the same branch, so the article is merged with web-sized images.
+on:
+  pull_request:
+    paths:
+      - 'public/**.jpg'
+      - 'public/**.jpeg'
+      - 'public/**.JPG'
+      - 'public/**.JPEG'
+      - 'public/**.png'
+      - 'public/**.PNG'
+      - 'public/**.webp'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: optimize-images-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  optimize:
+    if: startsWith(github.head_ref, 'cms/') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Compress new or changed images
+        run: |
+          git diff -z --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" -- public \
+            | xargs -0 -r node scripts/optimize-images.mjs
+
+      - name: Commit smaller images
+        run: |
+          if git diff --quiet; then echo "Nothing to optimize."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Optimize uploaded images"
+          git push

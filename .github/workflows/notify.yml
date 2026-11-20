@@ -1,26 +1,67 @@
-name: Notify subscribers on deploy
+name: Notify subscribers of new articles
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'src/content/blog/**'
+
+concurrency:
+  group: notify-${{ github.sha }}
 
 jobs:
   notify:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Wait for Pages deploy
-        run: sleep 60
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: Send push notification to subscribers
+      # Only files *added* by this push count as new articles; edits to
+      # existing articles no longer trigger an alert.
+      - name: Find newly published articles
+        id: new
         run: |
-          curl -s -X POST \
-            https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
-            -H "Authorization: Bearer ${{ secrets.NOTIFY_SECRET }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "title": "🗞️ New on TownScribe",
-              "body": "A new article has just been published. Tap to read.",
-              "url": "https://news.townscribe.org",
-              "icon": "https://news.townscribe.org/townscribe-img.jpg"
-            }'
+          files=$(git diff --name-only --diff-filter=A HEAD^1 HEAD -- 'src/content/blog/*.md' 'src/content/blog/*.mdx' || true)
+          echo "Added articles:"; echo "$files"
+          {
+            echo 'files<<EOF'
+            echo "$files"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Send push notification for each new article
+        if: steps.new.outputs.files != ''
+        env:
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
+          FILES: ${{ steps.new.outputs.files }}
+        run: |
+          set -euo pipefail
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            name=$(basename "$file"); slug="${name%.*}"
+            # Astro builds URLs from a slugified file name (lowercase, punctuation removed)
+            url_slug=$(printf '%s' "$slug" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9 _-]+//g; s/ /-/g')
+            url="https://news.townscribe.org/blog/${url_slug}"
+            title=$(sed -n 's/^title:[[:space:]]*//p' "$file" | head -n1 | sed -E "s/^['\"]//; s/['\"]$//")
+            [ -z "$title" ] && title="A new article has just been published"
+
+            # Wait (up to ~15 min) until Vercel has deployed the article
+            live=false
+            for i in $(seq 1 60); do
+              if curl -fsS -o /dev/null "$url"; then live=true; echo "Live: $url"; break; fi
+              echo "Waiting for $url ($i/60)"; sleep 15
+            done
+            # Never send readers to a 404: fall back to the homepage
+            if [ "$live" != true ]; then url="https://news.townscribe.org"; fi
+
+            payload=$(jq -n --arg title "🗞️ $title" --arg url "$url" \
+              '{title: $title, body: "Tap to read on TownScribe.", url: $url, icon: "https://news.townscribe.org/townscribe-img.jpg"}')
+            curl -fsS -X POST https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
+              -H "Authorization: Bearer ${NOTIFY_SECRET}" \
+              -H "Content-Type: application/json" \
+              -d "$payload"
+            echo
+          done <<< "$FILES"
