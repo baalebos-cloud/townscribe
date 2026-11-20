@@ -162,3 +162,20 @@ test('AdSense ownership tag and script are on every page type, exactly once', { 
 	assert.match(read('ads.txt'), /google\.com, pub-2369234321458849, DIRECT, f08c47fec0942fa0/);
 	assert.match(read(join('blog', articleDirs[0], 'index.html')), /data-ad-slot="3564332335"/);
 });
+
+test('password reset: link in the sign-in box and a private reset page', { skip: !OUT }, () => {
+	const home = read('index.html');
+	assert.match(home, /data-switch="forgot"[^>]*>Forgot password\?</);
+	assert.match(home, /id="tab-forgot"/);
+	assert.match(home, /\/forgot-password/);
+
+	const page = read(join('reset-password', 'index.html'));
+	const head = page.slice(0, page.indexOf('</head>'));
+	assert.match(head, /<meta name="robots" content="noindex, follow"/);
+	assert.match(head, /<meta name="referrer" content="no-referrer"/);
+	assert.match(head, /history\.replaceState\(null, '', location\.pathname\)/, 'token removed from the address bar in <head>');
+	assert.equal(count(page, /adsbygoogle\.js|fundingchoicesmessages|googlefcPresent|var aa=typeof Object/g), 0, 'no ad scripts on the reset page');
+	assert.match(page, /\/reset-password'/);
+	assert.match(page, /href="\/\?forgot=1"/);
+	assert.ok(!read('sitemap.xml').includes('/reset-password'), 'not in the sitemap');
+});

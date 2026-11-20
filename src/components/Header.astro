@@ -179,6 +179,9 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
         <label for="login-password">Password</label>
         <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" />
       </div>
+      <p class="auth-forgot">
+        <button type="button" class="auth-switch-btn" data-switch="forgot">Forgot password?</button>
+      </p>
       <button id="login-submit" class="auth-submit-btn">
         <span id="login-btn-text">Sign In</span>
         <span id="login-spinner" class="spinner" style="display:none;"></span>
@@ -186,6 +189,26 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
       <p class="auth-switch">
         Don't have an account?
         <button class="auth-switch-btn" data-switch="register">Create one</button>
+      </p>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div id="tab-forgot" style="display:none;">
+      <h2 class="auth-title">Forgot your password?</h2>
+      <p class="auth-subtitle">Enter the email you signed up with and we'll send you a link to choose a new password.</p>
+      <div id="forgot-error"   class="auth-error"   style="display:none;"></div>
+      <div id="forgot-success" class="auth-success" style="display:none;"></div>
+      <div class="auth-field">
+        <label for="forgot-email">Email</label>
+        <input type="email" id="forgot-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <button id="forgot-submit" class="auth-submit-btn">
+        <span id="forgot-btn-text">Send reset link</span>
+        <span id="forgot-spinner" class="spinner" style="display:none;"></span>
+      </button>
+      <p class="auth-switch">
+        Remembered it?
+        <button class="auth-switch-btn" data-switch="login">Back to sign in</button>
       </p>
     </div>
 
@@ -352,10 +375,17 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
   }
   function switchTab(tab) {
     document.querySelectorAll('.auth-tab').forEach(t =>
-      t.classList.toggle('active', t.dataset.tab === tab)
+      t.classList.toggle('active', t.dataset.tab === (tab === 'forgot' ? 'login' : tab))
     );
     document.getElementById('tab-login').style.display     = tab === 'login'    ? 'block' : 'none';
     document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
+    const forgot = document.getElementById('tab-forgot');
+    if (forgot) forgot.style.display = tab === 'forgot' ? 'block' : 'none';
+    if (tab === 'forgot') {
+      const loginEmail = document.getElementById('login-email')?.value.trim();
+      const forgotEmail = document.getElementById('forgot-email');
+      if (forgotEmail && loginEmail && !forgotEmail.value) forgotEmail.value = loginEmail;
+    }
   }
 
   function showMsg(id, msg, type) {
@@ -433,6 +463,30 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
       showMsg('register-error', 'Network error. Please try again.');
     } finally {
       setLoading('register-btn-text', 'register-spinner', false);
+    }
+  }
+
+
+  // ── FORGOT PASSWORD ───────────────────────────────────────
+  async function handleForgot() {
+    const email = document.getElementById('forgot-email').value.trim();
+    hideMsg('forgot-error');
+    hideMsg('forgot-success');
+    if (!email || !email.includes('@')) return showMsg('forgot-error', 'Please enter your email address.');
+    setLoading('forgot-btn-text', 'forgot-spinner', true);
+    try {
+      const res  = await fetch(`${AUTH_API}/forgot-password`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) showMsg('forgot-error', data.error || 'Could not send the reset link. Please try again.');
+      else showMsg('forgot-success', '✅ ' + (data.message || 'If an account exists for that email, a reset link is on its way.'));
+    } catch {
+      showMsg('forgot-error', 'Network error. Please try again.');
+    } finally {
+      setLoading('forgot-btn-text', 'forgot-spinner', false);
     }
   }
 
@@ -605,6 +659,8 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
     // Form submit
     document.getElementById('login-submit')?.addEventListener('click', handleLogin);
     document.getElementById('register-submit')?.addEventListener('click', handleRegister);
+    document.getElementById('forgot-submit')?.addEventListener('click', handleForgot);
+    document.getElementById('forgot-email')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleForgot(); });
     document.getElementById('login-password')?.addEventListener('keydown',    e => { if (e.key === 'Enter') handleLogin(); });
     document.getElementById('register-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
 
@@ -626,6 +682,17 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
     if (window.location.search.includes('verified=1')) {
       openModal('login');
       showMsg('login-success', '✅ Email verified! You can now sign in.');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+    // Open "Forgot password" directly (link from an expired reset page)
+    if (new URLSearchParams(window.location.search).get('forgot') === '1') {
+      openModal('forgot');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+    // Auto-open login after a password reset
+    if (new URLSearchParams(window.location.search).get('reset') === '1') {
+      openModal('login');
+      showMsg('login-success', '✅ Password changed! Sign in with your new password.');
       window.history.replaceState({}, '', window.location.pathname);
     }
   });
@@ -759,6 +826,7 @@ const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'num
   .auth-error   { background: #fef2f2; border: 1px solid #fecaca; color: var(--red); padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
   .auth-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a;  padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
 
+  .auth-forgot     { text-align: right; margin: -0.5rem 0 0.25rem; }
   .auth-switch     { text-align: center; font-size: 0.875rem; color: var(--muted); margin-top: 1rem; margin-bottom: 0; }
   .auth-switch-btn { background: none; border: none; color: var(--red); font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
   .auth-switch-btn:hover { text-decoration: underline; }

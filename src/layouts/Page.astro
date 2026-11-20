@@ -10,6 +10,7 @@ interface Props {
 	heading?: string;
 	heroImage?: string;
 	noindex?: boolean;
+	ads?: boolean;
 }
 
 const {
@@ -18,10 +19,12 @@ const {
 	heading,
 	heroImage,
 	noindex = false,
+	ads = true,
 } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} image={heroImage} noindex={noindex}>
+<BaseLayout title={title} description={description} image={heroImage} noindex={noindex} ads={ads}>
+	<slot name="head" slot="head" />
 	<div class="wrap"><div class="page">
 		{heroImage && <img class="page-hero" src={heroImage} alt="" width="1020" height="510" />}
 		{heading && <h1 class="page-heading">{heading}</h1>}
