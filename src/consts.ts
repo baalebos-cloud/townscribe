@@ -26,3 +26,10 @@ export const SOCIAL_LINKS = [
 
 export type SocialId = (typeof SOCIAL_LINKS)[number]['id'];
 export const WHATSAPP_CHANNEL_URL = SOCIAL_LINKS.find((s) => s.id === 'whatsapp')!.url;
+
+// Site developer credit (footer link + "creator" in the site's structured data for search engines)
+export const DEVELOPER = {
+	name: 'Oluwadare Jayeola',
+	url: 'https://github.com/baalebos-cloud',
+	sameAs: ['https://github.com/baalebos-cloud', 'https://www.linkedin.com/in/oluwadare-jayeola-6874591b4'],
+} as const;
