@@ -5,24 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>TownScribe Content Manager</title>
-    
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
+    <!-- Sign-in is handled by DecapBridge (see auth_* settings in config.yml) -->
     <link href="https://admin.townscribe.org/admin/config.yml" type="text/yaml" rel="cms-config-url" />
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
+    <!-- Pinned so a new Decap release can't change the editor without a code change -->
+    <script src="https://unpkg.com/decap-cms@3.18.0/dist/decap-cms.js"></script>
   </body>
 </html>
