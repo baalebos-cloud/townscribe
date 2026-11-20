@@ -110,3 +110,12 @@ test('side menu can scroll and is fully hidden when closed', { skip: !OUT }, () 
 	assert.match(drawer, /overflow-y:auto/);
 	assert.match(drawer, /translate(X)?\(-100%\)/);
 });
+
+test('light/dark switch is in the header and the saved choice is applied before paint', { skip: !OUT }, () => {
+	const home = read('index.html');
+	assert.match(home, /id="theme-toggle"/);
+	const head = home.slice(0, home.indexOf('</head>'));
+	assert.match(head, /localStorage\.getItem\('ts_theme'\)/);
+	const css = readdirSync(join(OUT, '_astro')).filter((f) => f.endsWith('.css')).map((f) => read(join('_astro', f))).join('\n') + home;
+	assert.match(css, /\[data-theme=["']?dark["']?\]/);
+});
