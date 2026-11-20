@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/townscribe-img.jpg';
-import { SITE_TITLE, SOCIAL_LINKS } from '../consts';
+import { DEVELOPER, SITE_TITLE, SOCIAL_LINKS } from '../consts';
 import { categoryLabel } from '../categories';
 
 interface Props {
@@ -98,6 +98,26 @@ const finalImageUrl = typeof image === 'string'
 <meta name="twitter:title" content={finalTitle} />
 <meta name="twitter:description" content={finalDescription} />
 <meta name="twitter:image" content={finalImageUrl} />
+
+{/* Site-wide structured data: who publishes the site and who built it */}
+<script type="application/ld+json" is:inline set:html={JSON.stringify({
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"name": "TownScribe Media",
+	"url": new URL('/', Astro.site).href,
+	"publisher": {
+		"@type": "Organization",
+		"name": "TownScribe",
+		"sameAs": SOCIAL_LINKS.map((l) => l.url),
+	},
+	"creator": {
+		"@type": "Person",
+		"name": DEVELOPER.name,
+		"url": DEVELOPER.url,
+		"jobTitle": "Developer",
+		"sameAs": DEVELOPER.sameAs,
+	},
+})} />
 
 {/* --- AUTOMATED STRUCTURED DATA SNIPPET (JSON-LD) --- */}
 {pubDate && (

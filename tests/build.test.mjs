@@ -132,3 +132,12 @@ test('Facebook page and WhatsApp channel are linked in header, footer and articl
 	assert.ok(article.includes(WA) && article.includes(FB));
 	assert.match(article, /"sameAs":\[[^\]]*facebook\.com[^\]]*whatsapp\.com/);
 });
+
+test('developer credit links to GitHub on every page and is in the structured data', { skip: !OUT }, () => {
+	for (const page of ['index.html', join('about', 'index.html'), join('blog', articleDirs[0], 'index.html')]) {
+		const html = read(page);
+		assert.match(html, /class="dev-credit"[^>]*href="https:\/\/github\.com\/baalebos-cloud"|href="https:\/\/github\.com\/baalebos-cloud"[^>]*class="dev-credit"/, `${page} missing credit`);
+		assert.doesNotMatch(html, /dev-credit[^>]*nofollow/);
+		assert.match(html, /"@type":"WebSite"[\s\S]*"creator":\{"@type":"Person","name":"Oluwadare Jayeola"/);
+	}
+});
