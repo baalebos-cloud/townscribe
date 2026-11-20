@@ -4,59 +4,54 @@ import { CATEGORIES } from '../categories';
 import HeaderLink from './HeaderLink.astro';
 import TvIcon from './TvIcon.astro';
 
+// Path without trailing slash, for highlighting the current section
+const currentPath = Astro.url.pathname.replace(/(.)\/$/, '$1');
+// Fallback date for the utility bar (replaced in the browser with today's date in Lagos)
+const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lagos' }).format(new Date());
+
 const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIbOj4IzrLHDjq5fxbRdDxQKgAWXvINYiPyo'; // 👈 Replace with your actual VAPID public key
 ---
 
 <!-- ═══════════════════════════════════════════════════════════
      HEADER / NAV
 ════════════════════════════════════════════════════════════ -->
-<header>
-  <nav class="main-navigation">
-    <div class="brand-row">
+<!-- Utility bar: date, TownScribe TV, socials -->
+<div class="util">
+  <div class="wrap util-row">
+    <span class="util-date" id="util-date">{todayLabel}</span>
+    <nav class="util-links" aria-label="TownScribe elsewhere">
+      <a class="util-tv" href="/tv"><TvIcon size={15} /> TownScribe TV</a>
+      <a class="util-social" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a class="util-social" href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+    </nav>
+  </div>
+</div>
 
-      <!-- LEFT: Hamburger + Site Name -->
-      <div class="left-brand-group">
-        <button id="menu-toggle" class="menu-btn" aria-label="Toggle Categories Menu">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6"  x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <div class="left-text-brand">
-          <a href="/" aria-label="Townscribe Media Home">
-            <span class="site-title-text-left">Townscribe Media</span>
-          </a>
-        </div>
-      </div>
+<!-- Masthead: menu button, logo, account and alerts -->
+<header class="mast">
+  <div class="wrap mast-row">
+    <div class="mast-left">
+      <button id="menu-toggle" class="menu-btn" aria-label="Open menu" aria-controls="nav-drawer">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6"  x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a class="brand" href="/" aria-label="TownScribe Media home">
+        <img src="/townscribe-img.jpg" alt="" width="46" height="46" />
+        <span class="brand-text">
+          <span class="brand-name">TownScribe</span>
+          <span class="brand-tag">Local news · Global reach</span>
+        </span>
+      </a>
+    </div>
 
-      <!-- CENTER: Logo -->
-      <div class="center-logo-container">
-        <a href="/" aria-label="Townscribe Media Home">
-          <img src="/townscribe-img.jpg" alt="Townscribe Media Logo" class="site-logo-graphic-center" />
-        </a>
-      </div>
-
-      <!-- RIGHT: Socials + Auth + Bell -->
-      <div class="right-actions">
-        <div class="social-links">
-          <a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <a href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-          </a>
-          <a href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
-            <TvIcon size={24} />
-          </a>
-        </div>
-
+    <div class="right-actions">
         <!-- Auth: Sign In button OR User Avatar -->
         <div class="auth-controls">
           <button id="auth-signin-btn" class="auth-btn signin-btn" style="display:none;">Sign In</button>
@@ -92,10 +87,25 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
         <button id="push-subscribe-btn" class="push-notify-btn" title="Get news alerts" aria-label="Subscribe to news alerts">
           🔔
         </button>
-      </div>
     </div>
+  </div>
+</header>
 
-    <!-- Side Drawer -->
+<!-- Section menu: one row, sticks to the top, scrolls sideways on phones -->
+<nav class="secnav" aria-label="Sections">
+  <div class="wrap secnav-row">
+  <ul>
+    <li><a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>Home</a></li>
+    {CATEGORIES.map((c) => (
+      <li><a href={`/category/${c.slug}`} aria-current={currentPath.startsWith(`/category/${c.slug}`) ? 'page' : undefined}>{c.label}</a></li>
+    ))}
+  </ul>
+  <a class="secnav-tv" href="/tv" aria-current={currentPath.startsWith('/tv') ? 'page' : undefined}><TvIcon size={15} /> TV</a>
+  </div>
+</nav>
+
+<div class="drawer-root">
+  <!-- Side Drawer (full menu) -->
     <div id="nav-drawer" class="nav-drawer">
       <div class="drawer-header">
         <span class="drawer-title">Menu</span>
@@ -117,8 +127,7 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
       </div>
     </div>
     <div id="drawer-overlay" class="drawer-overlay"></div>
-  </nav>
-</header>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      AUTH MODAL  (must live outside <header> in the DOM)
@@ -204,6 +213,12 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
 ════════════════════════════════════════════════════════════ -->
 <script is:inline define:vars={{ AUTH_API, VAPID_PUBLIC_KEY }}>
 
+  // ── DATE (utility bar) ────────────────────────────────────
+  try {
+    const dateEl = document.getElementById('util-date');
+    if (dateEl) dateEl.textContent = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lagos' }).format(new Date());
+  } catch {}
+
   // ── DRAWER ────────────────────────────────────────────────
   const menuToggle  = document.getElementById('menu-toggle');
   const menuClose   = document.getElementById('menu-close');
@@ -211,7 +226,8 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   const drawerOverlay = document.getElementById('drawer-overlay');
 
   function toggleMenu() {
-    navDrawer?.classList.toggle('open');
+    const open = navDrawer?.classList.toggle('open');
+    menuToggle?.setAttribute('aria-expanded', String(!!open));
     drawerOverlay?.classList.toggle('active');
     document.body.classList.toggle('menu-lock');
   }
@@ -551,62 +567,76 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
      STYLES
 ════════════════════════════════════════════════════════════ -->
 <style>
-  /* ── Base ── */
-  header { margin: 0; padding: 0; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-  .main-navigation { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-  .brand-row { display: flex; align-items: center; justify-content: space-between; height: 75px; }
+  /* ── Utility bar ── */
+  .util { background: var(--brand); color: var(--brand-ink); font-size: 0.8rem; }
+  .util-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 34px; }
+  .util-date { opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .util-links { display: flex; align-items: center; gap: 16px; }
+  .util-links a { color: var(--brand-ink); opacity: 0.9; display: inline-flex; align-items: center; gap: 6px; }
+  .util-links a:hover { opacity: 1; color: var(--brand-ink); }
+  .util-tv { font-weight: 600; }
 
-  /* ── Left brand ── */
-  .left-brand-group { display: flex; align-items: center; gap: 1rem; height: 100%; }
-  .left-text-brand a { text-decoration: none; display: flex; align-items: center; }
-  .site-title-text-left { display: inline-block; font-size: 1.25rem; font-weight: 700; color: #111111; white-space: nowrap; letter-spacing: -0.5px; }
+  /* ── Masthead ── */
+  .mast { background: var(--paper); border-bottom: 1px solid var(--line); }
+  .mast-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; }
+  .mast-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); min-width: 0; }
+  .brand:hover { color: var(--ink); }
+  .brand img { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+  .brand-text { display: grid; min-width: 0; }
+  .brand-name { font: 900 1.65rem/1 var(--font-head); letter-spacing: -0.02em; }
+  .brand-tag { font-size: 0.75rem; color: var(--muted); margin-top: 4px; white-space: nowrap; }
 
-  /* ── Center logo ── */
-  .center-logo-container { display: flex; justify-content: center; align-items: center; position: absolute; left: 50%; transform: translateX(-50%); pointer-events: auto; }
-  .site-logo-graphic-center { height: 62px; width: auto; object-fit: contain; display: block; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 4px rgba(0,0,0,0.08); border-radius: 6px; }
+  /* ── Section menu ── */
+  .secnav { position: sticky; top: 0; z-index: 100; background: var(--paper); border-bottom: 3px solid var(--brand); box-shadow: 0 1px 0 var(--line); }
+  .secnav-row { display: flex; align-items: center; gap: 8px; }
+  /* Categories scroll sideways; the fade at the right edge shows there is more */
+  .secnav ul { flex: 1; min-width: 0; list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent); padding-right: 28px; }
+  .secnav ul::-webkit-scrollbar { display: none; }
+  .secnav a { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; font: 600 0.84rem var(--font-ui); padding: 12px 9px; color: var(--ink-2); border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .secnav li:first-child a { padding-left: 0; }
+  .secnav a:hover, .secnav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--red); }
+  .secnav .secnav-tv { flex-shrink: 0; color: var(--red); border-left: 1px solid var(--line); padding-left: 14px; }
 
   /* ── Right actions ── */
-  .right-actions { display: flex; align-items: center; gap: 0.75rem; }
-  .social-links { display: flex; gap: 1.2rem; align-items: center; }
-  .social-links a { color: #000; transition: color 0.2s; display: inline-flex; align-items: center; }
-  .social-links a:hover { color: #14b8a6; }
+  .right-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
 
   /* ── Buttons ── */
-  .menu-btn { background: none; border: none; color: #000; cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
+  .menu-btn { background: none; border: none; color: var(--ink); cursor: pointer; padding: 0.5rem 0.25rem; display: flex; align-items: center; }
   .auth-controls { display: flex; align-items: center; }
   .auth-btn { border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; border-radius: 6px; transition: background 0.2s; }
-  .signin-btn { background: #dc2626; color: #fff; padding: 0.45rem 1rem; }
+  .signin-btn { background: var(--red); color: var(--red-ink); padding: 0.5rem 1.05rem; border-radius: 999px; }
   .signin-btn:hover { background: #b91c1c; }
 
   /* ── User menu ── */
   .user-menu { position: relative; align-items: center; }
   .user-avatar-btn { background: none; border: none; cursor: pointer; padding: 0; }
-  .avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
-  .user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 220px; z-index: 500; padding: 0.5rem 0; }
+  .avatar-circle { width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+  .user-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 220px; z-index: 500; padding: 0.5rem 0; }
   .dropdown-header { padding: 0.75rem 1rem 0.5rem; }
-  .dropdown-name  { display: block; font-weight: 700; font-size: 0.95rem; color: #111; }
-  .dropdown-email { display: block; font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .dropdown-divider { border: 0; border-top: 1px solid #f3f4f6; margin: 0.25rem 0; }
-  .dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; color: #374151; font-size: 0.9rem; text-decoration: none; transition: background 0.15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
-  .dropdown-item:hover { background: #f9fafb; color: #dc2626; }
-  .signout-item { color: #dc2626; }
+  .dropdown-name  { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+  .dropdown-email { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dropdown-divider { border: 0; border-top: 1px solid var(--line); margin: 0.25rem 0; }
+  .dropdown-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1rem; color: var(--ink-2); font-size: 0.9rem; text-decoration: none; transition: background 0.15s; cursor: pointer; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
+  .dropdown-item:hover { background: var(--surface); color: var(--red); }
+  .signout-item { color: var(--red); }
 
   /* ── Push bell ── */
-  .push-notify-btn { background: #dc2626; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
-  .push-notify-btn:hover { transform: scale(1.1); background: #b91c1c; }
-  .push-notify-btn.subscribed       { background: #16a34a; }
+  .push-notify-btn { background: var(--surface); border: 1px solid var(--line); border-radius: 50%; width: 38px; height: 38px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; }
+  .push-notify-btn:hover { transform: scale(1.06); border-color: var(--red); }
+  .push-notify-btn.subscribed       { background: #16a34a; border-color: #16a34a; }
   .push-notify-btn.subscribed:hover { background: #15803d; }
 
   /* ── Nav drawer ── */
   /* Off-canvas menu: fully hidden when closed (no edge peeking) and scrolls when it is taller than the screen */
-  .nav-drawer { position: fixed; top: 0; left: 0; box-sizing: border-box; width: min(300px, 85vw); height: 100vh; height: 100dvh; background: #142129; z-index: 200; display: flex; flex-direction: column; transform: translateX(-100%); visibility: hidden; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), visibility 0s linear 0.28s; padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom)); box-shadow: 4px 0 24px rgba(0,0,0,0.3); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .nav-drawer { position: fixed; top: 0; left: 0; box-sizing: border-box; width: min(300px, 85vw); height: 100vh; height: 100dvh; background: var(--brand); z-index: 200; display: flex; flex-direction: column; transform: translateX(-100%); visibility: hidden; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), visibility 0s linear 0.28s; padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom)); box-shadow: 4px 0 24px rgba(0,0,0,0.3); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
   .nav-drawer.open { transform: translateX(0); visibility: visible; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), visibility 0s; }
   .drawer-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
   .drawer-title  { color: #ffffff; font-weight: 600; font-size: 1.15rem; }
   .close-btn     { background: none; border: none; color: #ffffff; cursor: pointer; padding: 0.25rem; }
   .drawer-links  { display: flex; flex-direction: column; gap: 1.25rem; flex-shrink: 0; }
   .drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s; padding: 0.15rem 0; display: block; }
-  .drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #14b8a6; font-weight: 600; }
+  .drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #ffb4bf; font-weight: 600; }
   .drawer-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.5rem 0; }
   .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(1.5px); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .drawer-overlay.active { opacity: 1; pointer-events: auto; }
@@ -615,31 +645,31 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   /* ── Auth Modal ── */
   .auth-modal         { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
   .auth-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
-  .auth-modal-box     { position: relative; background: #fff; border-radius: 16px; padding: 2rem; width: 100%; max-width: 420px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-  .auth-modal-close   { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0.25rem; border-radius: 4px; }
-  .auth-modal-close:hover { color: #111; background: #f3f4f6; }
+  .auth-modal-box     { position: relative; background: var(--paper); border-radius: 16px; padding: 2rem; width: 100%; max-width: 420px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .auth-modal-close   { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: var(--muted); padding: 0.25rem; border-radius: 4px; }
+  .auth-modal-close:hover { color: var(--ink); background: var(--surface); }
 
-  .auth-tabs { display: flex; border-bottom: 2px solid #f3f4f6; margin-bottom: 1.5rem; }
-  .auth-tab  { flex: 1; background: none; border: none; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-  .auth-tab.active { color: #dc2626; border-bottom-color: #dc2626; }
+  .auth-tabs { display: flex; border-bottom: 2px solid var(--line); margin-bottom: 1.5rem; }
+  .auth-tab  { flex: 1; background: none; border: none; padding: 0.75rem; font-size: 0.95rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .auth-tab.active { color: var(--red); border-bottom-color: var(--red); }
 
-  .auth-title    { font-size: 1.4rem; font-weight: 700; color: #111; margin: 0 0 0.25rem; }
-  .auth-subtitle { font-size: 0.875rem; color: #6b7280; margin: 0 0 1.5rem; }
+  .auth-title    { font-size: 1.4rem; font-weight: 700; color: var(--ink); margin: 0 0 0.25rem; }
+  .auth-subtitle { font-size: 0.875rem; color: var(--muted); margin: 0 0 1.5rem; }
 
   .auth-field       { margin-bottom: 1rem; }
-  .auth-field label { display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem; }
-  .auth-field input { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
-  .auth-field input:focus { border-color: #dc2626; }
-  .field-hint { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
+  .auth-field label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--ink-2); margin-bottom: 0.35rem; }
+  .auth-field input { background: var(--paper); color: var(--ink); width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid var(--line); border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+  .auth-field input:focus { border-color: var(--red); }
+  .field-hint { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
 
-  .auth-submit-btn { width: 100%; background: #dc2626; color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  .auth-submit-btn { width: 100%; background: var(--red); color: #fff; border: none; padding: 0.8rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
   .auth-submit-btn:hover { background: #b91c1c; }
 
-  .auth-error   { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
+  .auth-error   { background: #fef2f2; border: 1px solid #fecaca; color: var(--red); padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
   .auth-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a;  padding: 0.65rem 0.85rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; }
 
-  .auth-switch     { text-align: center; font-size: 0.875rem; color: #6b7280; margin-top: 1rem; margin-bottom: 0; }
-  .auth-switch-btn { background: none; border: none; color: #dc2626; font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
+  .auth-switch     { text-align: center; font-size: 0.875rem; color: var(--muted); margin-top: 1rem; margin-bottom: 0; }
+  .auth-switch-btn { background: none; border: none; color: var(--red); font-weight: 600; cursor: pointer; font-size: 0.875rem; padding: 0; }
   .auth-switch-btn:hover { text-decoration: underline; }
 
   /* ── Spinner ── */
@@ -647,10 +677,14 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ── Responsive ── */
-  @media (max-width: 720px) { .social-links { display: none; } }
-  @media (max-width: 600px) {
-    .brand-row { height: 65px; }
-    .site-logo-graphic-center { height: 42px; }
-    .site-title-text-left { font-size: 1.05rem; }
+  @media (max-width: 720px) {
+    .util-links .util-social { display: none; }
+    .mast-row { min-height: 64px; }
+    .brand img { width: 38px; height: 38px; }
+    .brand-name { font-size: 1.3rem; }
+    .brand-tag { display: none; }
+  }
+  @media (max-width: 380px) {
+    .brand-text { display: none; }
   }
 </style>

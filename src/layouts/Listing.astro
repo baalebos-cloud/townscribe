@@ -21,7 +21,7 @@ const { title, description, heading, subtitle, posts, base, current, total, show
 ---
 
 <BaseLayout title={current > 1 ? `${title} — Page ${current}` : title} description={description}>
-	<div class="listing">
+	<div class="wrap listing">
 		<header class="listing-header">
 			<p class="breadcrumbs"><a href="/">Home</a> / {heading}</p>
 			<h1>{heading}</h1>
@@ -31,7 +31,7 @@ const { title, description, heading, subtitle, posts, base, current, total, show
 		{posts.length === 0 ? (
 			<p class="empty">No articles published here yet. Where Every Story Breathes...</p>
 		) : (
-			<PostGrid posts={posts} showCategory={showCategory} />
+			<PostGrid posts={posts} showCategory={showCategory} eager={4} />
 		)}
 
 		<Pagination base={base} current={current} total={total} />
@@ -40,31 +40,34 @@ const { title, description, heading, subtitle, posts, base, current, total, show
 
 <style>
 	.listing {
-		width: 1100px;
-		max-width: 100%;
-		margin: 0 auto;
-		padding: 1rem 0 2rem;
+		padding-block: 1.5rem 1rem;
 	}
 	.listing-header {
-		border-bottom: 2px solid #eaeaea;
-		padding-bottom: 1.25rem;
-		margin-bottom: 2rem;
+		border-bottom: 3px solid var(--brand);
+		padding-bottom: 1rem;
+		margin-bottom: 1.75rem;
 	}
 	.listing-header h1 {
-		font-size: 2.4rem;
-		margin: 0.4rem 0;
-		letter-spacing: -0.5px;
-	}
-	.breadcrumbs a {
-		color: #666;
-		text-decoration: none;
+		font-size: clamp(2rem, 1.4rem + 2vw, 2.8rem);
+		margin: 0.35rem 0;
 	}
 	.breadcrumbs,
 	.subtitle {
-		color: #666;
+		color: var(--muted);
 		margin: 0;
+		font-size: 0.9rem;
+	}
+	.breadcrumbs a {
+		color: var(--muted);
+	}
+	.breadcrumbs a:hover {
+		color: var(--red);
+	}
+	.subtitle {
+		font: 400 1.05rem/1.5 var(--font-read);
+		color: var(--ink-2);
 	}
 	.empty {
-		color: #555;
+		color: var(--ink-2);
 	}
 </style>

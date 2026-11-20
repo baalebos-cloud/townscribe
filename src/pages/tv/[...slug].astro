@@ -20,7 +20,7 @@ const more = (await getAllVideos()).filter((v) => v.id !== videoId).slice(0, 4);
 ---
 
 <BaseLayout title={`${post.data.title} | TownScribe TV`} description={post.data.description} image={post.data.thumbnail}>
-	<article class="tv-post">
+	<article class="wrap tv-post">
 		<p class="eyebrow">
 			<a href="/tv"><TvIcon size={18} /> TownScribe TV</a>
 			{post.data.isLive && <span class="live">● LIVE</span>}
@@ -45,10 +45,8 @@ const more = (await getAllVideos()).filter((v) => v.id !== videoId).slice(0, 4);
 
 <style>
 	.tv-post {
-		width: 820px;
-		max-width: 100%;
-		margin: 0 auto;
-		padding: 1rem 0 2rem;
+		max-width: calc(820px + 32px);
+		padding-block: 1.5rem 1rem;
 	}
 	.eyebrow {
 		display: flex;
@@ -64,11 +62,11 @@ const more = (await getAllVideos()).filter((v) => v.id !== videoId).slice(0, 4);
 		display: inline-flex;
 		align-items: center;
 		gap: 0.35rem;
-		color: #dc2626;
+		color: var(--red);
 		text-decoration: none;
 	}
 	.live {
-		background: #dc2626;
+		background: var(--red);
 		color: #fff;
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
@@ -78,7 +76,7 @@ const more = (await getAllVideos()).filter((v) => v.id !== videoId).slice(0, 4);
 		line-height: 1.2;
 	}
 	.meta {
-		color: #6b7280;
+		color: var(--muted);
 		margin: 0 0 1.25rem;
 	}
 	.write-up {

@@ -28,6 +28,13 @@ const decode = (s: string) =>
 		.replace(/&quot;/g, '"')
 		.replace(/&#39;|&apos;/g, "'");
 
+/** Cuts text at a word boundary and adds an ellipsis. */
+function shorten(text: string, max: number): string {
+	const clean = text.replace(/\s+/g, ' ').trim();
+	if (clean.length <= max) return clean;
+	return clean.slice(0, clean.lastIndexOf(' ', max)).replace(/[,.;:!?-]+$/, '') + '…';
+}
+
 let feedCache: Promise<Video[]> | undefined;
 
 /**
@@ -49,7 +56,7 @@ export function getChannelVideos(): Promise<Video[]> {
 				if (!id) return [];
 				const title = decode(entry.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
 				const published = new Date(entry.match(/<published>([^<]+)<\/published>/)?.[1] ?? 0);
-				const summary = decode(entry.match(/<media:description>([\s\S]*?)<\/media:description>/)?.[1] ?? '').slice(0, 200);
+				const summary = shorten(decode(entry.match(/<media:description>([\s\S]*?)<\/media:description>/)?.[1] ?? ''), 200);
 				return [{ id, title, published, thumbnail: thumbUrl(id), href: `/tv?v=${id}`, youtubeUrl: watchUrl(id), live: false, summary }];
 			});
 		} catch (err) {

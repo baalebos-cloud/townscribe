@@ -59,13 +59,22 @@ test('every category has a page, including crime, governance and lifestyle', { s
 });
 
 test('listing pages are paginated', { skip: !OUT }, () => {
-	const home = read('index.html');
-	const homeCards = count(home, /<li[^>]*>\s*<a href="\/blog\//g);
-	assert.ok(homeCards > 0 && homeCards <= PAGE_SIZE, `homepage shows ${homeCards} cards`);
+	const stories = (html) => count(html, /<article class="story[^"]*"/g);
+	const homeStories = stories(read('index.html'));
+	assert.ok(homeStories > 0 && homeStories <= 40, `homepage shows ${homeStories} stories`);
 	const pages = Math.ceil(articleCount / PAGE_SIZE);
 	if (pages > 1) assert.ok(existsSync(join(OUT, 'blog', 'page', String(pages), 'index.html')));
-	const news = read(join('category', 'news', 'index.html'));
-	assert.ok(count(news, /<li[^>]*>\s*<a href="\/blog\//g) <= PAGE_SIZE);
+	const newsStories = stories(read(join('category', 'news', 'index.html')));
+	assert.ok(newsStories > 0 && newsStories <= PAGE_SIZE, `news page shows ${newsStories} stories`);
+});
+
+test('redesign: fonts, dark mode tokens and sticky section menu are in place', { skip: !OUT }, () => {
+	const home = read('index.html');
+	assert.match(home, /fonts\.googleapis\.com\/css2\?family=Archivo/);
+	assert.match(home, /<nav class="secnav"/);
+	const css = readdirSync(join(OUT, '_astro')).filter((f) => f.endsWith('.css')).map((f) => read(join('_astro', f))).join('\n') + home;
+	assert.match(css, /prefers-color-scheme:\s*dark/);
+	assert.match(css, /\.secnav\[[^\]]*\]\{[^}]*position:sticky/);
 });
 
 test('standalone pages do not carry article widgets', { skip: !OUT }, () => {

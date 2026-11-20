@@ -72,6 +72,8 @@ collections:
           - { label: "Pidgin News", value: "pidgin-news" }
           - { label: "Job", value: "job" }
 
+      - { label: "Breaking news", name: "breaking", widget: "boolean", default: false, required: false, hint: "Turn ON only for urgent stories: shows a red BREAKING strip at the top of the homepage for 48 hours." }
+
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg", choose_url: true }
 
       - label: "Gallery Images"

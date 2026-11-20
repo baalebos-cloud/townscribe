@@ -22,6 +22,8 @@ const blog = defineCollection({
 		seoTitle: z.string().optional(),
 		seoDescription: z.string().optional(),
 		seoKeyword: z.string().optional(),
+		// Shows the red BREAKING strip on the homepage for 48 hours after publishing
+		breaking: z.boolean().default(false),
 		// Optional YouTube preview embedded at the top of the article
 		youtubeUrl: z.string().optional(),
 	}),

@@ -77,6 +77,13 @@ scripts/
 tests/                  node:test suites run in CI
 ```
 
+### Design
+
+All colours, fonts and the page width are tokens at the top of `src/styles/global.css` (light values, then dark values used automatically when the reader's device is in dark mode). Headlines use Archivo, interface text Inter, and article text Source Serif 4 (Google Fonts). Use `var(--red)` only for LIVE, BREAKING and hover states; section labels use `.kicker` (gold). Wrap page content in `.wrap` for the standard width and side gutters.
+
+- **Breaking news:** the CMS "Breaking news" switch puts a red BREAKING strip on the homepage for 48 hours after the story's publish time.
+- **Homepage sections** appear automatically for categories with at least four more stories than the top block shows.
+
 ### Categories
 
 Categories are defined once in `src/categories.ts`. The CMS dropdown in `public/admin/config.yml` must list the same slugs; `npm test` fails if they drift apart. To add a category, add it in both places — the header menu, category pages and sitemap pick it up automatically.
