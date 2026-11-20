@@ -67,6 +67,15 @@ const finalImageUrl = typeof image === 'string'
 <meta name="theme-color" content="#0b2545" />
 <meta name="color-scheme" content="light dark" />
 
+<!-- Apply the reader's saved light/dark choice before the page paints (no flash).
+     Without a saved choice the site follows the device setting. -->
+<script is:inline>
+	try {
+		var t = localStorage.getItem('ts_theme');
+		if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+	} catch (e) {}
+</script>
+
 <!-- Search engine directives -->
 <link rel="canonical" href={canonicalURL} />
 <title>{finalTitle}</title>
