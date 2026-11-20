@@ -64,9 +64,16 @@ jobs:
 
             payload=$(jq -n --arg title "${prefix}${title}" --arg url "$url" \
               '{title: $title, body: "Tap to read on TownScribe.", url: $url, icon: "https://news.townscribe.org/townscribe-img.jpg"}')
-            curl -fsS -X POST https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
+            result=$(curl -fsS -X POST https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
               -H "Authorization: Bearer ${NOTIFY_SECRET}" \
               -H "Content-Type: application/json" \
-              -d "$payload"
-            echo
+              -d "$payload")
+            echo "Push worker replied: $result"
+            sent=$(echo "$result" | jq -r '.sent // 0' 2>/dev/null || echo 0)
+            failed=$(echo "$result" | jq -r '.failed // 0' 2>/dev/null || echo 0)
+            echo "### 🔔 ${title}" >> "$GITHUB_STEP_SUMMARY"
+            echo "Sent: **${sent}** · Failed: **${failed}** · Link: ${url}" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$failed" != "0" ]; then
+              echo "::warning title=Some news alerts failed::${failed} of $((sent + failed)) alerts were not delivered (expired or invalid subscriptions)."
+            fi
           done <<< "$FILES"

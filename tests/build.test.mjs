@@ -141,3 +141,12 @@ test('developer credit links to GitHub on every page and is in the structured da
 		assert.match(html, /"@type":"WebSite"[\s\S]*"creator":\{"@type":"Person","name":"Oluwadare Jayeola"/);
 	}
 });
+
+test('news alerts use one subscribe path with the push worker key (no hard-coded key)', { skip: !OUT }, () => {
+	const home = read('index.html');
+	assert.doesNotMatch(home, /BN3ASYeflTaMmXt98VaFs/, 'old hard-coded VAPID key must be gone');
+	assert.match(home, /\/vapid-public-key/);
+	assert.match(home, /initNewsAlerts\(\)/);
+	assert.doesNotMatch(home, /initPushButton|WEB PUSH NOTIFICATION ENGINE/);
+	assert.equal(count(home, /pushManager\.subscribe\(/g), 1, 'exactly one place subscribes');
+});

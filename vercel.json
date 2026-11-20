@@ -1,5 +1,19 @@
 {
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.townscribe.org" }],
+      "destination": "https://news.townscribe.org/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "townscribe.org" }],
+      "destination": "https://news.townscribe.org/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/admin/:path*",
