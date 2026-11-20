@@ -1,8 +1,8 @@
 ---
-import { SITE_TITLE } from '../consts.ts';
+import { AUTH_API } from '../consts';
+import { CATEGORIES } from '../categories';
 import HeaderLink from './HeaderLink.astro';
 
-const AUTH_API       = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
 const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIbOj4IzrLHDjq5fxbRdDxQKgAWXvINYiPyo'; // 👈 Replace with your actual VAPID public key
 ---
 
@@ -112,18 +112,9 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
         <HeaderLink href="/">Home</HeaderLink>
         <HeaderLink href="/about">About</HeaderLink>
         <hr class="drawer-divider" />
-        <HeaderLink href="/category/articles">Articles</HeaderLink>
-        <HeaderLink href="/category/news">News</HeaderLink>
-        <HeaderLink href="/category/pidgin-news">Pidgin News</HeaderLink>
-        <HeaderLink href="/category/politics">Politics</HeaderLink>
-        <HeaderLink href="/category/business">Business</HeaderLink>
-        <HeaderLink href="/category/exclusive">Exclusive</HeaderLink>
-        <HeaderLink href="/category/entertainment">Entertainment</HeaderLink>
-        <HeaderLink href="/category/technology">Technology</HeaderLink>
-        <HeaderLink href="/category/health">Health</HeaderLink>
-        <HeaderLink href="/category/sport">Sport</HeaderLink>
-        <HeaderLink href="/category/world">World</HeaderLink>
-        <HeaderLink href="/category/job">Job</HeaderLink>
+        {CATEGORIES.map((c) => (
+          <HeaderLink href={`/category/${c.slug}`}>{c.label}</HeaderLink>
+        ))}
       </div>
     </div>
     <div id="drawer-overlay" class="drawer-overlay"></div>

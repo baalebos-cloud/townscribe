@@ -1,0 +1,32 @@
+---
+// Page shell shared by every non-article page: <head>, header, footer.
+import Analytics from '@vercel/analytics/astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	noindex?: boolean;
+}
+
+const { title, description, image, noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} image={image} noindex={noindex} />
+		<Analytics />
+		<slot name="head" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

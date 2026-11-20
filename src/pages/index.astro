@@ -1,207 +1,108 @@
 ---
-import Analytics from '@vercel/analytics/astro';
-import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets'; // High-performance asset processing engine
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Pagination from '../components/Pagination.astro';
+import PostGrid from '../components/PostGrid.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import FormattedDate from '../components/FormattedDate.astro';
+import { getSortedPosts, pageCount, pageSlice } from '../posts';
 
-// FETCH THE ARTICLES ENGINE: This goes into your content directory and pulls the news
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const all = await getSortedPosts();
+const latest = pageSlice(all, 1);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<Analytics />
-		
-		{/* --- DECOUPLED DECAP SYSTEM ROUTING INTERCEPTOR --- */}
-		<script is:inline>
-			const currentHost = window.location.hostname;
-			if (currentHost === 'admin.townscribe.org') {
-				if (!window.location.pathname.startsWith('/admin')) {
-					window.location.replace('/admin/');
-				}
-			}
-		</script>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	{/* admin.townscribe.org serves the same site; send editors straight to the CMS */}
+	<script is:inline slot="head">
+		if (window.location.hostname === 'admin.townscribe.org' && !window.location.pathname.startsWith('/admin')) {
+			window.location.replace('/admin/');
+		}
+	</script>
 
-		<style>
-			main {
-				width: 960px;
-				max-width: calc(100% - 2rem);
-				margin: 3rem auto;
-				padding: 0 1rem;
-			}
-			.welcome-section {
-				margin-bottom: 4rem;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-				padding-bottom: 2rem;
-			}
-			h1 {
-				font-size: 2.5rem;
-				margin-bottom: 1.5rem;
-			}
-			p {
-				line-height: 1.6;
-				color: #333;
-			}
-			
-			/* --- BOTTOM CONTENT LINE SOCIAL BLOCKS --- */
-			.social-inline-links {
-				margin-top: 1.5rem;
-				line-height: 2;
-			}
-			.inline-social-group {
-				display: inline-flex;
-				align-items: center;
-				gap: 1.25rem;
-				margin-left: 0.5rem;
-				vertical-align: middle;
-			}
-			.inline-icon {
-				color: #111;
-				transition: color 0.2s ease, transform 0.2s ease;
-				display: inline-flex;
-				align-items: center;
-			}
-			.inline-icon:hover {
-				transform: translateY(-2px);
-			}
-			.inline-icon.insta:hover { color: #E1306C; }
-			.inline-icon.x-corp:hover { color: #000000; }
-			.inline-icon.ytube:hover { color: #FF0000; }
+	<div class="home">
+		<h1 class="sr-only">TownScribe Media — latest news</h1>
+		<div class="welcome-section">
+			{/* --- CORRECTED BOTTOM SOCIAL INTERFACE LINK BAR --- */}
+			<p class="social-inline-links">
+				Looking for a way to carry out your publicity or your blog? Connect with us:
+				<span class="inline-social-group">
+				<a class="inline-icon insta" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram Profile">
+					<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+				</a>
+				<a class="inline-icon x-corp" href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter) Profile">
+					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+				</a>
+				<a class="inline-icon ytube" href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube Channel">
+					<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+				</a>
+				</span>
+			</p>
+		</div>
 
-			/* --- RECENT ARTICLES GRID LAYOUT --- */
-			.articles-heading {
-				font-size: 1.8rem;
-				margin-bottom: 2rem;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				position: relative;
-			}
-			.articles-heading::after {
-				content: '';
-				display: block;
-				width: 60px;
-				height: 4px;
-				background: #14b8a6;
-				margin-top: 0.5rem;
-			}
-			.blog-grid {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			.blog-grid li {
-				width: calc(50% - 1rem);
-			}
-			.blog-grid li * {
-				transition: 0.2s ease;
-			}
-			.blog-grid li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-				width: 100%;
-				height: auto;
-				object-fit: cover;
-				/* --- CRITICAL: Swapped from 16/9 to 3/2 aspect ratio for 720x480 geometry --- */
-				aspect-ratio: 3 / 2;
-				box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-			}
-			.blog-grid li a {
-				display: block;
-				text-decoration: none;
-			}
-			.blog-grid li a:hover img {
-				transform: translateY(-4px);
-				box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-			}
-			.title {
-				margin: 0.5rem 0 0 0;
-				color: #111;
-				line-height: 1.2;
-				font-size: 1.4rem;
-			}
-			.date {
-				margin: 0.2rem 0 0 0;
-				color: #777;
-				font-size: 0.95rem;
-			}
-			.blog-grid li a:hover .title {
-				color: #14b8a6;
-			}
+		<section>
+			<h2 class="articles-heading">Latest News Updates</h2>
+			<PostGrid posts={latest} />
+			{/* Page 1 of /blog is the same list, so "Older" jumps straight to page 2 */}
+			<Pagination base="/blog" current={1} total={pageCount(all.length)} />
+		</section>
+	</div>
+</BaseLayout>
 
-			@media (max-width: 720px) {
-				.blog-grid {
-					gap: 1.5rem;
-				}
-				.blog-grid li {
-					width: 100%;
-				}
-				h1 {
-					font-size: 2rem;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			{/* Intro Welcome Frame */}
-			<div class="welcome-section">
-				{/* --- CORRECTED BOTTOM SOCIAL INTERFACE LINK BAR --- */}
-				<p class="social-inline-links">
-					Looking for a way to carry out your publicity or your blog? Connect with us:
-					<span class="inline-social-group">
-						<a class="inline-icon insta" href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram Profile">
-							<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-						</a>
-						<a class="inline-icon x-corp" href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter) Profile">
-							<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-						</a>
-						<a class="inline-icon ytube" href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube Channel">
-							<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-						</a>
-					</span>
-				</p>
-			</div>
-
-			{/* --- DYNAMIC AUTOMATED POSTS FEED LOOP --- */}
-			<section>
-				<h2 class="articles-heading">Latest News Updates</h2>
-				<ul class="blog-grid">
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.slug || post.id}/`}>
-									<Image 
-										src={post.data.heroImage || '/townscribe-img.jpg'} 
-										alt=""
-										width={720}
-										height={480}
-										format="webp"
-										loading="lazy"
-										decoding="async"
-									/>
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+<style>
+	.home {
+		width: 1100px;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 1rem 0 2rem;
+	}
+	.welcome-section {
+		margin-bottom: 4rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		padding-bottom: 2rem;
+	}
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 1.5rem;
+	}
+	p {
+		line-height: 1.6;
+		color: #333;
+	}
+	
+	/* --- BOTTOM CONTENT LINE SOCIAL BLOCKS --- */
+	.social-inline-links {
+		margin-top: 1.5rem;
+		line-height: 2;
+	}
+	.inline-social-group {
+		display: inline-flex;
+		align-items: center;
+		gap: 1.25rem;
+		margin-left: 0.5rem;
+		vertical-align: middle;
+	}
+	.inline-icon {
+		color: #111;
+		transition: color 0.2s ease, transform 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+	}
+	.inline-icon:hover {
+		transform: translateY(-2px);
+	}
+	.inline-icon.insta:hover { color: #E1306C; }
+	.inline-icon.x-corp:hover { color: #000000; }
+	.inline-icon.ytube:hover { color: #FF0000; }
+	.articles-heading {
+		font-size: 1.8rem;
+		margin-bottom: 2rem;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	.articles-heading::after {
+		content: '';
+		display: block;
+		width: 60px;
+		height: 4px;
+		background: #14b8a6;
+		margin-top: 0.5rem;
+	}
+</style>

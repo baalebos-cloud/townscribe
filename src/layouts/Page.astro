@@ -1,0 +1,50 @@
+---
+// Layout for standalone pages (About, Contact, legal pages, account pages).
+// Unlike BlogPost it has no comments, view counter, ads or related news.
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	/** Optional visible <h1>; leave out when the page body has its own heading */
+	heading?: string;
+	heroImage?: string;
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description = 'TownScribe Media — where every story breathes.',
+	heading,
+	heroImage,
+	noindex = false,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={heroImage} noindex={noindex}>
+	<div class="page">
+		{heroImage && <img class="page-hero" src={heroImage} alt="" width="1020" height="510" />}
+		{heading && <h1 class="page-heading">{heading}</h1>}
+		<slot />
+	</div>
+</BaseLayout>
+
+<style>
+	.page {
+		width: 760px;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 1rem 0 2rem;
+	}
+	.page-hero {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 12px;
+		margin-bottom: 1.5rem;
+	}
+	.page-heading {
+		text-align: center;
+		margin: 0.5rem 0 1.5rem;
+	}
+</style>
