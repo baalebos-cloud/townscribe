@@ -80,3 +80,24 @@ test('standalone pages do not carry article widgets', { skip: !OUT }, () => {
 test('search-console verification file is published', { skip: !OUT }, () => {
 	assert.ok(existsSync(join(OUT, 'u77yi2vlztxiq8zuij3uduneujlc8d.html')));
 });
+
+test('TownScribe TV page exists and the TV icon replaces the YouTube logo', { skip: !OUT }, () => {
+	assert.ok(existsSync(join(OUT, 'tv', 'index.html')));
+	const home = read('index.html');
+	assert.match(home, /href="\/tv" aria-label="TownScribe TV"/);
+	// The old YouTube logo path must be gone from header, footer and homepage
+	assert.equal(count(home, /M22\.54 6\.42a2\.78/g), 0);
+	assert.match(read('sitemap.xml'), /<loc>https:\/\/news\.townscribe\.org\/tv<\/loc>/);
+});
+
+test('side menu can scroll and is fully hidden when closed', { skip: !OUT }, () => {
+	const css = readdirSync(join(OUT, '_astro'))
+		.filter((f) => f.endsWith('.css'))
+		.map((f) => read(join('_astro', f)))
+		.join('\n');
+	const html = read('index.html');
+	const all = css + html;
+	const drawer = all.match(/\.nav-drawer\[[^\]]*\]\{[^}]*\}|\.nav-drawer\{[^}]*\}/)?.[0] ?? '';
+	assert.match(drawer, /overflow-y:auto/);
+	assert.match(drawer, /translate(X)?\(-100%\)/);
+});

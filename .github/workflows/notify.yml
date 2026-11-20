@@ -1,4 +1,4 @@
-name: Notify subscribers of new articles
+name: Notify subscribers of new articles and TV programmes
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'src/content/blog/**'
+      - 'src/content/tv/**'
 
 concurrency:
   group: notify-${{ github.sha }}
@@ -24,7 +25,7 @@ jobs:
       - name: Find newly published articles
         id: new
         run: |
-          files=$(git diff --name-only --diff-filter=A HEAD^1 HEAD -- 'src/content/blog/*.md' 'src/content/blog/*.mdx' || true)
+          files=$(git diff --name-only --diff-filter=A HEAD^1 HEAD -- 'src/content/blog/*.md' 'src/content/blog/*.mdx' 'src/content/tv/*.md' 'src/content/tv/*.mdx' || true)
           echo "Added articles:"; echo "$files"
           {
             echo 'files<<EOF'
@@ -44,7 +45,11 @@ jobs:
             name=$(basename "$file"); slug="${name%.*}"
             # Astro builds URLs from a slugified file name (lowercase, punctuation removed)
             url_slug=$(printf '%s' "$slug" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9 _-]+//g; s/ /-/g')
-            url="https://news.townscribe.org/blog/${url_slug}"
+            case "$file" in
+              src/content/tv/*) section="tv"; prefix="📺 TownScribe TV: " ;;
+              *)                section="blog"; prefix="🗞️ " ;;
+            esac
+            url="https://news.townscribe.org/${section}/${url_slug}"
             title=$(sed -n 's/^title:[[:space:]]*//p' "$file" | head -n1 | sed -E "s/^['\"]//; s/['\"]$//")
             [ -z "$title" ] && title="A new article has just been published"
 
@@ -57,7 +62,7 @@ jobs:
             # Never send readers to a 404: fall back to the homepage
             if [ "$live" != true ]; then url="https://news.townscribe.org"; fi
 
-            payload=$(jq -n --arg title "🗞️ $title" --arg url "$url" \
+            payload=$(jq -n --arg title "${prefix}${title}" --arg url "$url" \
               '{title: $title, body: "Tap to read on TownScribe.", url: $url, icon: "https://news.townscribe.org/townscribe-img.jpg"}')
             curl -fsS -X POST https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev/notify \
               -H "Authorization: Bearer ${NOTIFY_SECRET}" \

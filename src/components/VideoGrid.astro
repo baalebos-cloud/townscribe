@@ -1,0 +1,124 @@
+---
+// Grid of video cards. On /tv (inlinePlay) a click plays the video in the
+// page's main player; elsewhere cards link to the video's page.
+import type { Video } from '../youtube';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	videos: Video[];
+	inlinePlay?: boolean;
+}
+
+const { videos, inlinePlay = false } = Astro.props;
+---
+
+<ul class="video-grid">
+	{videos.map((v) => (
+		<li>
+			<a
+				class="video-card"
+				href={v.href}
+				data-inline-play={inlinePlay && !v.href.startsWith('/tv/') ? 'true' : undefined}
+				data-id={v.id}
+				data-url={v.youtubeUrl}
+				data-live={v.live ? 'true' : 'false'}
+				data-title={v.title}
+			>
+				<div class="thumb">
+					<img src={v.thumbnail} alt="" width="480" height="270" loading="lazy" decoding="async" />
+					{v.live ? <span class="live">● LIVE</span> : <span class="play" aria-hidden="true">▶</span>}
+				</div>
+				<h3>{v.title}</h3>
+				<p class="date"><FormattedDate date={v.published} /></p>
+			</a>
+		</li>
+	))}
+</ul>
+
+{inlinePlay && (
+	<script>
+		document.querySelectorAll<HTMLAnchorElement>('a[data-inline-play]').forEach((a) => {
+			a.addEventListener('click', (e) => {
+				if (!window.tsPlayVideo || e.metaKey || e.ctrlKey) return;
+				e.preventDefault();
+				const { id, url, live, title } = a.dataset;
+				window.tsPlayVideo({ id: id!, url, live: live === 'true', title });
+				history.replaceState(null, '', `/tv?v=${id}`);
+			});
+		});
+	</script>
+)}
+
+<style>
+	.video-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.video-card {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+	.thumb {
+		position: relative;
+		border-radius: 10px;
+		overflow: hidden;
+		background: #111;
+	}
+	.thumb img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		transition: transform 0.25s ease;
+	}
+	.video-card:hover img {
+		transform: scale(1.04);
+	}
+	.play {
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		background: rgba(220, 38, 38, 0.95);
+		color: #fff;
+		display: grid;
+		place-items: center;
+		font-size: 0.8rem;
+	}
+	.live {
+		position: absolute;
+		left: 10px;
+		top: 10px;
+		background: #dc2626;
+		color: #fff;
+		font: 700 0.7rem/1 system-ui, sans-serif;
+		letter-spacing: 0.06em;
+		padding: 0.35rem 0.5rem;
+		border-radius: 4px;
+	}
+	h3 {
+		font-size: 1rem;
+		line-height: 1.35;
+		margin: 0.6rem 0 0.2rem;
+		color: #111;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.video-card:hover h3 {
+		color: #dc2626;
+	}
+	.date {
+		margin: 0;
+		color: #6b7280;
+		font-size: 0.85rem;
+	}
+</style>
