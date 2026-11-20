@@ -1,5 +1,5 @@
 ---
-import { AUTH_API, SOCIAL_LINKS } from '../consts';
+import { AUTH_API, PUSH_API, SOCIAL_LINKS } from '../consts';
 import SocialIcon from './SocialIcon.astro';
 import { CATEGORIES } from '../categories';
 import HeaderLink from './HeaderLink.astro';
@@ -10,7 +10,6 @@ const currentPath = Astro.url.pathname.replace(/(.)\/$/, '$1');
 // Fallback date for the utility bar (replaced in the browser with today's date in Lagos)
 const todayLabel = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lagos' }).format(new Date());
 
-const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIbOj4IzrLHDjq5fxbRdDxQKgAWXvINYiPyo'; // 👈 Replace with your actual VAPID public key
 ---
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -227,7 +226,7 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
 <!-- ═══════════════════════════════════════════════════════════
      SCRIPTS
 ════════════════════════════════════════════════════════════ -->
-<script is:inline define:vars={{ AUTH_API, VAPID_PUBLIC_KEY }}>
+<script is:inline define:vars={{ AUTH_API, PUSH_API }}>
 
   // ── THEME SWITCH ──────────────────────────────────────────
   (function () {
@@ -455,7 +454,11 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   }
 
 
-  // ── PUSH NOTIFICATIONS ────────────────────────────────────
+  // ── NEWS ALERTS (web push) ────────────────────────────────
+  // One code path for everyone (signed in or not):
+  //  - the signing key always comes from the push worker that sends alerts,
+  //  - subscriptions are saved to that worker (and copied to the account API),
+  //  - browsers subscribed with an old/wrong key are re-subscribed quietly.
   function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
     const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -463,83 +466,117 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
     return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
   }
 
-  async function initPushButton() {
+  let pushKeyPromise;
+  function getPushKey() {
+    pushKeyPromise ??= fetch(`${PUSH_API}/vapid-public-key`).then(r => r.json()).then(d => d.key);
+    return pushKeyPromise;
+  }
+
+  function usesKey(subscription, key) {
+    const current = subscription.options && subscription.options.applicationServerKey;
+    if (!current) return false;
+    const a = new Uint8Array(current);
+    const b = urlBase64ToUint8Array(key);
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+  }
+
+  async function saveSubscription(subscription) {
+    const body = JSON.stringify(subscription);
+    const res = await fetch(`${PUSH_API}/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+    if (!res.ok) throw new Error(`push worker replied ${res.status}`);
+    // Keep the account service in step too (best effort)
+    fetch(`${AUTH_API}/push/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }).catch(() => {});
+    try { localStorage.setItem('ts_push_synced', String(Date.now())); } catch {}
+  }
+
+  async function subscribeWithServerKey(reg) {
+    const key = await getPushKey();
+    const subscription = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(key) });
+    await saveSubscription(subscription);
+    return subscription;
+  }
+
+  async function initNewsAlerts() {
     const btn = document.getElementById('push-subscribe-btn');
     if (!btn) return;
 
-    // Hide bell on unsupported browsers
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
       btn.style.display = 'none';
       return;
     }
 
-    // Register service worker
     let reg;
     try {
-      reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.register('/sw.js');
+      reg = await navigator.serviceWorker.ready;
     } catch (err) {
-      console.error('[Push] Service worker registration failed:', err);
+      console.error('[Alerts] Service worker registration failed:', err);
       btn.style.display = 'none';
       return;
     }
 
-    // Sync bell colour with actual subscription state
-    async function syncBellState() {
-      const sub = await reg.pushManager.getSubscription();
-      if (sub) {
-        btn.classList.add('subscribed');
-        btn.title = 'Notifications ON — click to unsubscribe';
-        btn.setAttribute('aria-label', 'Unsubscribe from news alerts');
+    function showState(on) {
+      btn.classList.toggle('subscribed', on);
+      if (Notification.permission === 'denied') {
+        btn.title = 'News alerts are blocked in your browser settings';
       } else {
-        btn.classList.remove('subscribed');
-        btn.title = 'Get news alerts';
-        btn.setAttribute('aria-label', 'Subscribe to news alerts');
+        btn.title = on ? 'News alerts are ON (click to turn off)' : 'Get news alerts';
       }
+      btn.setAttribute('aria-label', on ? 'Turn off news alerts' : 'Turn on news alerts');
     }
 
-    await syncBellState();
+    // Repair: re-subscribe readers stuck on the wrong key, and make sure the
+    // push worker has every existing subscription (re-sent at most weekly).
+    let existing = await reg.pushManager.getSubscription();
+    if (existing && Notification.permission === 'granted') {
+      try {
+        const key = await getPushKey();
+        if (!usesKey(existing, key)) {
+          await existing.unsubscribe();
+          existing = await subscribeWithServerKey(reg);
+        } else {
+          let last = 0;
+          try { last = Number(localStorage.getItem('ts_push_synced')) || 0; } catch {}
+          if (Date.now() - last > 7 * 24 * 3600 * 1000) await saveSubscription(existing);
+        }
+      } catch (err) {
+        console.error('[Alerts] Could not refresh subscription:', err);
+      }
+    }
+    showState(!!existing);
 
     btn.addEventListener('click', async () => {
-      await navigator.serviceWorker.ready;
-      const existing = await reg.pushManager.getSubscription();
-
-      if (existing) {
-        // ── UNSUBSCRIBE ──
+      const current = await reg.pushManager.getSubscription();
+      if (current) {
+        if (!confirm('Turn off TownScribe news alerts on this device?')) return;
         try {
-          await existing.unsubscribe();
-          await fetch(`${AUTH_API}/push/unsubscribe`, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ endpoint: existing.endpoint }),
-          });
+          await current.unsubscribe();
+          fetch(`${AUTH_API}/push/unsubscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: current.endpoint }) }).catch(() => {});
         } catch (err) {
-          console.error('[Push] Unsubscribe failed:', err);
+          console.error('[Alerts] Unsubscribe failed:', err);
         }
-      } else {
-        // ── SUBSCRIBE ──
-        const permission = await Notification.requestPermission();
-        if (permission !== 'granted') {
-          alert('Please allow notifications in your browser settings to receive breaking news alerts.');
-          return;
-        }
-        try {
-          const subscription = await reg.pushManager.subscribe({
-            userVisibleOnly:      true,
-            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-          });
-          await fetch(`${AUTH_API}/push/subscribe`, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(subscription),
-          });
-        } catch (err) {
-          console.error('[Push] Subscribe failed:', err);
-          alert('Could not enable notifications. Please try again.');
-          return;
-        }
+        showState(false);
+        return;
       }
 
-      await syncBellState();
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        alert('News alerts are blocked. Allow notifications for this site in your browser settings, then tap the bell again.');
+        showState(false);
+        return;
+      }
+      try {
+        btn.disabled = true;
+        await subscribeWithServerKey(reg);
+        showState(true);
+        alert('You will now get TownScribe news alerts on this device.');
+      } catch (err) {
+        console.error('[Alerts] Subscribe failed:', err);
+        alert('Could not turn on news alerts. Please check your connection and try again.');
+        showState(false);
+      } finally {
+        btn.disabled = false;
+      }
     });
   }
 
@@ -548,7 +585,7 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   document.addEventListener('DOMContentLoaded', () => {
 
     initAuthState();
-    initPushButton();
+    initNewsAlerts();
 
     // Modal open/close
     document.getElementById('auth-signin-btn')?.addEventListener('click', () => openModal('login'));

@@ -7,6 +7,8 @@ export const SITE_DESCRIPTION =
 
 // Cloudflare Worker endpoints used by the browser
 export const AUTH_API = 'https://townscribe-auth.jayeolaoluwadamilare.workers.dev';
+// Sends news alerts; also the source of the alert signing (VAPID) key
+export const PUSH_API = 'https://townscribe-push-worker.jayeolaoluwadamilare.workers.dev';
 export const VIEW_COUNTER_API = 'https://townscribe-view-counter.jayeolaoluwadamilare.workers.dev';
 export const COMMENTS_HOST = 'https://comments.townscribe.org';
 
