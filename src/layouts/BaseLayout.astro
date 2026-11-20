@@ -10,15 +10,16 @@ interface Props {
 	description: string;
 	image?: string;
 	noindex?: boolean;
+	ads?: boolean;
 }
 
-const { title, description, image, noindex = false } = Astro.props;
+const { title, description, image, noindex = false, ads = true } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} image={image} noindex={noindex} />
+		<BaseHead title={title} description={description} image={image} noindex={noindex} ads={ads} />
 		<Analytics />
 		<slot name="head" />
 	</head>
