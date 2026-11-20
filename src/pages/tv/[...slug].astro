@@ -1,0 +1,91 @@
+---
+// A "TV & Live" post from the CMS: short write-up + the video or live stream.
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import TvIcon from '../../components/TvIcon.astro';
+import VideoGrid from '../../components/VideoGrid.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+import { type TvPost, getAllVideos, getTvPosts, getYouTubeId } from '../../youtube';
+
+export async function getStaticPaths() {
+	const posts = await getTvPosts();
+	return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: TvPost };
+const { Content } = await render(post);
+const videoId = getYouTubeId(post.data.youtubeUrl)!;
+const more = (await getAllVideos()).filter((v) => v.id !== videoId).slice(0, 4);
+---
+
+<BaseLayout title={`${post.data.title} | TownScribe TV`} description={post.data.description} image={post.data.thumbnail}>
+	<article class="tv-post">
+		<p class="eyebrow">
+			<a href="/tv"><TvIcon size={18} /> TownScribe TV</a>
+			{post.data.isLive && <span class="live">● LIVE</span>}
+		</p>
+		<h1>{post.data.title}</h1>
+		<p class="meta">By {post.data.author} · <FormattedDate date={post.data.pubDate} /></p>
+
+		<VideoPlayer videoId={videoId} youtubeUrl={post.data.youtubeUrl} live={post.data.isLive} title={post.data.title} thumbnail={post.data.thumbnail} />
+
+		<div class="write-up">
+			<Content />
+		</div>
+
+		{more.length > 0 && (
+			<section>
+				<h2>More from TownScribe TV</h2>
+				<VideoGrid videos={more} />
+			</section>
+		)}
+	</article>
+</BaseLayout>
+
+<style>
+	.tv-post {
+		width: 820px;
+		max-width: 100%;
+		margin: 0 auto;
+		padding: 1rem 0 2rem;
+	}
+	.eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-size: 0.85rem;
+	}
+	.eyebrow a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		color: #dc2626;
+		text-decoration: none;
+	}
+	.live {
+		background: #dc2626;
+		color: #fff;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+	}
+	h1 {
+		margin: 0.5rem 0;
+		line-height: 1.2;
+	}
+	.meta {
+		color: #6b7280;
+		margin: 0 0 1.25rem;
+	}
+	.write-up {
+		margin: 1.75rem 0;
+	}
+	h2 {
+		font-size: 1.3rem;
+		margin: 2.5rem 0 1rem;
+	}
+</style>

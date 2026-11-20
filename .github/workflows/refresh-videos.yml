@@ -1,0 +1,28 @@
+name: Refresh TownScribe TV videos
+
+# The site is pre-built, so new YouTube uploads appear after the next deploy.
+# Articles already trigger deploys; this also rebuilds every 3 hours so the
+# /tv page and homepage video strip catch up on quiet days.
+#
+# Setup (once): Vercel → Project → Settings → Git → Deploy Hooks → create a hook
+# for the "main" branch, then add its URL as the repository secret
+# VERCEL_DEPLOY_HOOK_URL. Until then this workflow does nothing.
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger a production rebuild
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::VERCEL_DEPLOY_HOOK_URL is not set; skipping."
+            exit 0
+          fi
+          curl -fsS -X POST "$HOOK"

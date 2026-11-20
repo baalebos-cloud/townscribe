@@ -2,6 +2,7 @@
 import { AUTH_API } from '../consts';
 import { CATEGORIES } from '../categories';
 import HeaderLink from './HeaderLink.astro';
+import TvIcon from './TvIcon.astro';
 
 const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIbOj4IzrLHDjq5fxbRdDxQKgAWXvINYiPyo'; // 👈 Replace with your actual VAPID public key
 ---
@@ -51,11 +52,8 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </a>
-          <a href="https://www.youtube.com/@townscribeTV" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-            </svg>
+          <a href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
+            <TvIcon size={24} />
           </a>
         </div>
 
@@ -111,6 +109,7 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
       <div class="drawer-links">
         <HeaderLink href="/">Home</HeaderLink>
         <HeaderLink href="/about">About</HeaderLink>
+        <HeaderLink href="/tv">📺 TownScribe TV</HeaderLink>
         <hr class="drawer-divider" />
         {CATEGORIES.map((c) => (
           <HeaderLink href={`/category/${c.slug}`}>{c.label}</HeaderLink>
@@ -599,12 +598,13 @@ const VAPID_PUBLIC_KEY = 'BN3ASYeflTaMmXt98VaFs-QJy03aFNYs54vXF8BeGz0B-Of-Vl5JIb
   .push-notify-btn.subscribed:hover { background: #15803d; }
 
   /* ── Nav drawer ── */
-  .nav-drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100vh; background: #142129; z-index: 200; display: flex; flex-direction: column; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1); padding: 1.5rem; box-shadow: 4px 0 24px rgba(0,0,0,0.3); }
-  .nav-drawer.open { transform: translateX(320px); }
-  .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
+  /* Off-canvas menu: fully hidden when closed (no edge peeking) and scrolls when it is taller than the screen */
+  .nav-drawer { position: fixed; top: 0; left: 0; box-sizing: border-box; width: min(300px, 85vw); height: 100vh; height: 100dvh; background: #142129; z-index: 200; display: flex; flex-direction: column; transform: translateX(-100%); visibility: hidden; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), visibility 0s linear 0.28s; padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom)); box-shadow: 4px 0 24px rgba(0,0,0,0.3); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .nav-drawer.open { transform: translateX(0); visibility: visible; transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), visibility 0s; }
+  .drawer-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
   .drawer-title  { color: #ffffff; font-weight: 600; font-size: 1.15rem; }
   .close-btn     { background: none; border: none; color: #ffffff; cursor: pointer; padding: 0.25rem; }
-  .drawer-links  { display: flex; flex-direction: column; gap: 1.25rem; }
+  .drawer-links  { display: flex; flex-direction: column; gap: 1.25rem; flex-shrink: 0; }
   .drawer-links :global(a) { color: #ffffff; font-size: 1.3rem; font-weight: 500; text-decoration: none; transition: color 0.15s; padding: 0.15rem 0; display: block; }
   .drawer-links :global(a.active), .drawer-links :global(a:hover) { color: #14b8a6; font-weight: 600; }
   .drawer-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 0.5rem 0; }

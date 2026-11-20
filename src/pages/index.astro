@@ -2,11 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Pagination from '../components/Pagination.astro';
 import PostGrid from '../components/PostGrid.astro';
+import TvIcon from '../components/TvIcon.astro';
+import VideoGrid from '../components/VideoGrid.astro';
+import { getAllVideos } from '../youtube';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getSortedPosts, pageCount, pageSlice } from '../posts';
 
 const all = await getSortedPosts();
 const latest = pageSlice(all, 1);
+const videos = await getAllVideos();
+const liveNow = videos.find((v) => v.live);
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -19,6 +24,14 @@ const latest = pageSlice(all, 1);
 
 	<div class="home">
 		<h1 class="sr-only">TownScribe Media — latest news</h1>
+
+		{liveNow && (
+			<a class="live-banner" href={liveNow.href}>
+				<span class="live-pill">● LIVE</span>
+				<span class="live-title">{liveNow.title}</span>
+				<span class="live-cta">Watch now →</span>
+			</a>
+		)}
 		<div class="welcome-section">
 			{/* --- CORRECTED BOTTOM SOCIAL INTERFACE LINK BAR --- */}
 			<p class="social-inline-links">
@@ -30,8 +43,8 @@ const latest = pageSlice(all, 1);
 				<a class="inline-icon x-corp" href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter) Profile">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
 				</a>
-				<a class="inline-icon ytube" href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube Channel">
-					<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+				<a class="inline-icon tv" href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
+					<TvIcon size={24} />
 				</a>
 				</span>
 			</p>
@@ -43,6 +56,16 @@ const latest = pageSlice(all, 1);
 			{/* Page 1 of /blog is the same list, so "Older" jumps straight to page 2 */}
 			<Pagination base="/blog" current={1} total={pageCount(all.length)} />
 		</section>
+
+		{videos.length > 0 && (
+			<section class="tv-strip">
+				<div class="tv-strip-head">
+					<h2 class="articles-heading"><TvIcon size={26} /> TownScribe TV</h2>
+					<a href="/tv">All videos →</a>
+				</div>
+				<VideoGrid videos={videos.slice(0, 4)} />
+			</section>
+		)}
 	</div>
 </BaseLayout>
 
@@ -90,12 +113,72 @@ const latest = pageSlice(all, 1);
 	}
 	.inline-icon.insta:hover { color: #E1306C; }
 	.inline-icon.x-corp:hover { color: #000000; }
-	.inline-icon.ytube:hover { color: #FF0000; }
+	.inline-icon.tv:hover { color: #dc2626; }
 	.articles-heading {
 		font-size: 1.8rem;
 		margin-bottom: 2rem;
 		text-transform: uppercase;
 		letter-spacing: 1px;
+	}
+	.live-banner {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		background: #111827;
+		color: #fff;
+		text-decoration: none;
+		padding: 0.85rem 1.1rem;
+		border-radius: 10px;
+		margin-bottom: 2rem;
+	}
+	.live-pill {
+		background: #dc2626;
+		font-weight: 800;
+		font-size: 0.75rem;
+		letter-spacing: 0.06em;
+		padding: 0.3rem 0.55rem;
+		border-radius: 4px;
+		animation: pulse 1.6s ease-in-out infinite;
+	}
+	.live-title {
+		flex: 1;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+	.live-cta {
+		white-space: nowrap;
+		color: #fca5a5;
+		font-weight: 700;
+	}
+	@keyframes pulse {
+		50% { opacity: 0.6; }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.live-pill { animation: none; }
+	}
+	.tv-strip {
+		margin-top: 3.5rem;
+	}
+	.tv-strip-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+	}
+	.tv-strip-head a {
+		color: #dc2626;
+		font-weight: 700;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	.tv-strip .articles-heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.tv-strip .articles-heading::after {
+		flex-basis: 100%;
 	}
 	.articles-heading::after {
 		content: '';

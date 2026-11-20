@@ -9,6 +9,8 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import InArticleAd from '../components/InArticleAd.astro';
+import VideoPlayer from '../components/VideoPlayer.astro';
+import { getYouTubeId } from '../youtube-id';
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -43,27 +45,7 @@ const prevPost = currentPostIndex >= 0 && currentPostIndex < allPosts.length - 1
 // Same-category stories first, topped up with the latest news
 const relatedPosts = pickRelated(allPosts, { id: currentSlug ?? '', category });
 
-function getYouTubeId(url: string | undefined) {
-    if (!url) return null;
-    const cleanUrl = url.trim();
-    if (cleanUrl.includes('watch')) {
-        const searchParams = new URL(cleanUrl).searchParams;
-        return searchParams.get('v');
-    }
-    if (cleanUrl.includes('youtu.be/')) {
-        return cleanUrl.split('youtu.be/')[1]?.split(/[?#]/)[0];
-    }
-    if (cleanUrl.includes('/embed/') || cleanUrl.includes('/shorts/') || cleanUrl.includes('/live/')) {
-        return cleanUrl.split('/').pop()?.split(/[?#]/)[0];
-    }
-    if (cleanUrl.length === 11) return cleanUrl;
-    return null;
-}
-
 const extractedVideoId = getYouTubeId(youtubeUrl);
-const fallbackRedirectUrl = "https://youtube.com/@townscribetv?si=ADdKzVgGQxb9gBmF";
-const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl;
-
 ---
 
 <!doctype html>
@@ -103,9 +85,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
             .bookmark-toast.show { transform: translateX(-50%) translateY(0); }
 
             .video-wrapper-zone { margin: 2rem 0; }
-            .video-container { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-            .video-container iframe, #player { width: 100%; height: 100%; border: none; }
-            .redirect-alert { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(224, 12, 12, 0.98); color: #fff; padding: 0.6rem 1.4rem; border-radius: 30px; font-size: 0.9rem; font-weight: 600; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.4); white-space: nowrap; font-family: system-ui, sans-serif; }
 
             .nav-pagination { display: flex; justify-content: space-between; border-top: 1px solid #edf2f7; border-bottom: 1px solid #edf2f7; padding: 1.5rem 0; margin: 2.5rem 0; font-family: system-ui, -apple-system, sans-serif; }
             .nav-block { max-width: 47%; text-decoration: none; color: #1a202c; display: flex; flex-direction: column; }
@@ -166,17 +145,11 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                         <hr />
                     </div>
                     
-                    {youtubeUrl && (
+                    {extractedVideoId && (
                         <div class="video-wrapper-zone">
-                            <div class="video-container">
-                                <div id="player"></div>
-                                <div id="redirect-timer" class="redirect-alert" style="display: none;">
-                                    Preview ending. Redirecting to full video in <span id="countdown-secs">5</span>s...
-                                </div>
-                            </div>
+                            <VideoPlayer videoId={extractedVideoId} youtubeUrl={youtubeUrl} title={title} />
                         </div>
                     )}
-
                     <slot />
                     {gallery.length > 0 && (
                         <section class="gallery" aria-label="Photo gallery">
@@ -355,50 +328,6 @@ const finalRedirectTarget = youtubeUrl ? youtubeUrl.trim() : fallbackRedirectUrl
                 loadRemark42();
             }
         </script>
-
-        {youtubeUrl && (
-            <script is:inline src="https://www.youtube.com/iframe_api"></script>
-            <script is:inline define:vars={{ extractedVideoId, finalRedirectTarget }}>
-                let player;
-                let pollInterval = null;
-                const cutoffTime = 48;
-                window.onYouTubeIframeAPIReady = function() {
-                    if (!extractedVideoId) return;
-                    player = new YT.Player('player', {
-                        videoId: extractedVideoId,
-                        playerVars: { 'playsinline': 1, 'rel': 0, 'modestbranding': 1, 'controls': 1 },
-                        events: {
-                            'onReady': (e) => { e.target.cueVideoById({ videoId: extractedVideoId, startSeconds: 0, endSeconds: cutoffTime }); },
-                            'onStateChange': onPlayerStateChange
-                        }
-                    });
-                }
-                function onPlayerStateChange(event) {
-                    if (event.data === YT.PlayerState.PLAYING) {
-                        if (!pollInterval) pollInterval = setInterval(monitorTimeline, 250);
-                    } else if (event.data === YT.PlayerState.ENDED) {
-                        executeChannelRedirect();
-                    } else { clearInterval(pollInterval); pollInterval = null; }
-                }
-                function monitorTimeline() {
-                    if (!player || typeof player.getCurrentTime !== 'function') return;
-                    const progress = player.getCurrentTime();
-                    if (progress >= 43 && progress < cutoffTime) {
-                        const alertBox = document.getElementById('redirect-timer');
-                        const timeSpan = document.getElementById('countdown-secs');
-                        if (alertBox && timeSpan) {
-                            alertBox.style.display = 'block';
-                            timeSpan.textContent = Math.ceil(cutoffTime - progress);
-                        }
-                    }
-                }
-                function executeChannelRedirect() {
-                    clearInterval(pollInterval);
-                    window.location.href = finalRedirectTarget;
-                }
-            </script>
-        )}
-
         <script is:inline define:vars={{ VIEW_COUNTER_API }}>
             const workerUrl = VIEW_COUNTER_API;
             fetch(`${workerUrl}?slug=${window.location.pathname}`, { method: "POST" })
