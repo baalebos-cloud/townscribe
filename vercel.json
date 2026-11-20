@@ -2,15 +2,15 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/:path((?!ads\\.txt$|robots\\.txt$).*)",
       "has": [{ "type": "host", "value": "www.townscribe.org" }],
-      "destination": "https://news.townscribe.org/:path*",
+      "destination": "https://news.townscribe.org/:path",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/:path((?!ads\\.txt$|robots\\.txt$).*)",
       "has": [{ "type": "host", "value": "townscribe.org" }],
-      "destination": "https://news.townscribe.org/:path*",
+      "destination": "https://news.townscribe.org/:path",
       "permanent": true
     }
   ],

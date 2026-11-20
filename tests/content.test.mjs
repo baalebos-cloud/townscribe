@@ -128,3 +128,18 @@ test('every TV post has a valid YouTube link', () => {
 	}
 	assert.deepEqual(problems, []);
 });
+
+test('vercel.json: www/apex redirect to news.townscribe.org but serve ads.txt and robots.txt directly', () => {
+	const cfg = JSON.parse(readFileSync('vercel.json', 'utf8'));
+	for (const host of ['www.townscribe.org', 'townscribe.org']) {
+		const rule = cfg.redirects.find((r) => r.has?.some((h) => h.type === 'host' && h.value === host));
+		assert.ok(rule, `missing redirect for ${host}`);
+		assert.equal(rule.permanent, true);
+		assert.match(rule.destination, /^https:\/\/news\.townscribe\.org\//);
+		// Vercel source "/:path(<regex>)" — turn it into a JS regex to check which paths redirect
+		const inner = rule.source.match(/^\/:path\((.*)\)$/)[1].replace(/\\\\/g, '\\');
+		const re = new RegExp(`^/(${inner})$`);
+		for (const p of ['/ads.txt', '/robots.txt']) assert.equal(re.test(p), false, `${host}${p} must not redirect (AdSense / crawlers)`);
+		for (const p of ['/', '/blog/some-story', '/tv']) assert.equal(re.test(p), true, `${host}${p} should redirect`);
+	}
+});
