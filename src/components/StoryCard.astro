@@ -1,0 +1,144 @@
+---
+// One story teaser. Variants:
+//   lead  — big picture, large headline and standfirst (top of the homepage)
+//   stack — picture on top (desktop) / to the right (phone), medium headline
+//   card  — standard grid card used in sections and listings
+import FormattedDate from './FormattedDate.astro';
+import { categoryLabel } from '../categories';
+import { DEFAULT_IMAGE } from '../consts';
+import { type Post, postUrl } from '../posts';
+
+interface Props {
+	post: Post;
+	variant?: 'lead' | 'stack' | 'card';
+	showCategory?: boolean;
+	eager?: boolean;
+}
+
+const { post, variant = 'card', showCategory = true, eager = false } = Astro.props;
+const href = postUrl(post);
+const HeadingTag = variant === 'lead' ? 'h2' : 'h3';
+---
+
+<article class:list={['story', variant]}>
+	<a class="pic" href={href} tabindex="-1" aria-hidden="true">
+		<img
+			src={post.data.heroImage || DEFAULT_IMAGE}
+			alt=""
+			width={variant === 'lead' ? 960 : 640}
+			height={variant === 'lead' ? 600 : 400}
+			loading={eager ? 'eager' : 'lazy'}
+			decoding="async"
+			fetchpriority={variant === 'lead' ? 'high' : undefined}
+		/>
+	</a>
+	<div class="text">
+		{showCategory && <a class="kicker" href={`/category/${post.data.category}`}>{categoryLabel(post.data.category)}</a>}
+		<HeadingTag class="headline"><a href={href}>{post.data.title}</a></HeadingTag>
+		{variant === 'lead' && <p class="standfirst">{post.data.description}</p>}
+		<p class="meta">
+			{variant === 'lead' && <span>By {post.data.author} · </span>}
+			<FormattedDate date={post.data.pubDate} />
+		</p>
+	</div>
+</article>
+
+<style>
+	.story {
+		display: grid;
+		gap: 10px;
+		align-content: start;
+		min-width: 0;
+	}
+	.pic img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		border-radius: 4px;
+		background: var(--surface);
+		transition: opacity 0.2s ease;
+	}
+	.pic:hover img {
+		opacity: 0.88;
+	}
+	.text {
+		display: grid;
+		gap: 6px;
+		min-width: 0;
+	}
+	.kicker {
+		justify-self: start;
+	}
+	.kicker:hover {
+		color: var(--red);
+	}
+	.headline {
+		margin: 0;
+		font-size: 1.05rem;
+		line-height: 1.25;
+		font-weight: 700;
+	}
+	.headline a {
+		color: var(--ink);
+	}
+	.headline a:hover {
+		color: var(--red);
+	}
+	.meta {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.8rem;
+	}
+
+	.lead .headline {
+		font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.25rem);
+		line-height: 1.08;
+		font-weight: 800;
+	}
+	.lead .standfirst {
+		margin: 0;
+		font: 400 1.08rem/1.5 var(--font-read);
+		color: var(--ink-2);
+	}
+	.lead .text {
+		gap: 10px;
+		margin-top: 4px;
+	}
+
+	.stack {
+		padding-bottom: 18px;
+		border-bottom: 1px solid var(--line);
+	}
+	.stack .headline {
+		font-size: 1.12rem;
+	}
+
+	@media (max-width: 640px) {
+		/* Phones: small square picture beside the headline */
+		.stack,
+		.card {
+			grid-template-columns: minmax(0, 1fr) 112px;
+			column-gap: 12px;
+		}
+		.stack .pic,
+		.card .pic {
+			grid-column: 2;
+			grid-row: 1;
+		}
+		.stack .text,
+		.card .text {
+			grid-column: 1;
+			grid-row: 1;
+		}
+		.stack .pic img,
+		.card .pic img {
+			aspect-ratio: 1;
+		}
+		.card {
+			padding-bottom: 16px;
+			border-bottom: 1px solid var(--line);
+		}
+	}
+</style>

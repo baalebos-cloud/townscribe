@@ -1,71 +1,144 @@
 ---
+import { CATEGORIES } from '../categories';
+import TvIcon from './TvIcon.astro';
+
 const today = new Date();
+const half = Math.ceil(CATEGORIES.length / 2);
+const columns = [CATEGORIES.slice(0, half), CATEGORIES.slice(half)];
 ---
 
-<footer>
-	<p>&copy; {today.getFullYear()} Townscribe. All rights reserved.</p>
-	
-	{/* --- ADSENSE COMPLIANCE NAVIGATION --- */}
-	<nav class="footer-nav">
-		<a href="/about">About Us</a>
-		<a href="/contact">Contact</a>
-		<a href="/privacy-policy">Privacy Policy</a>
-		<a href="/terms-of-service">Terms of Service</a>
-	</nav>
-	
-	{/* --- BOTTOM LINE: CORRECT BRAND LOGOS --- */}
-	<div class="social-links">
-		<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" aria-label="Instagram">
-			<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-		</a>
-		<a href="https://x.com/townscribenews?s=21" target="_blank" aria-label="X (Twitter)">
-			<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-		</a>
-		<a href="https://www.youtube.com/@townscribeTV" target="_blank" aria-label="YouTube">
-			<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-		</a>
+<footer class="foot">
+	<div class="wrap">
+		<div class="cols">
+			<div class="about">
+				<a class="brand" href="/" aria-label="TownScribe Media home">
+					<img src="/townscribe-img.jpg" alt="" width="40" height="40" loading="lazy" />
+					<span>TownScribe</span>
+				</a>
+				<p>Independent Nigerian news on politics, governance, crime, business, sport and lifestyle. Where every story breathes.</p>
+				<div class="social-links">
+					<a href="https://www.instagram.com/townscribenews?igsh=MTZxM3p1b3Bub2s2ag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+						<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+					</a>
+					<a href="https://x.com/townscribenews?s=21" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+						<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+					</a>
+					<a href="/tv" aria-label="TownScribe TV" title="TownScribe TV">
+						<TvIcon size={22} />
+					</a>
+				</div>
+			</div>
+
+			{columns.map((col, i) => (
+				<nav aria-label={i === 0 ? 'Sections' : 'More sections'}>
+					<h2>{i === 0 ? 'Sections' : 'More'}</h2>
+					<ul>
+						{col.map((c) => <li><a href={`/category/${c.slug}`}>{c.label}</a></li>)}
+					</ul>
+				</nav>
+			))}
+
+			{/* AdSense requires these pages to be easy to reach */}
+			<nav class="footer-nav" aria-label="TownScribe">
+				<h2>TownScribe</h2>
+				<ul>
+					<li><a href="/tv">TownScribe TV</a></li>
+					<li><a href="/about">About Us</a></li>
+					<li><a href="/contact">Contact</a></li>
+					<li><a href="/privacy-policy">Privacy Policy</a></li>
+					<li><a href="/terms-of-service">Terms of Service</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<div class="legal">
+			<span>&copy; {today.getFullYear()} TownScribe Media. All rights reserved.</span>
+			<a href="/rss.xml">RSS feed</a>
+		</div>
 	</div>
 </footer>
 
 <style>
-	footer {
-		padding: 2em 1em 6em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
-		text-align: center;
-	}
-	.footer-nav {
-		display: flex;
-		justify-content: center;
-		flex-wrap: wrap;
-		gap: 1.25rem;
-		margin-top: 1.5rem;
-		margin-bottom: 0.5rem;
-	}
-	.footer-nav a {
-		text-decoration: none;
-		color: rgb(var(--gray));
+	.foot {
+		background: var(--brand);
+		color: var(--brand-ink);
+		padding-block: 2.5rem calc(2rem + env(safe-area-inset-bottom, 0px));
+		margin-top: 3rem;
 		font-size: 0.9rem;
-		font-weight: 500;
-		transition: color 0.2s ease;
 	}
-	.footer-nav a:hover {
-		color: #14b8a6;
+	.cols {
+		display: grid;
+		grid-template-columns: 1.6fr repeat(3, 1fr);
+		gap: 2rem;
+	}
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		color: var(--brand-ink);
+		font: 900 1.35rem/1 var(--font-head);
+		letter-spacing: -0.02em;
+	}
+	.brand img {
+		width: 40px;
+		height: 40px;
+		border-radius: 8px;
+		object-fit: cover;
+	}
+	.about p {
+		opacity: 0.8;
+		margin: 0.9rem 0 1rem;
+		max-width: 36ch;
+	}
+	h2 {
+		font: 700 0.72rem var(--font-ui);
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: var(--brand-ink);
+		opacity: 0.65;
+		margin: 0 0 0.8rem;
+	}
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.45rem;
+	}
+	a {
+		color: var(--brand-ink);
+		opacity: 0.88;
+	}
+	a:hover {
+		color: var(--brand-ink);
+		opacity: 1;
+		text-decoration: underline;
 	}
 	.social-links {
 		display: flex;
-		justify-content: center;
-		gap: 1.5rem;
-		margin-top: 1em;
-	}
-	.social-links a {
-		text-decoration: none;
-		color: rgb(var(--gray));
-		transition: color 0.2s ease;
-		display: inline-flex;
+		gap: 1.1rem;
 		align-items: center;
 	}
-	.social-links a:hover {
-		color: #14b8a6;
+	.social-links a {
+		display: inline-flex;
+	}
+	.legal {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.15);
+		margin-top: 2rem;
+		padding-top: 1rem;
+		font-size: 0.8rem;
+		opacity: 0.8;
+	}
+	@media (max-width: 760px) {
+		.cols {
+			grid-template-columns: 1fr 1fr;
+		}
+		.about {
+			grid-column: 1 / -1;
+		}
 	}
 </style>

@@ -4,6 +4,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { CATEGORIES, normalizeCategory } from '../src/categories.ts';
+import { getYouTubeId } from '../src/youtube-id.ts';
 
 const BLOG_DIR = 'src/content/blog';
 const SLUGS = CATEGORIES.map((c) => c.slug);
@@ -97,4 +98,33 @@ test('no stray Python environment or partial downloads are committed', () => {
 	assert.equal(existsSync('env'), false, 'env/ should not be in the repo');
 	const partial = readdirSync('public').filter((f) => f.endsWith('.crdownload'));
 	assert.deepEqual(partial, []);
+});
+
+test('getYouTubeId understands common YouTube links', () => {
+	assert.equal(getYouTubeId('https://www.youtube.com/watch?v=Dys5AFCCH9c&t=30s'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('https://youtu.be/Dys5AFCCH9c?si=abc'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('https://www.youtube.com/live/Dys5AFCCH9c?feature=share'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('https://youtube.com/shorts/Dys5AFCCH9c'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('https://m.youtube.com/embed/Dys5AFCCH9c'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('Dys5AFCCH9c'), 'Dys5AFCCH9c');
+	assert.equal(getYouTubeId('https://www.youtube.com/@townscribeTV'), null);
+	assert.equal(getYouTubeId('not a link'), null);
+});
+
+test('CMS has a "TV & Live" collection with a live switch', () => {
+	const config = readFileSync('public/admin/config.yml', 'utf8');
+	assert.match(config, /name: "tv"\s*\n\s*label: "TV & Live"/);
+	assert.match(config, /folder: "src\/content\/tv"/);
+	assert.match(config, /name: "isLive", widget: "boolean"/);
+});
+
+test('every TV post has a valid YouTube link', () => {
+	const dir = 'src/content/tv';
+	const problems = [];
+	for (const file of existsSync(dir) ? readdirSync(dir).filter((f) => /\.mdx?$/.test(f)) : []) {
+		const fm = readFileSync(join(dir, file), 'utf8').match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+		if (!getYouTubeId(field(fm, 'youtubeUrl'))) problems.push(`${file}: missing or invalid youtubeUrl`);
+		checkImage(field(fm, 'thumbnail'), file, problems);
+	}
+	assert.deepEqual(problems, []);
 });

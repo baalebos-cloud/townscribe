@@ -72,6 +72,8 @@ collections:
           - { label: "Pidgin News", value: "pidgin-news" }
           - { label: "Job", value: "job" }
 
+      - { label: "Breaking news", name: "breaking", widget: "boolean", default: false, required: false, hint: "Turn ON only for urgent stories: shows a red BREAKING strip at the top of the homepage for 48 hours." }
+
       - { label: "Hero Image", name: "heroImage", widget: "image", required: false, default: "/townscribe-img.jpg", choose_url: true }
 
       - label: "Gallery Images"
@@ -117,3 +119,21 @@ collections:
         required: true
         pattern: ['^(PASS|pass)$', "INDEX DENIED: Review your Meta Title, Meta Description, Focus Keyword, and Body constraints above. If they are compliant, type 'PASS' to authorize indexing configuration."]
         hint: "Self-Audit Console: Ensure your titles fit character thresholds and your body has transition words. Type PASS when done to greenlight Google indexing."
+
+  # TownScribe TV: short write-up + YouTube video or live stream (shown on /tv and the homepage)
+  - name: "tv"
+    label: "TV & Live"
+    label_singular: "TV / Live post"
+    folder: "src/content/tv"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{pubDate}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "e.g. LIVE: Town hall meeting on fuel prices" }
+      - { label: "Short summary", name: "description", widget: "string", hint: "One or two sentences shown on cards and in search results." }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "YouTube video or live-stream link", name: "youtubeUrl", widget: "string", pattern: ['(youtube\.com|youtu\.be)', "Paste a YouTube link (youtube.com/watch?v=…, youtu.be/…, or youtube.com/live/…)"], hint: "For a live programme, paste the live-stream link from YouTube Studio." }
+      - { label: "Live now", name: "isLive", widget: "boolean", default: false, required: false, hint: "Turn ON while the programme is streaming: it plays in full on the site and shows a red LIVE banner on the homepage. Turn OFF when it ends so it becomes a normal 15-second preview." }
+      - { label: "Custom thumbnail (optional)", name: "thumbnail", widget: "image", required: false, choose_url: true, hint: "Leave empty to use the YouTube thumbnail." }
+      - { label: "Presenter / Author", name: "author", widget: "string", default: "TownScribe TV", required: false }
+      - { label: "Write-up", name: "body", widget: "markdown", required: false, hint: "A few paragraphs about the programme." }

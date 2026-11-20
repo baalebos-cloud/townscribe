@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TvIcon from '../../components/TvIcon.astro';
+import VideoGrid from '../../components/VideoGrid.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+import { PREVIEW_SECONDS, YOUTUBE_CHANNEL_URL, getAllVideos } from '../../youtube';
+
+const videos = await getAllVideos();
+const live = videos.filter((v) => v.live);
+const featured = videos[0];
+---
+
+<BaseLayout
+	title="TownScribe TV — Videos & Live Programmes"
+	description="Watch the latest TownScribe TV videos and live programmes, then catch the full stories on our YouTube channel."
+>
+	<div class="wrap tv">
+		<header class="tv-header">
+			<div>
+				<p class="eyebrow"><TvIcon size={20} /> TownScribe TV</p>
+				<h1>Videos &amp; live programmes</h1>
+				<p class="sub">
+					Watch a {PREVIEW_SECONDS}-second preview here, then continue the full video on YouTube.
+					Live programmes play in full.
+				</p>
+			</div>
+			<a class="subscribe" href={`${YOUTUBE_CHANNEL_URL}?sub_confirmation=1`} target="_blank" rel="noopener">Subscribe on YouTube</a>
+		</header>
+
+		{featured ? (
+			<section class="featured">
+				<VideoPlayer videoId={featured.id} youtubeUrl={featured.youtubeUrl} live={featured.live} title={featured.title} thumbnail={featured.thumbnail} />
+				<div class="featured-info">
+					{featured.live && <span class="live-tag">● LIVE NOW</span>}
+					<h2>{featured.title}</h2>
+					{featured.summary && <p>{featured.summary}</p>}
+					{featured.href.startsWith('/tv/') && <a href={featured.href}>Read more →</a>}
+				</div>
+			</section>
+		) : (
+			<p class="empty">
+				No videos yet. Visit <a href={YOUTUBE_CHANNEL_URL}>our YouTube channel</a>.
+			</p>
+		)}
+
+		{live.length > 1 && (
+			<section>
+				<h2 class="section-title"><span class="dot"></span> Live now</h2>
+				<VideoGrid videos={live} />
+			</section>
+		)}
+
+		{videos.length > 1 && (
+			<section>
+				<h2 class="section-title">Latest videos</h2>
+				<VideoGrid videos={videos} inlinePlay />
+			</section>
+		)}
+	</div>
+</BaseLayout>
+
+<script>
+	// Keep the text beside the main player in sync with the video it is showing
+	document.addEventListener('ts-video-change', (e) => {
+		const { title, live } = (e as CustomEvent<{ title?: string; live: boolean }>).detail;
+		const info = document.querySelector<HTMLElement>('.featured-info');
+		if (!info) return;
+		info.querySelector('h2')!.textContent = title ?? '';
+		info.querySelector<HTMLElement>('.live-tag')?.toggleAttribute('hidden', !live);
+		info.querySelectorAll<HTMLElement>('p, a').forEach((el) => (el.hidden = true));
+	});
+
+	// /tv?v=<id> (from homepage cards) shows that video in the main player
+	const id = new URLSearchParams(location.search).get('v');
+	const card = id ? document.querySelector<HTMLAnchorElement>(`a.video-card[data-id="${CSS.escape(id)}"]`) : null;
+	if (card && window.tsPlayVideo) {
+		const { url, live, title } = card.dataset;
+		window.tsPlayVideo({ id: id!, url, live: live === 'true', title, autoplay: false });
+	}
+</script>
+
+<style>
+	.tv {
+		padding-block: 1.5rem 1rem;
+	}
+	.tv-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		border-bottom: 3px solid var(--brand);
+		padding-bottom: 1.25rem;
+		margin-bottom: 2rem;
+	}
+	.eyebrow {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--red);
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-size: 0.85rem;
+		margin: 0;
+	}
+	h1 {
+		margin: 0.3rem 0;
+		font-size: 2.4rem;
+	}
+	.sub {
+		margin: 0;
+		color: var(--ink-2);
+	}
+	.subscribe {
+		background: var(--red);
+		color: #fff;
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.7rem 1.2rem;
+		border-radius: 999px;
+	}
+	.featured {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 1.5rem;
+		align-items: start;
+		margin-bottom: 3rem;
+	}
+	.featured-info h2 {
+		margin: 0.3rem 0 0.6rem;
+		font-size: 1.5rem;
+		line-height: 1.25;
+	}
+	.featured-info p {
+		color: var(--ink-2);
+	}
+	.featured-info [hidden] {
+		display: none;
+	}
+	.live-tag {
+		color: var(--red);
+		font-weight: 800;
+		letter-spacing: 0.05em;
+		font-size: 0.85rem;
+	}
+	.section-title {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 1.4rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin: 2.5rem 0 1.25rem;
+	}
+	.dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--red);
+	}
+	@media (max-width: 800px) {
+		.featured {
+			grid-template-columns: 1fr;
+		}
+		h1 {
+			font-size: 1.9rem;
+		}
+	}
+</style>

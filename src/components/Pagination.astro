@@ -28,22 +28,22 @@ const href = (n: number) => (n <= 1 ? base : `${base}/page/${n}`);
 		gap: 1rem;
 		margin: 3rem 0 1rem;
 		padding-top: 1.5rem;
-		border-top: 1px solid #e5e7eb;
+		border-top: 1px solid var(--line);
 	}
 	.pagination a {
 		font-weight: 600;
 		text-decoration: none;
-		color: #111;
-		border: 1.5px solid #e5e7eb;
+		color: var(--ink);
+		border: 1.5px solid var(--line);
 		border-radius: 999px;
 		padding: 0.45rem 1.1rem;
 	}
 	.pagination a:hover {
-		border-color: #14b8a6;
-		color: #14b8a6;
+		border-color: var(--red);
+		color: var(--red);
 	}
 	.status {
-		color: #6b7280;
+		color: var(--muted);
 		font-size: 0.9rem;
 	}
 </style>
