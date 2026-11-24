@@ -1,6 +1,6 @@
 ---
-title: After Ten Months of Limbo, CAS Finally Confirms Senegal as True 2025
-  AFCON Champions
+title: CAS Finally Confirms Senegal as True 2025 AFCON Champions After Ten
+  Months of Limbo
 description: Court of Arbitration for Sport overturns CAF’s forfeit ruling,
   restoring Senegal’s hard-fought 1-0 extra-time victory over hosts Morocco in
   one of African football’s most controversial finals.
@@ -15,8 +15,8 @@ seoKeyword: CAS Senegal AFCON 2025, Senegal reinstated AFCON champions, Court of
   Arbitration for Sport AFCON ruling, Senegal vs Morocco final controversy, CAF
   forfeit decision overturned, 2025 Africa Cup of Nations winners, Sadio Mane
   Senegal title, AFCON 2025 final walk-off.
-seoTitle: After Ten Months of Limbo, CAS Finally Confirms Senegal as True 2025
-  AFCON Champions
+seoTitle: CAS Finally Confirms Senegal as True 2025 AFCON Champions After Ten
+  Months of Limbo
 seoDescription: Court of Arbitration for Sport overturns CAF’s forfeit ruling,
   restoring Senegal’s hard-fought 1-0 extra-time victory over hosts Morocco in
   one of African
