@@ -4,11 +4,11 @@ description: French defender cleared after controversial early dismissal in 4-0
   Anfield defeat during Pochettino’s debut, restoring availability for upcoming
   fixtures.
 pubDate: 2026-11-24T16:51:00.000+01:00
-author: TownScribe Staff
-authorRole: Writer
-category: news
+author: AFOLABI OLAIYA
+authorRole: Admin
+category: sport
 breaking: false
-heroImage: /townscribe-img.jpg
+heroImage: /images/uploads/yoro.webp
 seo_divider: ""
 seoKeyword: Leny Yoro red card overturned, Manchester United FA appeal success,
   Yoro suspension removed, Man Utd vs Liverpool red card, Pochettino debut
@@ -19,23 +19,17 @@ seoDescription: French defender cleared after controversial early dismissal in
   upcoming fixtures.
 seo_gatekeeper: PASS
 ---
-\*\*\*\*
+Manchester United received a rare piece of positive news on Tuesday when the Football Association overturned Leny Yoro’s red card from the club’s heavy defeat at Liverpool.
 
+ The independent Regulatory Commission upheld the club’s claim of wrongful dismissal, removing the defender’s one-match suspension.
 
+Yoro was sent off just eight minutes into Mauricio Pochettino’s first match in charge on Sunday at Anfield. The French center-back was judged to have denied an obvious goalscoring opportunity after bringing down Alexander Isak as the Liverpool striker raced towards goal. 
 
-\*\*Subheadline:\*\* 
+Referee Sam Barrott showed a straight red, a decision later confirmed by VAR. Liverpool capitalised immediately, with Dominik Szoboszlai converting the resulting free-kick, and went on to win 4-0.
 
+The incident quickly became a major talking point. United argued that Isak had taken a heavy touch that sent the ball towards goalkeeper Senne Lammens, raising questions over whether a clear goalscoring chance truly existed. 
 
-
-Manchester United received a rare piece of positive news on Tuesday when the Football Association overturned Leny Yoro’s red card from the club’s heavy defeat at Liverpool. The independent Regulatory Commission upheld the club’s claim of wrongful dismissal, removing the defender’s one-match suspension.
-
-
-
-Yoro was sent off just eight minutes into Mauricio Pochettino’s first match in charge on Sunday at Anfield. The French centre-back was judged to have denied an obvious goalscoring opportunity after bringing down Alexander Isak as the Liverpool striker raced towards goal. Referee Sam Barrott showed a straight red, a decision later confirmed by VAR. Liverpool capitalised immediately, with Dominik Szoboszlai converting the resulting free-kick, and went on to win 4-0.
-
-
-
-The incident quickly became a major talking point. United argued that Isak had taken a heavy touch that sent the ball towards goalkeeper Senne Lammens, raising questions over whether a clear goalscoring chance truly existed. Pochettino and several players, including Kobbie Mainoo and Bruno Fernandes, publicly questioned the decision after the match, describing it as unfair and game-changing.
+Pochettino and several players, including Kobbie Mainoo and Bruno Fernandes, publicly questioned the decision after the match, describing it as unfair and game-changing.
 
 United formally appealed the dismissal. On Tuesday the FA confirmed the outcome: 
 
