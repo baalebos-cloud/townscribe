@@ -4,7 +4,7 @@ description: Soldiers returning on pass from the North-East ran into a suspected
   kidnappers' roadblock at Hawan Kibo at 2 a.m. — three died instantly while
   others fight for life in hospital.
 pubDate: 2026-11-25T22:09:00.000+01:00
-author: Afolai OLAIYA
+author: Afolabi OLAIYA
 authorRole: Admin
 category: crime
 breaking: false
