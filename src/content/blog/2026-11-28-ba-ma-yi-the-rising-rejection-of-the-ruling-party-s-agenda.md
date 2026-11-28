@@ -1,5 +1,5 @@
 ---
-title: "“Ba Ma Yi”: The Rising Rejection of the Ruling Party’s Agenda"
+title: "“Ba Ma Yi”: The Rising Rejection of the Ruling Party’s Agenda — PDP"
 description: Opposition party highlights growing public disillusionment and
   positions itself as the alternative to what it calls “Renewed Shege.”
 pubDate: 2026-11-28T21:05:00.000+01:00
@@ -13,7 +13,7 @@ seoKeyword: PDP Ba ma yi statement, Nigerians reject Renewed Hope, Ba ma yi
   chants Northern Nigeria, PDP Tinubu criticism November 2026, Renewed Shege
   meaning, opposition alternative 2027, public disillusionment APC, Hausa slogan
   political rejection, PDP official statement, Tinubu failed promises.
-seoTitle: "“Ba Ma Yi”: The Rising Rejection of the Ruling Party’s Agenda"
+seoTitle: "“Ba Ma Yi”: The Rising Rejection of the Ruling Party’s Agenda — PDP"
 seoDescription: Opposition party highlights growing public disillusionment and
   positions itself as the alternative to what it calls “Renewed Shege.”
 seo_gatekeeper: PASS
